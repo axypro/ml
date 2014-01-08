@@ -1,0 +1,27 @@
+{
+    "name": "axy/ml",
+    "type": "library",
+    "description": "Simple markup language",
+    "keywords": [
+        "Markup",
+        "bb",
+        "Html"
+    ],
+    "homepage": "https://github.com/axypro/ml",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oleg Grigoriev",
+            "email": "go.vasac@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "axy\\ml\\": ""
+        }
+    },
+    "target-dir": "axy/ml"
+}
