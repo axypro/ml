@@ -1,0 +1,36 @@
+
+# This is header
+
+#= tags: one, two, three
+#= url: http://url
+#= cache
+#
+
+##[h2] This is subheader
+
+#* this is comment
+
+  First line.
+Second line.
+Third line.
+
+ First Second.
+  Second [B]bold[/B] Second.
+
+#[cut]
+
+[[[code:php
+  x = 1;
+  y = A[x];
+]]]
+
+Text with [<html>] HTML!
+
+Text with [<
+wrap
+
+>]!
+
+Closed tag: [tag]
+
+
