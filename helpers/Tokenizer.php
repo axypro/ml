@@ -24,12 +24,15 @@ class Tokenizer
 
     /**
      * Tokenize, please!
+     *
+     * @param string $cut [optional]
      */
-    public function tokenize()
+    public function tokenize($cut = null)
     {
         if ($this->meta) {
             return true;
         }
+        $this->cut = $cut;
         $this->meta = new \axy\ml\Meta();
         $this->process = true;
         while ($this->process) {
@@ -134,6 +137,10 @@ class Tokenizer
             if (empty($content)) {
                 return;
             }
+        }
+        if (($name !== null) && ($name === $this->cut)) {
+            $this->process = false;
+            return;
         }
         if (empty($content)) {
             $token = new Token(Token::TYPE_ANCHOR, $this->numline);
@@ -280,4 +287,9 @@ class Tokenizer
      * @var \axy\ml\helpers\Token
      */
     private $text;
+
+    /**
+     * @var boolean
+     */
+    private $cut;
 }
