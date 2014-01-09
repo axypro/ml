@@ -26,6 +26,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['meta'], $tokenizer->getMeta()->getSource());
         $tokens = $tokenizer->getTokens();
         $this->assertEquals($data['tokens'], $this->tokens2array($tokens));
+        $this->assertFalse($tokenizer->isCutted());
     }
 
     /**
@@ -41,6 +42,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
         $tokens = $tokenizer->getTokens();
         $expected = \array_slice($data['tokens'], 0, 4);
         $this->assertEquals($expected, $this->tokens2array($tokens));
+        $this->assertTrue($tokenizer->isCutted());
     }
 
     /**

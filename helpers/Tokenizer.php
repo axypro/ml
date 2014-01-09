@@ -71,6 +71,16 @@ class Tokenizer
     }
 
     /**
+     * Check if content was cutted by more-anchor
+     *
+     * @return boolean
+     */
+    public function isCutted()
+    {
+        return $this->cutted;
+    }
+
+    /**
      * Load and parse a next block from the content
      */
     private function loadNextBlock()
@@ -140,6 +150,7 @@ class Tokenizer
         }
         if (($name !== null) && ($name === $this->cut)) {
             $this->process = false;
+            $this->cutted = true;
             return;
         }
         if (empty($content)) {
@@ -292,4 +303,9 @@ class Tokenizer
      * @var boolean
      */
     private $cut;
+
+    /**
+     * @var boolean
+     */
+    private $cutted = false;
 }
