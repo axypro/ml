@@ -64,4 +64,30 @@ class TagParser
         $content = $matches[2];
         return $matches[1];
     }
+
+    /**
+     * Load the last component from the tag value
+     *
+     * @param string $content
+     * @return string
+     */
+    public static function loadLastComponent($content)
+    {
+        $content = \trim($content);
+        if (empty($content)) {
+            return '';
+        }
+        $first = $content[0];
+        if (($first !== '"') && ($first !== "'")) {
+            return $content;
+        }
+        $len = \strlen($content);
+        if ($len === 1) {
+            return $content;
+        }
+        if ($content[$len - 1] !== $first) {
+            return $content;
+        }
+        return \substr($content, 1, -1);
+    }
 }

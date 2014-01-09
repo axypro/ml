@@ -73,7 +73,7 @@ class TagParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadNextComponent($content, $component, $remain)
     {
-        $this->assertEquals($component, TagParser::loadNextComponent($content));
+        $this->assertSame($component, TagParser::loadNextComponent($content));
         $this->assertSame($remain, $content);
     }
 
@@ -117,6 +117,54 @@ class TagParserTest extends \PHPUnit_Framework_TestCase
                 '"" content eol',
                 '',
                 'content eol',
+            ],
+        ];
+    }
+
+    /**
+     * @covers ::loadNextComponent
+     * @dataProvider providerLoadLastComponent
+     * @param string $content
+     * @param string $component
+     */
+    public function testLoadLastComponent($content, $component)
+    {
+        $this->assertSame($component, TagParser::loadLastComponent($content));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerLoadLastComponent()
+    {
+        return [
+            [
+                '',
+                '',
+            ],
+            [
+                '   ',
+                '',
+            ],
+            [
+                '  one two three',
+                'one two three',
+            ],
+            [
+                ' "qwe rty"',
+                'qwe rty',
+            ],
+            [
+                ' "qwe rty"  ',
+                'qwe rty',
+            ],
+            [
+                ' "qwe rty"  z',
+                '"qwe rty"  z',
+            ],
+            [
+                '""',
+                '',
             ],
         ];
     }
