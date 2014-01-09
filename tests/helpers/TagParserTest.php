@@ -63,4 +63,61 @@ class TagParserTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * @covers ::loadNextComponent
+     * @dataProvider providerLoadNextComponent
+     * @param string $content
+     * @param string $component
+     * @param string $remain
+     */
+    public function testLoadNextComponent($content, $component, $remain)
+    {
+        $this->assertEquals($component, TagParser::loadNextComponent($content));
+        $this->assertSame($remain, $content);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerLoadNextComponent()
+    {
+        return [
+            [
+                '',
+                '',
+                '',
+            ],
+            [
+                '   ',
+                '',
+                '',
+            ],
+            [
+                'one two three',
+                'one',
+                'two three',
+            ],
+            [
+                '"one two" three',
+                'one two',
+                'three',
+            ],
+            [
+                '\' one " two \'three',
+                ' one " two ',
+                'three',
+            ],
+            [
+                '"one two"    ',
+                'one two',
+                '',
+            ],
+            [
+                '"" content eol',
+                '',
+                'content eol',
+            ],
+        ];
+    }
 }

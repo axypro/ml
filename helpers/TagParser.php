@@ -39,4 +39,29 @@ class TagParser
         }
         return $attrs;
     }
+
+    /**
+     * Load a next component from the tag value
+     *
+     * @param string $content
+     * @return string
+     */
+    public static function loadNextComponent(&$content)
+    {
+        $content = \ltrim($content);
+        if (empty($content)) {
+            return '';
+        }
+        $first = $content[0];
+        if (($first === '"') || ($first === "'")) {
+            $e = \explode($first, $content, 3);
+            $content = isset($e[2]) ? \ltrim($e[2]) : '';
+            return $e[1];
+        }
+        if (!\preg_match('/^(\S*)\s*(.*)$/is', $content, $matches)) {
+            return '';
+        }
+        $content = $matches[2];
+        return $matches[1];
+    }
 }
