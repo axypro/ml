@@ -13,12 +13,12 @@ use axy\ml\tags\Http;
 class HttpTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider providerRender
+     * @dataProvider providerHttp
      * @param string $content
      * @param string $html
      * @param string $plain
      */
-    public function testRender($content, $html, $plain)
+    public function testHttp($content, $html, $plain)
     {
         $tag = new Http('http', $content);
         $this->assertSame($html, $tag->getHTML());
@@ -28,7 +28,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerRender()
+    public function providerHttp()
     {
         return [
             [
@@ -45,6 +45,48 @@ class HttpTest extends \PHPUnit_Framework_TestCase
                 '"://example.com Link" <caption>',
                 '<a href="http://example.com Link">&lt;caption&gt;</a>',
                 'http://example.com Link <caption>',
+            ],
+            [
+                '',
+                '',
+                '',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider providerHttps
+     * @param string $content
+     * @param string $html
+     * @param string $plain
+     */
+    public function testHttps($content, $html, $plain)
+    {
+        $tag = new Http('https', $content);
+        $this->assertSame($html, $tag->getHTML());
+        $this->assertSame($plain, $tag->getPlain());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerHttps()
+    {
+        return [
+            [
+                '://example.com/?x=1',
+                '<a href="https://example.com/?x=1">https://example.com/?x=1</a>',
+                'https://example.com/?x=1',
+            ],
+            [
+                '://example.com Link <caption>',
+                '<a href="https://example.com">Link &lt;caption&gt;</a>',
+                'https://example.com Link <caption>',
+            ],
+            [
+                '"://example.com Link" <caption>',
+                '<a href="https://example.com Link">&lt;caption&gt;</a>',
+                'https://example.com Link <caption>',
             ],
             [
                 '',

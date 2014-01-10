@@ -14,10 +14,57 @@ namespace axy\ml\tags;
  *
  * @author Oleg Grigoriev
  */
-class Http extends LinkBase
+class Http extends Base
 {
     /**
      * {@inheritdoc}
      */
-    protected $protocol = 'http';
+    public function getHTML()
+    {
+        if (empty($this->url)) {
+            return '';
+        }
+        $url = $this->name.$this->url;
+        $content = $this->content ?: $url;
+        return '<a href="'.$this->escape($url).'">'.$this->escape($content).'</a>';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPlain()
+    {
+        if (empty($this->url)) {
+            return '';
+        }
+        $url = $this->name.$this->url;
+        return $url.($this->content ? ' '.$this->content : '');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parse()
+    {
+        $this->url = $this->getNextComponent();
+        $this->content = $this->getLastComponent();
+        if (empty($this->url)) {
+            $this->errors[] = 'empty url';
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $args = false;
+
+    /**
+     * @var string
+     */
+    private $url;
+
+    /**
+     * @var string
+     */
+    private $content;
 }
