@@ -6,7 +6,7 @@
 namespace axy\ml\tags;
 
 /**
- * Tag [HTTP]
+ * Tags [HTTP] & [HTTPS]
  *
  * @example [http://example.loc/]
  * @example [http://example.loc/ Example link]
