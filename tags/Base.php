@@ -17,11 +17,16 @@ abstract class Base
     /**
      * Constructor
      *
+     * @param string $name
+     *        the tag name
      * @param string $content
+     *        the content of the tag
      * @param array $options [optional]
+     *        the custom options
      */
-    public function __construct($content, array $options = null)
+    public function __construct($name, $content, array $options = null)
     {
+        $this->name = $name;
         $this->value = $content;
         if ($options) {
             $this->options = \array_replace($this->options, $options);
@@ -144,6 +149,13 @@ abstract class Base
      * @var array
      */
     protected $options = [];
+
+    /**
+     * Tag name
+     *
+     * @var string
+     */
+    protected $name;
 
     /**
      * The current value of the tag (can be trimmed)

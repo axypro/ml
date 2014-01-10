@@ -20,7 +20,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function testRender($content, $html, $plain)
     {
-        $tag = new Http($content);
+        $tag = new Http('http', $content);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
     }

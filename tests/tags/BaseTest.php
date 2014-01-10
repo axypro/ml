@@ -24,7 +24,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
      */
     public function testOne($content, $options, $html, $errors = [])
     {
-        $tag = new One($content, $options);
+        $tag = new One('one', $content, $options);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($html, $tag->getPlain());
         $this->assertEquals($errors, $tag->getErrors());
@@ -73,7 +73,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
      */
     public function testTwo($content, $options, $html, $plain)
     {
-        $tag = new Two($content, $options);
+        $tag = new Two('two', $content, $options);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
     }
