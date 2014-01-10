@@ -69,7 +69,7 @@ abstract class Base
     }
 
     /**
-     * Should there be a create block?
+     * Should the block be created?
      * (for standalone tags)
      *
      * @return boolean
@@ -167,7 +167,7 @@ abstract class Base
     protected $splitBlock = false;
 
     /**
-     * Should there be a create block?
+     * Should the block be created?
      *
      * @var string
      */
