@@ -58,6 +58,28 @@ abstract class Base
     }
 
     /**
+     * Should the block be broken?
+     * (for inline tags)
+     *
+     * @return boolean
+     */
+    public function shouldSplitBlock()
+    {
+        return $this->splitBlock;
+    }
+
+    /**
+     * Should there be a create block?
+     * (for standalone tags)
+     *
+     * @return boolean
+     */
+    public function shouldCreateBlock()
+    {
+        return $this->createBlock;
+    }
+
+    /**
      * Parse (called from the constructor)
      */
     protected function parse()
@@ -131,9 +153,23 @@ abstract class Base
     protected $value;
 
     /**
-     * The errors list. (array of messages)
+     * The errors list (array of messages)
      *
      * @var array
      */
     protected $errors = [];
+
+    /**
+     * Should the block be broken?
+     *
+     * @var string
+     */
+    protected $splitBlock = false;
+
+    /**
+     * Should there be a create block?
+     *
+     * @var string
+     */
+    protected $createBlock = true;
 }
