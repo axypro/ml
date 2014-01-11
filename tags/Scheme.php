@@ -14,7 +14,7 @@ namespace axy\ml\tags;
  *
  * @author Oleg Grigoriev
  */
-class Http extends Base
+class Scheme extends Base
 {
     /**
      * {@inheritdoc}

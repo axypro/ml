@@ -5,12 +5,12 @@
 
 namespace axy\ml\tests\tags;
 
-use axy\ml\tags\Http;
+use axy\ml\tags\Scheme;
 
 /**
- * @coversDefaultClass axy\ml\tags\Http
+ * @coversDefaultClass axy\ml\tags\Scheme
  */
-class HttpTest extends \PHPUnit_Framework_TestCase
+class SchemeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerHttp
@@ -20,7 +20,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function testHttp($content, $html, $plain)
     {
-        $tag = new Http('http', $content);
+        $tag = new Scheme('http', $content);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
     }
@@ -62,7 +62,7 @@ class HttpTest extends \PHPUnit_Framework_TestCase
      */
     public function testHttps($content, $html, $plain)
     {
-        $tag = new Http('https', $content);
+        $tag = new Scheme('https', $content);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
     }
