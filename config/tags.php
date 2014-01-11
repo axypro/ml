@@ -22,5 +22,8 @@ return [
     'https' => 'Scheme',
     'tag' => 'Tag',
     'url' => 'Url',
+    'img' => 'Img',
     'code' => 'Code',
+    'html' => 'Html',
+    '' => 'Html',
 ];

@@ -10,7 +10,7 @@ use axy\ml\tags\HtmlTag;
 /**
  * @coversDefaultClass axy\ml\tags\HtmlTag
  */
-class HtmlTest extends \PHPUnit_Framework_TestCase
+class HtmlTagTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerHtmlTag
