@@ -38,6 +38,9 @@ class ClosingTag extends Base
     {
         $this->tagname = \strtolower($this->getNextComponent());
         $this->tagattrs = $this->getLastComponent();
+        if (!$this->tagname) {
+            $this->errors[] = 'empty closing tag';
+        }
     }
 
     /**
