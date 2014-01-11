@@ -30,6 +30,19 @@ class One extends \axy\ml\tags\Base
     }
 
     /**
+     * @param string $prefix
+     * @param string $url
+     * @return string
+     */
+    public static function handleUrl($prefix, $url)
+    {
+        if (\strpos($url, $prefix) === 0) {
+
+        }
+        return $url;
+    }
+
+    /**
      * @var array
      */
     private $components = [];
