@@ -29,24 +29,21 @@ class Options extends \axy\magic\ArrayWrapper
      */
     public function __construct(array $options = null)
     {
+        $this->source = self::loadDefaultOptions();
         parent::__construct($options, true, true);
     }
 
     /**
-     * Default options
-     *
-     * @var array
+     * @return array
      */
-    protected $source = [
-        'nl' => "\n", // newline symbol(s) in result
-        'tab' => 4, // count of spaces for tab
-        'escape' => true, // escape html special chars
-        'textHandler' => null, // handler for text (callback)
-        'hStart' => 1, // number of top level <h> (<h1> by default)
-        'hHandler' => null, // wrapper for header (callback)
-        'pTags' => ['<p>', '</p>'], // tags for paragraph
-        'pHandler' => null, // wrapper for paragraph (callback)
-    ];
+    private static function loadDefaultOptions()
+    {
+        static $options;
+        if (!$options) {
+            $options = include(__DIR__.'/config/options.php');
+        }
+        return $options;
+    }
 
     /**
      * {@inheritdoc}
