@@ -5,6 +5,8 @@
 
 namespace axy\ml\helpers;
 
+use axy\callbacks\Callback;
+
 /**
  * The helper for handling and wrapping blocks and values
  *
@@ -22,7 +24,7 @@ class Handlers
     public static function text($text, $options)
     {
         if ($options['textHandler']) {
-            $text = \call_user_func($options['textHandler'], $text);
+            $text = Callback::call($options['textHandler'], [$text]);
         }
         if ($options['escape']) {
             $text = \htmlspecialchars($text, \ENT_COMPAT, 'UTF-8');

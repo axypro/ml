@@ -5,6 +5,8 @@
 
 namespace axy\ml\tags;
 
+use axy\callbacks\Callback;
+
 /**
  * Tag [URL]
  *
@@ -50,7 +52,7 @@ class Url extends Base
         $this->url = $this->getNextComponent();
         $this->caption = $this->getLastComponent();
         if ($this->options['handler']) {
-            $this->url = \call_user_func($this->options['handler'], $this->url);
+            $this->url = Callback::call($this->options['handler'], [$this->url]);
         }
         if (empty($this->url)) {
             $this->errors[] = 'empty url';

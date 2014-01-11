@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "axy/magic": "~0.1.2"
+        "axy/magic": "~0.1.2",
+        "axy/callbacks": "~0.0.1"
     },
     "autoload": {
         "psr-0": {
