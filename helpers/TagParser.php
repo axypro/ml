@@ -115,4 +115,43 @@ class TagParser
         }
         return $result;
     }
+
+    /**
+     * Merge the default list of tags with a custom list
+     *
+     * @param array $default
+     * @param array $custom
+     * @return array
+     */
+    public static function mergeTagLists(array $default, array $custom = null)
+    {
+        foreach ($default as &$params) {
+            $params = self::getParamsFromTagList($params);
+        }
+        unset($params);
+        if ($custom) {
+            foreach ($custom as $k => $params) {
+                if ($params) {
+                    $params = self::getParamsFromTagList($params);
+                    if (isset($default[$k])) {
+                        if ($params['classname']) {
+                            $default[$k] = $params['classname'];
+                        }
+                        $default[$k]['options'] = \array_replace($default[$k]['options'], $params['options']);
+                    } else {
+                        $default[$k] = $params;
+                    }
+                } else {
+                    $default[$k] = null;
+                }
+            }
+        }
+        $result = [];
+        foreach ($default as $k => $params) {
+            if ($params && $params['classname']) {
+                $result[$k] = $params;
+            }
+        }
+        return $result;
+    }
 }

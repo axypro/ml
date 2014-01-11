@@ -222,4 +222,41 @@ class TagParserTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * @covers ::mergeTagLists
+     */
+    public function testMergeTagList()
+    {
+        $default = [
+            'one' => 'One',
+            'two' => 'Two',
+            'three' => [
+                'classname' => 'Three',
+                'options' => ['x' => 1, 'y' => 2],
+            ],
+        ];
+        $custom = [
+            'two' => null,
+            'three' => [
+                'options' => ['y' => 3, 'z' => 4,]
+            ],
+            'four' => '\my\MyTag',
+        ];
+        $expected = [
+            'one' => [
+                'classname' => '\axy\ml\tags\One',
+                'options' => [],
+            ],
+            'three' => [
+                'classname' => '\axy\ml\tags\Three',
+                'options' => ['x' => 1, 'y' => 3, 'z' => 4],
+            ],
+            'four' => [
+                'classname' => '\my\MyTag',
+                'options' => [],
+            ],
+        ];
+        $this->assertEquals($expected, TagParser::mergeTagLists($default, $custom));
+    }
 }
