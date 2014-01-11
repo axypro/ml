@@ -168,4 +168,58 @@ class TagParserTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * @covers ::getParamsFromTagList
+     * @dataProvider providerGetParamsFromTagList
+     * @param mixed $params
+     * @param array $expected
+     */
+    public function testGetParamsFromTagList($params, $expected)
+    {
+        $this->assertEquals($expected, TagParser::getParamsFromTagList($params));
+    }
+
+    /**
+     * @return array
+     */
+    public function providerGetParamsFromTagList()
+    {
+        return [
+            [
+                'Tag',
+                [
+                    'classname' => '\axy\ml\tags\Tag',
+                    'options' => [],
+                ],
+            ],
+            [
+                '\my\ns\MyTag',
+                [
+                    'classname' => '\my\ns\MyTag',
+                    'options' => [],
+                ],
+            ],
+            [
+                [
+                    'classname' => 'Tag',
+                    'options' => ['x' => 1,],
+                ],
+                [
+                    'classname' => '\axy\ml\tags\Tag',
+                    'options' => ['x' => 1,],
+                ],
+            ],
+            [
+                [
+                    'options' => ['x' => 1,],
+                    'x' => 2,
+                ],
+                [
+                    'classname' => null,
+                    'options' => ['x' => 1,],
+                ],
+            ],
+        ];
+    }
 }

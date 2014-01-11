@@ -90,4 +90,29 @@ class TagParser
         }
         return \substr($content, 1, -1);
     }
+
+    /**
+     * Get creating parameters from tag list
+     *
+     * @param mixed $params
+     * @return array (classname, options)
+     */
+    public static function getParamsFromTagList($params)
+    {
+        if (\is_array($params)) {
+            $result = [
+                'classname' => isset($params['classname']) ? $params['classname'] : null,
+                'options' => isset($params['options']) ? $params['options'] : [],
+            ];
+        } else {
+            $result = [
+                'classname' => $params,
+                'options' => [],
+            ];
+        }
+        if (($result['classname']) && ($result['classname'][0] !== '\\')) {
+            $result['classname'] = '\axy\ml\tags\\'.$result['classname'];
+        }
+        return $result;
+    }
 }
