@@ -5,6 +5,8 @@
 
 namespace axy\ml;
 
+use axy\ml\helpers\Config;
+
 /**
  * Options of parser
  *
@@ -29,20 +31,8 @@ class Options extends \axy\magic\ArrayWrapper
      */
     public function __construct(array $options = null)
     {
-        $this->source = self::loadDefaultOptions();
+        $this->source = Config::getOptions();
         parent::__construct($options, true, true);
-    }
-
-    /**
-     * @return array
-     */
-    private static function loadDefaultOptions()
-    {
-        static $options;
-        if (!$options) {
-            $options = include(__DIR__.'/config/options.php');
-        }
-        return $options;
     }
 
     /**
