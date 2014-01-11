@@ -14,7 +14,7 @@ use axy\callbacks\Callback;
  * @example [URL http://example.loc/ Example link]
  * @example [URL "http://link with space" Caption]
  *
- * @author Oleg Grigoriev
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Url extends Base
 {
