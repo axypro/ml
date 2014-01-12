@@ -33,5 +33,5 @@ return [
     'bHandler' => null,
 
     /* separator of blocks */
-    'blocks_separator' => "\n \n",
+    'blocks_separator' => "\n\n",
 ];

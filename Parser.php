@@ -6,6 +6,7 @@
 namespace axy\ml;
 
 use axy\ml\helpers\Tokenizer;
+use axy\ml\helpers\Normalizer;
 
 /**
  * The parser of axyml documents
@@ -40,6 +41,7 @@ class Parser
      */
     public function parse($content, $cut = null)
     {
+        $content = Normalizer::toParse($content, $this->options);
         $tokenizer = new Tokenizer($content);
         $tokenizer->tokenize($cut);
         return new Result($tokenizer, $this->options, $this->tags);

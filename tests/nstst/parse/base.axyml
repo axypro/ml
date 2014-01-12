@@ -1,0 +1,32 @@
+#* Basic test
+
+# Title of the document
+#
+#* Error "header_empty"
+
+#= keywords: basic, test
+#=
+#* Error "meta_empty"
+
+ This is [B]short[/B] text.
+
+##[cut] Subtitle
+
+First line of first paragraph.
+Second line of second paragraph [code 2 > 2].
+
+Escape: if 2 > 3 then &copy;
+
+### Header of level 3
+
+#[anchor]
+
+## 2 level > header
+
+Unknown tag: [unknown].
+And many empty lines.
+
+
+
+Not closed tag: [br
+

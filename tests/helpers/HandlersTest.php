@@ -130,6 +130,16 @@ class HandlersTest extends \PHPUnit_Framework_TestCase
                 ['escape' => false],
                 '<h3>This is > header</h3>',
             ],
+            [
+                ['content' => 'This is > header', 'level' => 3, 'name' => ''],
+                ['escape' => false],
+                '<h3>This is > header</h3>',
+            ],
+            [
+                ['content' => 'This is > header', 'level' => 3, 'name' => 'hname'],
+                ['escape' => false],
+                '<h3 id="hname">This is > header</h3>',
+            ],
         ];
     }
 

@@ -5,6 +5,8 @@
 
 namespace axy\ml\helpers;
 
+use axy\ml\Error;
+
 /**
  * The axyML-tokenizer
  *
@@ -112,6 +114,7 @@ class Tokenizer
         $this->block = null;
         $line = \rtrim($line);
         if ($line === '#') {
+            $this->errors[] = new Error(Error::HEADER_EMPTY, $this->numline);
             return;
         }
         switch ($line[1]) {
@@ -120,6 +123,7 @@ class Tokenizer
             case '=':
                 $line = \preg_replace('/^#=\s*/is', '', $line);
                 if (empty($line)) {
+                    $this->errors[] = new Error(Error::META_EMPTY, $this->numline);
                     return;
                 }
                 $line = \explode(':', $line, 2);
@@ -132,6 +136,7 @@ class Tokenizer
         $level = \strlen($matches[1]);
         $line = $matches[2];
         if (empty($line)) {
+            $this->errors[] = new Error(Error::HEADER_EMPTY, $this->numline);
             return;
         }
         if ($line[0] === '[') {
@@ -226,19 +231,23 @@ class Tokenizer
         $e = \explode($close, $line, 2);
         $line = '';
         $tag = $e[0];
-        if (isset($e[1])) {
+        $err = !isset($e[1]);
+        if (!$err) {
             $this->content = $e[1];
+            $err =  false;
         } else {
-            $this->content = ''; // @todo error
+            $this->content = '';
+            $err = true;
         }
-        $this->parseTag($tag);
+        $this->parseTag($tag, $err);
         $this->numline += \substr_count($tag, "\n") - 1;
     }
 
     /**
      * @param string $content
+     * @param boolean $notclosed [optional]
      */
-    private function parseTag($content)
+    private function parseTag($content, $notclosed = false)
     {
         $token = new Token(Token::TYPE_TAG, $this->numline);
         $this->block->append($token);
@@ -248,6 +257,9 @@ class Tokenizer
         if ($content[0] === '/') {
             $token->name = '/';
             $token->content = \substr($content, 1);
+            if ($notclosed) {
+                $this->errors[] = new Error(Error::TAG_NOT_CLOSED, $this->numline, ['tag' => '/']);
+            }
             return;
         }
         if (\preg_match('/^([a-z0-9_]+)(.*?)$/is', $content, $matches)) {
@@ -256,6 +268,9 @@ class Tokenizer
         } else {
             $token->name = null;
             $token->content = $content;
+        }
+        if ($notclosed) {
+            $this->errors[] = new Error(Error::TAG_NOT_CLOSED, $this->numline, ['tag' => $token->name]);
         }
     }
 

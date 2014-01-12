@@ -1,0 +1,12 @@
+Title of the document
+This is short text.
+Subtitle
+First line of first paragraph.
+Second line of second paragraph 2 > 2.
+Escape: if 2 > 3 then &copy;
+Header of level 3
+2 level > header
+Unknown tag: .
+And many empty lines.
+Not closed tag:
+
