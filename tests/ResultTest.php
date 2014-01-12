@@ -125,6 +125,32 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test hHandler, tag alias and block split
+     */
+    public function testBlocks()
+    {
+        $hHandler = function ($header) {
+            return '<div class="h'.$header->level.'">'.$header->content.'</div>';
+        };
+        $options = [
+            'hHandler' => $hHandler
+        ];
+        $tags = [
+            'php' => [
+                'classname' => '=code',
+                'options' => [
+                    'lang' => 'php',
+                ],
+            ],
+        ];
+        $axyml = $this->getFile('blocks.axyml');
+        $html = $this->getFile('blocks.html');
+        $parser = new Parser($options, $tags);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */

@@ -76,15 +76,17 @@ class Handlers
     {
         $blocks = [];
         $block = [];
+        $lastCr = true;
         foreach ($container->subs as $token) {
             switch ($token->type) {
                 case Token::TYPE_TEXT:
+                    $lastCr = true;
                     $block[] = self::text($token->content, $options);
                     break;
                 case Token::TYPE_TAG:
                     $tag = $tags->create($token->name, $token->content);
                     if ($tag) {
-                        $block[] = $tag->getHtml();
+                        $html = $tag->getHtml();
                         foreach ($tag->getErrors() as $err) {
                             $data = [
                                 'tag' => $token->name,
@@ -92,6 +94,18 @@ class Handlers
                             ];
                             $errors[] = new Error(Error::TAG_INVALID, $token->line, $data);
                         }
+                        if (empty($block)) {
+                            $block[] = $html;
+                        } else {
+                            if ($tag->shouldSplitBlock()) {
+                                $blocks[] = self::wrapBlock($block, $options, $lastCr);
+                                $blocks[] = self::wrapBlock([$html], $options, $tag->shouldCreateBlock());
+                                $block = [];
+                            } else {
+                                $block[] = $html;
+                            }
+                        }
+                        $lastCr = $tag->shouldCreateBlock();
                     } else {
                         $data = [
                             'tag' => $token->name,
@@ -102,7 +116,7 @@ class Handlers
             }
         }
         if (!empty($block)) {
-            $blocks[] = self::wrapBlock($block, $options);
+            $blocks[] = self::wrapBlock($block, $options, $lastCr);
         }
         return $blocks;
     }
@@ -110,11 +124,15 @@ class Handlers
     /**
      * @param array $block
      * @param array $options
+     * @param boolean $lastCr
      * @return string
      */
-    private static function wrapBlock(array $block, $options)
+    private static function wrapBlock(array $block, $options, $lastCr)
     {
-        $block = \implode('', $block);
+        if ((!$lastCr) && (\count($block) === 1)) {
+            return $block[0];
+        }
+        $block = \trim(\implode('', $block));
         if ($options['bHandler']) {
             return Callback::call($options['bHandler'], $block);
         }
