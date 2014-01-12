@@ -91,6 +91,10 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
             [
+                'unk',
+                null,
+            ],
+            [
                 'c',
                 [
                     'classname' => 'axy\ml\tags\Code',

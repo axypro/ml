@@ -91,6 +91,9 @@ class TagsList
         } else {
             $result['classname'] = __NAMESPACE__.'\tags\\'.$result['classname'];
         }
+        if (!\class_exists($result['classname'], true)) {
+            return null;
+        }
         return $result;
     }
 
