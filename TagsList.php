@@ -20,10 +20,10 @@ class TagsList
      * @param array $tags [optional]
      *        the list of custom tags
      */
-    public function __construct(array $custom = [])
+    public function __construct(array $custom = null)
     {
         $this->default = Config::getTags();
-        $this->custom = $custom;
+        $this->custom = $custom ?: [];
     }
 
     /**
