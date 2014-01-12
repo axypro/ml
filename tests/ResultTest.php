@@ -94,6 +94,37 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test escape, textHandler, hStart, bTags, block_separator, code: default_lang, unknown tag
+     */
+    public function testMany()
+    {
+        $textHandler = function ($text) {
+            return \str_replace(2, 3, $text);
+        };
+        $options = [
+            'escape' => false,
+            'textHandler' => $textHandler,
+            'hStart' => 2,
+            'bTags' => ['<div>', '</div>'],
+            'blocks_separator' => "\n",
+        ];
+        $tags = [
+            'code' => [
+                'options' => [
+                    'default_lang' => 'php',
+                ],
+            ],
+            'unknown' => 'HtmlTag',
+            'b' => null,
+        ];
+        $axyml = $this->getFile('base.axyml');
+        $html = $this->getFile('many.html');
+        $parser = new Parser($options, $tags);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */
