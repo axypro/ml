@@ -35,6 +35,47 @@ class ResultTest extends \PHPUnit_Framework_TestCase
             'Tag [br] is not closed on line 31',
         ];
         $this->assertEquals($expected, $errors);
+        $expected = [
+            [
+                'content' => 'Title of the document',
+                'level' => 1,
+                'name' => null,
+            ],
+            [
+                'content' => 'Subtitle',
+                'level' => 2,
+                'name' => 'cut',
+            ],
+            [
+                'content' => 'Header of level 3',
+                'level' => 3,
+                'name' => null,
+            ],
+            [
+                'content' => '2 level > header',
+                'level' => 2,
+                'name' => null,
+            ],
+        ];
+        $this->assertEquals($expected, $result->getHeaders());
+        $expected = [
+            [
+                'content' => 'Title of the document',
+                'level' => 1,
+                'name' => null,
+            ],
+            [
+                'content' => 'Subtitle',
+                'level' => 2,
+                'name' => 'cut',
+            ],
+            [
+                'content' => '2 level > header',
+                'level' => 2,
+                'name' => null,
+            ],
+        ];
+        $this->assertEquals($expected, $result->getHeaders(2));
     }
 
     /**

@@ -56,6 +56,31 @@ class Result
     }
 
     /**
+     * Get the list of headers
+     *
+     * @param int $max [optional]
+     * @return array (content, level, name)
+     */
+    public function getHeaders($max = null)
+    {
+        $headers = [];
+        foreach ($this->tokenizer->getTokens() as $token) {
+            if ($token->type !== Token::TYPE_HEADER) {
+                continue;
+            }
+            if ($max && ($token->level > $max)) {
+                continue;
+            }
+            $headers[] = [
+                'content' => $token->content,
+                'level' => $token->level,
+                'name' => $token->name,
+            ];
+        }
+        return $headers;
+    }
+
+    /**
      * @return string
      */
     private function loadTitle()
