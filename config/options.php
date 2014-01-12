@@ -31,4 +31,7 @@ return [
 
     /* wrapper for block (callback) */
     'bHandler' => null,
+
+    /* separator of blocks */
+    'blocks_separator' => "\n \n",
 ];
