@@ -37,7 +37,7 @@ class One extends \axy\ml\tags\Base
     public static function handleUrl($prefix, $url)
     {
         if (\strpos($url, $prefix) === 0) {
-
+            return 'http://example.loc/'.\substr($url, 1);
         }
         return $url;
     }

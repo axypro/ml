@@ -156,4 +156,92 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
             ],
         ];
     }
+
+    /**
+     * @covers create
+     * @dataProvider providerCreate
+     * @param string $name
+     * @param string $content
+     * @param string $html
+     */
+    public function testCreate($name, $content, $html)
+    {
+        $list = new TagsList($this->custom);
+        $tag = $list->create($name, $content);
+        if ($html !== null) {
+            $this->assertInstanceOf('axy\ml\tags\Base', $tag);
+            $this->assertSame($html, $tag->getHTML());
+        } else {
+            $this->assertNull($tag);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function providerCreate()
+    {
+        return [
+            [
+                'br',
+                '',
+                null,
+            ],
+            [
+                'unk',
+                '',
+                null,
+            ],
+            [
+                'ccc',
+                '',
+                null,
+            ],
+            [
+                'unknown',
+                '',
+                null,
+            ],
+            [
+                'url',
+                ' :page Link',
+                '<a href="http://example.loc/page">Link</a>',
+            ],
+            [
+                'one',
+                ':a:b xx "yy zz" aa',
+                'a.b:xx.yy zz.aa',
+            ],
+            [
+                'code',
+                ':js x=1;',
+                '<code rel="js">x=1;</code>',
+            ],
+            [
+                'c',
+                ':js x=1;',
+                '<code rel="js">x=1;</code>',
+            ],
+            [
+                'cc',
+                ':js x=1;',
+                '<code lang="js">x=1;</code>',
+            ],
+            [
+                'php',
+                ':js x=1;',
+                '<code lang="php">x=1;</code>',
+            ],
+            [
+                'div',
+                ' rel="1"',
+                '<div rel="1">',
+            ],
+            [
+                'ftp',
+                '://ftp.server.loc/',
+                '<a href="ftp://ftp.server.loc/">ftp://ftp.server.loc/</a>',
+            ],
+        ];
+    }
 }

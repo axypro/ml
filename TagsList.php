@@ -41,6 +41,24 @@ class TagsList
     }
 
     /**
+     * Create the tag instance
+     *
+     * @param string $name
+     * @param string $content
+     * @return \axy\ml\tags\Base
+     *         the tag instance or NULL
+     */
+    public function create($name, $content)
+    {
+        $params = $this->getParams($name);
+        if (!$params) {
+            return null;
+        }
+        $classname = $params['classname'];
+        return new $classname($name, $content, $params['options']);
+    }
+
+    /**
      * @param string $name
      * @return mixed
      */
