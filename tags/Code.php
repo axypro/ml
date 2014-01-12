@@ -49,7 +49,13 @@ class Code extends Base
      */
     protected function parse()
     {
-        $this->lang = isset($this->args[0]) ? $this->args[0] : null;
+        if ($this->options['lang']) {
+            $this->lang = $this->options['lang'];
+        } elseif (isset($this->args[0])) {
+            $this->lang = $this->args[0];
+        } else {
+            $this->lang = $this->options['default_lang'];
+        }
         $this->code = $this->value;
         if ($this->block) {
             $this->splitBlock = true;
@@ -73,6 +79,8 @@ class Code extends Base
         'tag_block' => 'pre',
         'tag_inline' => 'code',
         'attr_lang' => 'rel',
+        'lang' => null,
+        'default_lang' => null,
     ];
 
     /**
