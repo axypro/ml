@@ -32,8 +32,22 @@ class Handlers
         return $text;
     }
 
+    /**
+     * Create HTML-header
+     *
+     * @param \axy\ml\helpers\Token $token
+     * @param array $options
+     * @return string
+     */
     public static function header(Token $token, $options)
     {
-
+        if ($options['hHandler']) {
+            return Callback::call($options['hHandler'], [$token]);
+        }
+        $level = $token->level + $options['hStart'] - 1;
+        if ($level > 6) {
+            $level = 6;
+        }
+        return '<h'.$level.'>'.self::text($token->content, $options).'</h'.$level.'>';
     }
 }
