@@ -78,6 +78,20 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result->getHeaders(2));
     }
 
+    public function testCut()
+    {
+        $axyml = $this->getFile('base.axyml');
+        $html1 = $this->getFile('base.html');
+        $html2 = $this->getFile('cut.html');
+        $parser = new Parser();
+        $result1 = $parser->parse($axyml, 'unk');
+        $this->assertSame($html1, \rtrim($result1->html));
+        $this->assertFalse($result1->isCutted);
+        $result2 = $parser->parse($axyml, 'anchor');
+        $this->assertSame($html2, \rtrim($result2->html));
+        $this->assertTrue($result2->isCutted);
+    }
+
     /**
      * @param string $fn
      * @return string
