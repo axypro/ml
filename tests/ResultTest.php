@@ -31,6 +31,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $expected = [
             'Header is empty on line 4',
             'Meta is empty on line 8',
+            'Invalid [img]: empty src on line 15',
             'Unknown tag [unknown] on line 26',
             'Tag [br] is not closed on line 31',
         ];

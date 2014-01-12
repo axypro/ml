@@ -85,8 +85,18 @@ class Handlers
                     $tag = $tags->create($token->name, $token->content);
                     if ($tag) {
                         $block[] = $tag->getHtml();
+                        foreach ($tag->getErrors() as $err) {
+                            $data = [
+                                'tag' => $token->name,
+                                'info' => $err,
+                            ];
+                            $errors[] = new Error(Error::TAG_INVALID, $token->line, $data);
+                        }
                     } else {
-                        $errors[] = new Error(Error::TAG_UNKNOWN, $token->line, ['tag' => $token->name]);
+                        $data = [
+                            'tag' => $token->name,
+                        ];
+                        $errors[] = new Error(Error::TAG_UNKNOWN, $token->line, $data);
                     }
                     break;
             }

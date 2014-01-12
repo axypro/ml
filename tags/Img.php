@@ -47,7 +47,7 @@ class Img extends Base
             $this->src = Callback::call($this->options['handler'], [$this->src]);
         }
         if (empty($this->src)) {
-            $this->errors[] = 'empty url';
+            $this->errors[] = 'empty src';
         }
     }
 
