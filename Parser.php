@@ -26,7 +26,7 @@ class Parser
     public function __construct(array $options = null, array $tags = null)
     {
         $this->options = new Options($options);
-        $this->tags = new TagsList($tags);
+        $this->tags = new TagsList($tags, $this->options->getSource());
     }
 
     /**

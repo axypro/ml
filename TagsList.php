@@ -19,11 +19,14 @@ class TagsList
      *
      * @param array $tags [optional]
      *        the list of custom tags
+     * @param array $goptions [optional]
+     *        the global options
      */
-    public function __construct(array $custom = null)
+    public function __construct(array $custom = null, $goptions = null)
     {
         $this->default = Config::getTags();
         $this->custom = $custom ?: [];
+        $this->goptions = $goptions ?: new Options();
     }
 
     /**
@@ -55,7 +58,7 @@ class TagsList
             return null;
         }
         $classname = $params['classname'];
-        return new $classname($name, $content, $params['options']);
+        return new $classname($name, $content, $params['options'], $this->goptions);
     }
 
     /**
@@ -142,6 +145,11 @@ class TagsList
      * @var array
      */
     private $custom;
+
+    /**
+     * @var array
+     */
+    private $goptions;
 
     /**
      * @var array

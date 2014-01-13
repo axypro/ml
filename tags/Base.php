@@ -6,6 +6,7 @@
 namespace axy\ml\tags;
 
 use axy\ml\helpers\TagParser;
+use axy\ml\Options;
 
 /**
  * The basic class of axyml-tags
@@ -23,11 +24,14 @@ abstract class Base
      *        the content of the tag
      * @param array $options [optional]
      *        the custom options
+     * @param array $goptions [optional]
+     *        the global options
      */
-    public function __construct($name, $content, array $options = null)
+    public function __construct($name, $content, array $options = null, $goptions = null)
     {
         $this->name = $name;
         $this->value = $content;
+        $this->goptions = $goptions ?: new Options();
         if ($options) {
             $this->options = \array_replace($this->options, $options);
         }
@@ -131,7 +135,10 @@ abstract class Base
      */
     protected function escape($text)
     {
-        return \htmlspecialchars($text, \ENT_COMPAT, 'UTF-8');
+        if ($this->goptions['escape']) {
+            $text = \htmlspecialchars($text, \ENT_COMPAT, 'UTF-8');
+        }
+        return $text;
     }
 
     /**
@@ -149,6 +156,13 @@ abstract class Base
      * @var array
      */
     protected $options = [];
+
+    /**
+     * Global options
+     *
+     * @var array
+     */
+    protected $goptions;
 
     /**
      * Tag name
