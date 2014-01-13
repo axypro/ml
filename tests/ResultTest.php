@@ -193,6 +193,18 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test new line
+     */
+    public function testNL()
+    {
+        $axyml = $this->getFile('nl.axyml');
+        $html = $this->getFile('nl.html');
+        $parser = new Parser();
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */

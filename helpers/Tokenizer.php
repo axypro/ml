@@ -189,6 +189,7 @@ class Tokenizer
         while ($line !== '') {
             $e = \explode('[', $line, 2);
             $text = ($fblock && $first) ? \ltrim($e[0]) : $e[0];
+            $etag = isset($e[1]);
             if ($text !== '') {
                 if (!$this->text) {
                     $this->text = new Token(Token::TYPE_TEXT, $this->numline);
@@ -197,14 +198,19 @@ class Tokenizer
                 } else {
                     $this->text->content .= ($first ? "\n" : '').$text;
                 }
+            } elseif ($first && $this->text) {
+                $this->text->content .= "\n";
             }
-            $first = false;
-            if (!isset($e[1])) {
+            if (!$etag) {
                 break;
             }
+            $first = false;
             $line = $e[1];
             $this->text = null;
             $this->loadTag($line);
+            if ($line === '') {
+                break;
+            }
         }
     }
 
