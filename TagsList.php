@@ -58,7 +58,7 @@ class TagsList
             return null;
         }
         $classname = $params['classname'];
-        return new $classname($name, $content, $params['options'], $this->goptions);
+        return new $classname($params['name'], $content, $params['options'], $this->goptions);
     }
 
     /**
@@ -85,6 +85,7 @@ class TagsList
             $result = [
                 'classname' => $custom['classname'] ?: $default['classname'],
                 'options' => \array_replace($default['options'], $custom['options']),
+                'name' => $custom['name'] ?: $default['name'],
             ];
         } elseif ($custom) {
             $result = $custom;
@@ -96,7 +97,9 @@ class TagsList
         if (empty($result['classname'])) {
             return null;
         }
-        $result['name'] = $name;
+        if ($result['name'] === null) {
+            $result['name'] = $name;
+        }
         $first = $result['classname'][0];
         if ($first === '=') {
             $alias = $this->getParams(\substr($result['classname'], 1));
@@ -128,11 +131,13 @@ class TagsList
             return [
                 'classname' => $params,
                 'options' => [],
+                'name' => null,
             ];
         }
         return [
             'classname' => empty($params['classname']) ? null : $params['classname'],
             'options' => empty($params['options']) ? null : $params['options'],
+            'name' => empty($params['name']) ? null : $params['name'],
         ];
     }
 

@@ -36,6 +36,11 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
         ],
         'div' => 'HtmlTag',
         'ftp' => 'Scheme',
+        'line' => [
+            'classname' => 'HtmlTag',
+            'options' => ['single' => true],
+            'name' => 'hr',
+        ],
     ];
 
     /**
@@ -154,6 +159,14 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
                     'name' => '/',
                 ],
             ],
+            [
+                'line',
+                [
+                    'classname' => 'axy\ml\tags\HtmlTag',
+                    'options' => ['single' => true],
+                    'name' => 'hr',
+                ],
+            ],
         ];
     }
 
@@ -241,6 +254,11 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
                 'ftp',
                 '://ftp.server.loc/',
                 '<a href="ftp://ftp.server.loc/">ftp://ftp.server.loc/</a>',
+            ],
+            [
+                'line',
+                '',
+                '<hr />',
             ],
         ];
     }
