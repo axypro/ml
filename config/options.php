@@ -34,4 +34,7 @@ return [
 
     /* separator of blocks */
     'blocks_separator' => "\n\n",
+
+    /* system context for using in custom tags */
+    'context' => null,
 ];
