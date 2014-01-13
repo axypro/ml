@@ -134,7 +134,7 @@ class Handlers
         }
         $block = \trim(\implode('', $block));
         if ($options['bHandler']) {
-            return Callback::call($options['bHandler'], $block);
+            return Callback::call($options['bHandler'], [$block]);
         }
         $t = $options['bTags'];
         return $t[0].$block.$t[1];
