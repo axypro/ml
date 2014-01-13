@@ -60,7 +60,11 @@ class Handlers
         if ($level > 6) {
             $level = 6;
         }
-        $attr = empty($token->name) ? '' : ' id="'.self::escape($token->name).'"';
+        if (isset($token->name) && ($token->name !== '')) {
+            $attr = ' id="'.self::escape($token->name).'"';
+        } else {
+            $attr = '';
+        }
         return '<h'.$level.$attr.'>'.self::text($token->content, $options).'</h'.$level.'>';
     }
 

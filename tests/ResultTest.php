@@ -181,6 +181,18 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * "0" is empty string
+     */
+    public function testEmpty0()
+    {
+        $axyml = $this->getFile('empty0.axyml');
+        $html = $this->getFile('empty0.html');
+        $parser = new Parser();
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */

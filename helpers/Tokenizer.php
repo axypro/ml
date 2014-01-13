@@ -87,7 +87,7 @@ class Tokenizer
      */
     private function loadNextBlock()
     {
-        if (empty($this->content)) {
+        if ($this->content === '') {
             $this->process = false;
             return;
         }
@@ -95,7 +95,7 @@ class Tokenizer
         $e = \explode("\n", $this->content, 2);
         $line = $e[0];
         $this->content = isset($e[1]) ? $e[1] : '';
-        if (empty($line)) {
+        if ($line === '') {
             $this->block = null;
             return;
         }
@@ -122,7 +122,7 @@ class Tokenizer
                 return;
             case '=':
                 $line = \preg_replace('/^#=\s*/is', '', $line);
-                if (empty($line)) {
+                if ($line === '') {
                     $this->errors[] = new Error(Error::META_EMPTY, $this->numline);
                     return;
                 }
@@ -135,7 +135,7 @@ class Tokenizer
         }
         $level = \strlen($matches[1]);
         $line = $matches[2];
-        if (empty($line)) {
+        if ($line === '') {
             $this->errors[] = new Error(Error::HEADER_EMPTY, $this->numline);
             return;
         }
@@ -149,7 +149,7 @@ class Tokenizer
         } else {
             $name = null;
             $content = \trim($line);
-            if (empty($content)) {
+            if ($content === '') {
                 return;
             }
         }
@@ -158,7 +158,7 @@ class Tokenizer
             $this->cutted = true;
             return;
         }
-        if (empty($content)) {
+        if ($content === '') {
             $token = new Token(Token::TYPE_ANCHOR, $this->numline);
             $token->name = $name;
         } else {
@@ -176,7 +176,7 @@ class Tokenizer
     private function loadFromBlock($line)
     {
         $line = \rtrim($line);
-        if (empty($line)) {
+        if ($line === '') {
             return;
         }
         $fblock = (!$this->block);
@@ -186,10 +186,10 @@ class Tokenizer
             $this->tokens[] = $this->block;
         }
         $first = true;
-        while (!empty($line)) {
+        while ($line !== '') {
             $e = \explode('[', $line, 2);
             $text = ($fblock && $first) ? \ltrim($e[0]) : $e[0];
-            if (!empty($text)) {
+            if ($text !== '') {
                 if (!$this->text) {
                     $this->text = new Token(Token::TYPE_TEXT, $this->numline);
                     $this->block->append($this->text);
@@ -251,7 +251,7 @@ class Tokenizer
     {
         $token = new Token(Token::TYPE_TAG, $this->numline);
         $this->block->append($token);
-        if (empty($content)) {
+        if ($content === '') {
             return;
         }
         if ($content[0] === '/') {
