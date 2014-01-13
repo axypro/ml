@@ -20,6 +20,7 @@ use axy\ml\helpers\Normalizer;
  * @property-read \axy\ml\Meta $meta
  * @property-read boolead $isCutted
  * @property-read array $tokens
+ * @property-read array $errors
  */
 class Result
 {
