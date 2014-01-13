@@ -151,6 +151,36 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test bHandler, tag alias & tag name
+     */
+    public function testHand()
+    {
+        $bHandler = function ($text) {
+            return '<span>'.\str_replace("\n", '', $text).'</span>';
+        };
+        $options = [
+            'bHandler' => $bHandler
+        ];
+        $tags = [
+            'hr' => [
+                'classname' => 'HtmlTag',
+                'options' => ['single' => true],
+            ],
+            'aliashr' => '=hr',
+            'line' => [
+                'classname' => 'HtmlTag',
+                'options' => ['single' => true],
+                'name' => 'hr',
+            ],
+        ];
+        $axyml = $this->getFile('hand.axyml');
+        $html = $this->getFile('hand.html');
+        $parser = new Parser($options, $tags);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */
