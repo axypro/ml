@@ -38,7 +38,7 @@ class Tokenizer
         $this->meta = new \axy\ml\Meta();
         $this->process = true;
         while ($this->process) {
-            $this->loadNextBlock();
+            $this->loadNextLine();
         }
     }
 
@@ -53,7 +53,7 @@ class Tokenizer
     }
 
     /**
-     * Get meta data
+     * Get the meta data
      *
      * @return \axy\ml\Meta
      */
@@ -63,7 +63,7 @@ class Tokenizer
     }
 
     /**
-     * Get list of errors
+     * Get the list of errors
      *
      * @return array
      */
@@ -73,7 +73,7 @@ class Tokenizer
     }
 
     /**
-     * Check if content was cutted by more-anchor
+     * Check if the document was cutted by more-anchor
      *
      * @return boolean
      */
@@ -83,9 +83,9 @@ class Tokenizer
     }
 
     /**
-     * Load and parse a next block from the content
+     * Load and parse a next line from the content
      */
-    private function loadNextBlock()
+    private function loadNextLine()
     {
         if ($this->content === '') {
             $this->process = false;
@@ -93,35 +93,36 @@ class Tokenizer
         }
         $this->numline++;
         $e = \explode("\n", $this->content, 2);
-        $line = $e[0];
+        $line = \rtrim($e[0]);
         $this->content = isset($e[1]) ? $e[1] : '';
         if ($line === '') {
             $this->block = null;
             return;
         }
         if ($line[0] === '#') {
-            $this->loadSign($line);
+            $this->loadSpecLine($line);
         } else {
             $this->loadFromBlock($line);
         }
     }
 
     /**
+     * Load a special line (begins with "#")
+     *
      * @param string $line
      */
-    private function loadSign($line)
+    private function loadSpecLine($line)
     {
         $this->block = null;
-        $line = \rtrim($line);
-        if ($line === '#') {
+        if ($line === '#') { // empty header
             $this->errors[] = new Error(Error::HEADER_EMPTY, $this->numline);
             return;
         }
         switch ($line[1]) {
-            case '*':
+            case '*': // comment #*
                 return;
-            case '=':
-                $line = \preg_replace('/^#=\s*/is', '', $line);
+            case '=': // meta data #=
+                $line = \ltrim(\substr($line, 2));
                 if ($line === '') {
                     $this->errors[] = new Error(Error::META_EMPTY, $this->numline);
                     return;
@@ -130,55 +131,39 @@ class Tokenizer
                 $this->meta[\rtrim($line[0])] = isset($line[1]) ? \ltrim($line[1]) : true;
                 return;
         }
-        if (!\preg_match('/^(#+)(.*)$/s', $line, $matches)) {
+        if (!\preg_match('/^(#+)(\[(.*?)\])?\s*(.*)$/s', $line, $matches)) {
             return;
         }
-        $level = \strlen($matches[1]);
-        $line = $matches[2];
-        if ($line === '') {
+        $ename = !empty($matches[2]);
+        $name = $ename ? \trim($matches[3]) : null;
+        $content = $matches[4];
+        if ($content !== '') { // content is not empty - this is header
+            $token = new Token(Token::TYPE_HEADER, $this->numline);
+            $token->content = $content;
+            $token->name = $name;
+            $token->level = \strlen($matches[1]);
+        } elseif ($ename !== null) { // content is empty, but exists name - anchor
+            $token = new Token(Token::TYPE_ANCHOR, $this->numline);
+            $token->name = $name;
+        } else { // empty header
             $this->errors[] = new Error(Error::HEADER_EMPTY, $this->numline);
             return;
         }
-        if ($line[0] === '[') {
-            $e = \explode(']', \substr($line, 1), 2);
-            if (!isset($e[1])) {
-                return;
-            }
-            $name = \trim($e[0]);
-            $content = \trim($e[1]);
-        } else {
-            $name = null;
-            $content = \trim($line);
-            if ($content === '') {
-                return;
-            }
-        }
-        if (($name !== null) && ($name === $this->cut)) {
+        if (($this->cut !== null) && ($this->cut === $name)) { // cut document by anchor
             $this->process = false;
             $this->cutted = true;
             return;
-        }
-        if ($content === '') {
-            $token = new Token(Token::TYPE_ANCHOR, $this->numline);
-            $token->name = $name;
-        } else {
-            $token = new Token(Token::TYPE_HEADER, $this->numline);
-            $token->name = $name;
-            $token->content = $content;
-            $token->level = $level;
         }
         $this->tokens[] = $token;
     }
 
     /**
+     * Load a line from a text block
+     *
      * @param string $line
      */
     private function loadFromBlock($line)
     {
-        $line = \rtrim($line);
-        if ($line === '') {
-            return;
-        }
         $fblock = (!$this->block);
         if ($fblock) {
             $this->block = new Token(Token::TYPE_BLOCK, $this->numline);
@@ -281,51 +266,71 @@ class Tokenizer
     }
 
     /**
+     * The remaining content of the document
+     *
      * @var string
      */
     private $content;
 
     /**
-     * @var array
-     */
-    private $tokens = [];
-
-    /**
-     * @var \axy\ml\Meta
-     */
-    private $meta;
-
-    /**
-     * @var array
-     */
-    private $errors = [];
-
-    /**
-     * @var int
-     */
-    private $numline = 0;
-
-    /**
-     * @var boolean
-     */
-    private $process;
-
-    /**
-     * @var \axy\ml\helpers\Token
-     */
-    private $block;
-
-    /**
-     * @var \axy\ml\helpers\Token
-     */
-    private $text;
-
-    /**
+     * The anchor for cutting
+     *
      * @var boolean
      */
     private $cut;
 
     /**
+     * The tokens list of the document
+     *
+     * @var array
+     */
+    private $tokens = [];
+
+    /**
+     * The meta-data of the document
+     *
+     * @var \axy\ml\Meta
+     */
+    private $meta;
+
+    /**
+     * The list of document format errors
+     *
+     * @var array
+     */
+    private $errors = [];
+
+    /**
+     * The number of the current line
+     *
+     * @var int
+     */
+    private $numline = 0;
+
+    /**
+     * The flag indicating that the parsing is in the process
+     *
+     * @var boolean
+     */
+    private $process;
+
+    /**
+     * The token of the current block of text
+     *
+     * @var \axy\ml\helpers\Token
+     */
+    private $block;
+
+    /**
+     * The current text chunk
+     *
+     * @var string
+     */
+    private $text;
+
+    /**
+     * The flag of cutted document
+     *
      * @var boolean
      */
     private $cutted = false;
