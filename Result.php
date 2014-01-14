@@ -173,16 +173,26 @@ class Result
         $tokerr = $this->tokenizer->getErrors();
         if (!empty($tokerr)) {
             $errors = \array_merge($errors, $tokerr);
-            \usort($errors, function ($a, $b) {
-                if ($a->line > $b->line) {
-                    return 1;
-                } elseif ($a->line < $b->line) {
-                    return -1;
-                }
-                return 0;
-            });
+            \usort($errors, [$this, 'sortErrors']);
         }
         return $errors;
+    }
+
+    /**
+     * Callback for sorting the errors list
+     *
+     * @param object $a
+     * @param object $b
+     * @return int
+     */
+    private function sortErrors($a, $b)
+    {
+        if ($a->line > $b->line) {
+            return 1;
+        } elseif ($a->line < $b->line) {
+            return -1;
+        }
+        return 0;
     }
 
     /**
