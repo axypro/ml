@@ -99,10 +99,16 @@ class Tokenizer
             $this->block = null;
             return;
         }
-        if ($line[0] === '#') {
-            $this->loadSpecLine($line);
-        } else {
-            $this->loadBlockLine($line);
+        switch ($line[0]) {
+            case '#':
+                $this->loadSpecLine($line);
+                break;
+            case '*':
+                $this->loadLI($line);
+                $this->loadBlockLine($line);
+                break;
+            default:
+                $this->loadBlockLine($line);
         }
     }
 
@@ -174,11 +180,13 @@ class Tokenizer
         if ($firstline) {
             /* create new block token */
             $this->block = new Token(Token::TYPE_BLOCK, $this->numline);
-            $this->text = null;
+            $this->listblock = false;
             $this->tokens[] = $this->block;
+            $this->text = null;
+            $this->endtag = false;
         }
         $firstpart = true; // this is a first part of this line
-        while ($line !== '') {
+        do {
             $parts = \explode('[', $line, 2);
             $text = ($firstline && $firstpart) ? \ltrim($parts[0]) : $parts[0];
             $etag = isset($parts[1]); // on this line was found a tag
@@ -188,8 +196,7 @@ class Tokenizer
                 } else {
                     $this->text = new Token(Token::TYPE_TEXT, $this->numline);
                     $this->block->append($this->text);
-                    if ($firstpart && (!$firstline)) {
-                        /* Previous line has a tag on the end */
+                    if ($this->endtag) {
                         $text = "\n".$text;
                     }
                     $this->text->content = $text;
@@ -212,7 +219,11 @@ class Tokenizer
             $line = $parts[1];
             $firstpart = false;
             $this->loadTag($line);
-        }
+            if ($line === '') {
+                $this->endtag = true;
+                break;
+            }
+        } while (true);
     }
 
     /**
@@ -291,6 +302,34 @@ class Tokenizer
     }
 
     /**
+     * Load a LI-token
+     *
+     * @param string &$line
+     */
+    private function loadLI(&$line)
+    {
+        if (!\preg_match('/^(\*+)(\d*)\s+(.*?)$/', $line, $matches)) {
+            return;
+        }
+        if ($matches[3] === '') {
+            return;
+        }
+        if (!$this->block) {
+            $this->block = new Token(Token::TYPE_BLOCK, $this->numline);
+            $this->listblock = true;
+            $this->tokens[] = $this->block;
+        } elseif (!$this->listblock) {
+            return;
+        }
+        $this->text = null;
+        $line = $matches[3];
+        $token = new Token(Token::TYPE_LI, $this->numline);
+        $token->level = \strlen($matches[1]);
+        $token->start = ($matches[2] === '') ? null : (int)$matches[2];
+        $this->block->append($token);
+    }
+
+    /**
      * The remaining content of the document
      *
      * @var string
@@ -359,4 +398,18 @@ class Tokenizer
      * @var boolean
      */
     private $cutted = false;
+
+    /**
+     * The current block is list
+     *
+     * @var boolean
+     */
+    private $listblock;
+
+    /**
+     * The previous line has a tag on the end
+     *
+     * @var boolean
+     */
+    private $endtag;
 }

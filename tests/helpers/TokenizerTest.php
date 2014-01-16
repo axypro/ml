@@ -19,8 +19,8 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTokenize()
     {
-        $content = Normalizer::toParse($this->getTokensContent(), new Options());
-        $data = $this->getTokensData();
+        $content = Normalizer::toParse($this->getTokensContent('base'), new Options());
+        $data = $this->getTokensData('base');
         $tokenizer = new Tokenizer($content);
         $tokenizer->tokenize();
         $this->assertEquals($data['meta'], $tokenizer->getMeta()->getSource());
@@ -34,8 +34,8 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTokenizeCut()
     {
-        $content = Normalizer::toParse($this->getTokensContent(), new Options());
-        $data = $this->getTokensData();
+        $content = Normalizer::toParse($this->getTokensContent('base'), new Options());
+        $data = $this->getTokensData('base');
         $tokenizer = new Tokenizer($content);
         $tokenizer->tokenize('cut');
         $this->assertEquals($data['meta'], $tokenizer->getMeta()->getSource());
@@ -46,27 +46,34 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return string
+     * @covers ::tokenize
      */
-    private function getTokensContent()
+    public function testTokenizeList()
     {
-        static $content;
-        if ($content === null) {
-            $content = \file_get_contents(__DIR__.'/../nstst/tokens.txt');
-        }
-        return $content;
+        $content = Normalizer::toParse($this->getTokensContent('list'), new Options());
+        $data = $this->getTokensData('list');
+        $tokenizer = new Tokenizer($content);
+        $tokenizer->tokenize();
+        $tokens = $tokenizer->getTokens();
+        $this->assertEquals($data['tokens'], $this->tokens2array($tokens));
     }
 
     /**
+     * @param string $name
+     * @return string
+     */
+    private function getTokensContent($name)
+    {
+        return \file_get_contents(__DIR__.'/../nstst/tokens/'.$name.'.txt');
+    }
+
+    /**
+     * @param string $name
      * @return array
      */
-    private function getTokensData()
+    private function getTokensData($name)
     {
-        static $data;
-        if ($data === null) {
-            $data = include(__DIR__.'/../nstst/tokens.php');
-        }
-        return $data;
+        return include(__DIR__.'/../nstst/tokens/'.$name.'.php');
     }
 
     /**

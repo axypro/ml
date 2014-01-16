@@ -21,6 +21,7 @@ class Token extends \stdClass
     const TYPE_BLOCK = 'block';
     const TYPE_TEXT = 'text';
     const TYPE_TAG = 'tag';
+    const TYPE_LI = 'li';
 
     /**
      * @var string
