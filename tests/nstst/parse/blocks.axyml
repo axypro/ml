@@ -2,7 +2,7 @@
 
 Start.> [php echo 2 + 2;]. End.
 
-Start. [php 
+Start. [php
     echo 2 + 2;
     echo 2 + 3;
 ]. End.
@@ -11,12 +11,12 @@ Start. [php
 
 [img /i/a.jpg]
 
-[php 
+[php
     echo 2 + 2;
     echo 2 + 3;
 ]
 
-Start.[html 
+Start.[html
 <div>
 Text.
 </div>
@@ -26,7 +26,7 @@ Start.
 ## This > is header
 End.
 
-[html 
+[html
 <div>
 Text.
 </div>

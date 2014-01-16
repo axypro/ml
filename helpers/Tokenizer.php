@@ -188,10 +188,20 @@ class Tokenizer
                 } else {
                     $this->text = new Token(Token::TYPE_TEXT, $this->numline);
                     $this->block->append($this->text);
+                    if ($firstpart && (!$firstline)) {
+                        /* Previous line has a tag on the end */
+                        $text = "\n".$text;
+                    }
                     $this->text->content = $text;
                 }
-            } elseif ($firstpart && $this->text) {
-                $this->text->content .= "\n";
+            } elseif ($firstpart) {
+                if ($this->text) {
+                    $this->text->content .= "\n";
+                } elseif ($etag && (!$firstline)) {
+                    $text = new Token(Token::TYPE_TEXT, $this->numline);
+                    $text->content = "\n";
+                    $this->block->append($text);
+                }
             }
             if (!$etag) {
                 /* A tag was not found - end of line */
