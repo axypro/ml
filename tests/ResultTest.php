@@ -205,6 +205,18 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test lists
+     */
+    public function testLists()
+    {
+        $axyml = $this->getFile('lists.axyml');
+        $html = $this->getFile('lists.html');
+        $parser = new Parser();
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */

@@ -327,6 +327,7 @@ class Tokenizer
         $token->level = \strlen($matches[1]);
         $token->start = ($matches[2] === '') ? null : (int)$matches[2];
         $this->block->append($token);
+        $this->endtag = false;
     }
 
     /**
