@@ -202,9 +202,6 @@ class Tokenizer
             $line = $parts[1];
             $firstpart = false;
             $this->loadTag($line);
-            if ($line === '') {
-                break;
-            }
         }
     }
 
@@ -234,15 +231,18 @@ class Tokenizer
         /* The tag is multiline */
         $parts = \explode($close, $this->content, 2);
         $tagcontent = $line."\n".$parts[0];
-        $line = '';
         $isclosed = isset($parts[1]); // tag is correctly closed
-        if ($isclosed) {
-            $this->content = $parts[1];
-        } else {
-            $this->content = '';
-        }
         $this->parseTag($tagcontent, !$isclosed);
         $this->numline += \substr_count($tagcontent, "\n") - 1;
+        if ($isclosed) {
+            $parts = \explode("\n", $parts[1], 2);
+            $line = ($parts[0]);
+            $this->content = isset($parts[1]) ? $parts[1] : '';
+            $this->numline++;
+        } else {
+            $this->content = '';
+            $line = '';
+        }
     }
 
     /**
