@@ -92,9 +92,9 @@ class Tokenizer
             return;
         }
         $this->numline++;
-        $e = \explode("\n", $this->content, 2);
-        $line = \rtrim($e[0]);
-        $this->content = isset($e[1]) ? $e[1] : '';
+        $parts = \explode("\n", $this->content, 2);
+        $line = \rtrim($parts[0]);
+        $this->content = isset($parts[1]) ? $parts[1] : '';
         if ($line === '') {
             $this->block = null;
             return;
@@ -102,7 +102,7 @@ class Tokenizer
         if ($line[0] === '#') {
             $this->loadSpecLine($line);
         } else {
-            $this->loadFromBlock($line);
+            $this->loadBlockLine($line);
         }
     }
 
@@ -119,9 +119,11 @@ class Tokenizer
             return;
         }
         switch ($line[1]) {
-            case '*': // comment #*
+            case '*':
+                /* comment #* */
                 return;
-            case '=': // meta data #=
+            case '=':
+                /* meta data #= */
                 $line = \ltrim(\substr($line, 2));
                 if ($line === '') {
                     $this->errors[] = new Error(Error::META_EMPTY, $this->numline);
@@ -134,22 +136,26 @@ class Tokenizer
         if (!\preg_match('/^(#+)(\[(.*?)\])?\s*(.*)$/s', $line, $matches)) {
             return;
         }
-        $ename = !empty($matches[2]);
-        $name = $ename ? \trim($matches[3]) : null;
+        $defname = !empty($matches[2]);
+        $name = $defname ? \trim($matches[3]) : null;
         $content = $matches[4];
-        if ($content !== '') { // content is not empty - this is header
+        if ($content !== '') {
+            /* content is not empty - this is header */
             $token = new Token(Token::TYPE_HEADER, $this->numline);
             $token->content = $content;
             $token->name = $name;
             $token->level = \strlen($matches[1]);
-        } elseif ($ename !== null) { // content is empty, but exists name - anchor
+        } elseif ($defname) {
+            /* content is empty, but exists name - anchor */
             $token = new Token(Token::TYPE_ANCHOR, $this->numline);
             $token->name = $name;
-        } else { // empty header
+        } else {
+            /* empty header */
             $this->errors[] = new Error(Error::HEADER_EMPTY, $this->numline);
             return;
         }
-        if (($this->cut !== null) && ($this->cut === $name)) { // cut document by anchor
+        if (($this->cut !== null) && ($this->cut === $name)) {
+            /* cut document by anchor */
             $this->process = false;
             $this->cutted = true;
             return;
@@ -162,36 +168,39 @@ class Tokenizer
      *
      * @param string $line
      */
-    private function loadFromBlock($line)
+    private function loadBlockLine($line)
     {
-        $fblock = (!$this->block);
-        if ($fblock) {
+        $firstline = (!$this->block); // this is a first line of the block
+        if ($firstline) {
+            /* create new block token */
             $this->block = new Token(Token::TYPE_BLOCK, $this->numline);
             $this->text = null;
             $this->tokens[] = $this->block;
         }
-        $first = true;
+        $firstpart = true; // this is a first part of this line
         while ($line !== '') {
-            $e = \explode('[', $line, 2);
-            $text = ($fblock && $first) ? \ltrim($e[0]) : $e[0];
-            $etag = isset($e[1]);
+            $parts = \explode('[', $line, 2);
+            $text = ($firstline && $firstpart) ? \ltrim($parts[0]) : $parts[0];
+            $etag = isset($parts[1]); // on this line was found a tag
             if ($text !== '') {
-                if (!$this->text) {
+                if ($this->text) {
+                    $this->text->content .= ($firstpart ? "\n" : '').$text;
+                } else {
                     $this->text = new Token(Token::TYPE_TEXT, $this->numline);
                     $this->block->append($this->text);
                     $this->text->content = $text;
-                } else {
-                    $this->text->content .= ($first ? "\n" : '').$text;
                 }
-            } elseif ($first && $this->text) {
+            } elseif ($firstpart && $this->text) {
                 $this->text->content .= "\n";
             }
             if (!$etag) {
+                /* A tag was not found - end of line */
                 break;
             }
-            $first = false;
-            $line = $e[1];
-            $this->text = null;
+            /* A tag was found - load it */
+            $this->text = null; // curent text ended
+            $line = $parts[1];
+            $firstpart = false;
             $this->loadTag($line);
             if ($line === '') {
                 break;
@@ -200,10 +209,13 @@ class Tokenizer
     }
 
     /**
+     * Load a tag from start of the content
+     *
      * @param string &$line
      */
     private function loadTag(&$line)
     {
+        /* Determine the size of the opening bracket */
         if (\preg_match('/^(\[*)(.*)$/s', $line, $matches)) {
             $len = \strlen($matches[1]) + 1;
             $line = $matches[2];
@@ -212,31 +224,34 @@ class Tokenizer
             $line = '';
         }
         $close = \str_repeat(']', $len);
-        $e = \explode($close, $line, 2);
-        if (isset($e[1])) {
-            $this->parseTag($e[0]);
-            $line = $e[1];
+        $parts = \explode($close, $line, 2);
+        if (isset($parts[1])) {
+            /* The tag ends on the current line */
+            $this->parseTag($parts[0]);
+            $line = $parts[1];
             return;
         }
-        $line .= "\n".$this->content;
-        $e = \explode($close, $line, 2);
+        /* The tag is multiline */
+        $parts = \explode($close, $this->content, 2);
+        $tagcontent = $line."\n".$parts[0];
         $line = '';
-        $tag = $e[0];
-        $err = !isset($e[1]);
-        if (!$err) {
-            $this->content = $e[1];
-            $err =  false;
+        $isclosed = isset($parts[1]); // tag is correctly closed
+        if ($isclosed) {
+            $this->content = $parts[1];
         } else {
             $this->content = '';
-            $err = true;
         }
-        $this->parseTag($tag, $err);
-        $this->numline += \substr_count($tag, "\n") - 1;
+        $this->parseTag($tagcontent, !$isclosed);
+        $this->numline += \substr_count($tagcontent, "\n") - 1;
     }
 
     /**
+     * Parse tag
+     *
      * @param string $content
+     *        the tag content (after the tag name)
      * @param boolean $notclosed [optional]
+     *        the tag is not closed
      */
     private function parseTag($content, $notclosed = false)
     {
