@@ -31,15 +31,14 @@ class One extends \axy\ml\tags\Base
 
     /**
      * @param string $prefix
-     * @param string $url
+     * @param object $url
      * @return string
      */
-    public static function handleUrl($prefix, $url)
+    public static function handleUrl($prefix, $params)
     {
-        if (\strpos($url, $prefix) === 0) {
-            return 'http://example.loc/'.\substr($url, 1);
+        if (\strpos($params->url, $prefix) === 0) {
+            $params->url = 'http://example.loc/'.\substr($params->url, 1);
         }
-        return $url;
     }
 
     /**

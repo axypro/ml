@@ -23,14 +23,13 @@ class Url extends Base
      */
     public function getHTML()
     {
-        if (empty($this->url)) {
+        $params = $this->params;
+        if (empty($params->url)) {
             return '';
         }
-        $caption = $this->caption ?: $this->url;
-        $href = $this->escape($this->url);
-        $cssclass = $this->escape($this->options['css_class']);
-        $c = $cssclass ? ' class="'.$cssclass.'"' : '';
-        return '<a href="'.$href.'"'.$c.'>'.$this->escape($caption).'</a>';
+        $url = $this->escape($params->url);
+        $css = $params->css ? ' class="'.$this->escape($params->css).'"' : '';
+        return '<a href="'.$url.'"'.$css.'>'.$params->caption.'</a>';
     }
 
     /**
@@ -38,13 +37,14 @@ class Url extends Base
      */
     public function getPlain()
     {
-        if (empty($this->url)) {
+        $params = $this->params;
+        if (empty($params->url)) {
             return '';
         }
-        if ($this->caption) {
-            return $this->url.' '.$this->caption;
+        if ($params->plain) {
+            return $params->url.' '.$params->plain;
         }
-        return $this->url;
+        return $params->url;
     }
 
     /**
@@ -52,12 +52,18 @@ class Url extends Base
      */
     protected function parse()
     {
-        $this->url = $this->getNextComponent();
-        $this->caption = $this->getLastComponent();
+        $url = $this->getNextComponent();
+        $caption = $this->getLastComponent();
+        $this->params = (object)[
+            'url' => $url,
+            'caption' => $this->escape($caption ?: $url),
+            'plain' => $caption,
+            'css' => $this->options['css'],
+        ];
         if ($this->options['handler']) {
-            $this->url = Callback::call($this->options['handler'], [$this->url]);
+            $this->url = Callback::call($this->options['handler'], [$this->params]);
         }
-        if (empty($this->url)) {
+        if (empty($this->params->url)) {
             $this->errors[] = 'empty url';
         }
     }
@@ -66,17 +72,12 @@ class Url extends Base
      * {@inheritdoc}
      */
     protected $options = [
-        'css_class' => null,
+        'css' => null,
         'handler' => null,
     ];
 
     /**
-     * @var string
+     * @var array
      */
-    protected $url;
-
-    /**
-     * @var string
-     */
-    protected $caption;
+    protected $params;
 }

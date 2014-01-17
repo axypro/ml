@@ -31,14 +31,16 @@ class UrlTest extends \PHPUnit_Framework_TestCase
      */
     public function providerUrl()
     {
-        $handler = function ($url) {
+        $handler = function ($params) {
+            $url = $params->url;
             if (empty($url)) {
-                return '/';
+                $params->url = '/';
+                $params->caption = '/';
+            } elseif ($url[0] === ':') {
+                $params->url = 'http://mysite.loc/'.\substr($url, 1);
+                $params->caption = $params->caption.'!';
+                $params->css = 'internal';
             }
-            if ($url[0] === ':') {
-                return 'http://mysite.loc/'.\substr($url, 1);
-            }
-            return $url;
         };
         return [
             [
@@ -80,20 +82,26 @@ class UrlTest extends \PHPUnit_Framework_TestCase
             [
                 ' :folder/page',
                 ['handler' => $handler],
-                '<a href="http://mysite.loc/folder/page">http://mysite.loc/folder/page</a>',
+                '<a href="http://mysite.loc/folder/page" class="internal">:folder/page!</a>',
                 'http://mysite.loc/folder/page',
             ],
             [
                 ' :folder/page Link',
                 ['handler' => $handler],
-                '<a href="http://mysite.loc/folder/page">Link</a>',
+                '<a href="http://mysite.loc/folder/page" class="internal">Link!</a>',
                 'http://mysite.loc/folder/page Link',
             ],
             [
                 ' http://yandex.ru Я',
-                ['css_class' => 'link'],
+                ['css' => 'link'],
                 '<a href="http://yandex.ru" class="link">Я</a>',
                 'http://yandex.ru Я',
+            ],
+            [
+                ' :page Link',
+                ['css' => 'link', 'handler' => $handler],
+                '<a href="http://mysite.loc/page" class="internal">Link!</a>',
+                'http://mysite.loc/page Link',
             ],
         ];
     }
