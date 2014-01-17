@@ -62,9 +62,9 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::$options
      * @covers ::getPlain
      * @covers ::escape
+     * covers ::$options
      * @dataProvider providerTwo
      * @param string $content
      * @param array $options

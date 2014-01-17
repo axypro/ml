@@ -168,7 +168,7 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers create
+     * @covers ::create
      * @dataProvider providerCreate
      * @param string $name
      * @param string $content

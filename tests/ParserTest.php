@@ -13,10 +13,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers axy\ml\Parser::__construct
      * @covers axy\ml\Parser::parse
-     * @covers axy\ml\Result::$tokens
-     * @covers axy\ml\Result::$meta
-     * @covers axy\ml\Result::$title
-     * @covers axy\ml\Result::$isCutted
+     * covers axy\ml\Result::$tokens
+     * covers axy\ml\Result::$meta
+     * covers axy\ml\Result::$title
+     * covers axy\ml\Result::$isCutted
      */
     public function testParse()
     {

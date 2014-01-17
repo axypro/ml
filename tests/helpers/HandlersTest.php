@@ -15,7 +15,7 @@ use axy\ml\helpers\Token;
 class HandlersTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers text
+     * @covers ::text
      * @dataProvider providerText
      * @param string $text
      * @param array $options
@@ -65,7 +65,7 @@ class HandlersTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers header
+     * @covers ::header
      * @dataProvider providerHeader
      * @param array $params
      * @param array $options
