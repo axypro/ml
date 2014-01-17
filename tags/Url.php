@@ -27,7 +27,10 @@ class Url extends Base
             return '';
         }
         $caption = $this->caption ?: $this->url;
-        return '<a href="'.$this->escape($this->url).'">'.$this->escape($caption).'</a>';
+        $href = $this->escape($this->url);
+        $cssclass = $this->escape($this->options['css_class']);
+        $c = $cssclass ? ' class="'.$cssclass.'"' : '';
+        return '<a href="'.$href.'"'.$c.'>'.$this->escape($caption).'</a>';
     }
 
     /**
@@ -63,6 +66,7 @@ class Url extends Base
      * {@inheritdoc}
      */
     protected $options = [
+        'css_class' => null,
         'handler' => null,
     ];
 
