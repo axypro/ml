@@ -19,14 +19,11 @@ class TagsList
      *
      * @param array $tags [optional]
      *        the list of custom tags
-     * @param array $goptions [optional]
-     *        the global options
      */
-    public function __construct(array $custom = null, $goptions = null)
+    public function __construct(array $custom = null)
     {
         $this->default = Config::getTags();
         $this->custom = $custom ?: [];
-        $this->goptions = $goptions ?: new Options();
     }
 
     /**
@@ -48,17 +45,18 @@ class TagsList
      *
      * @param string $name
      * @param string $content
+     * @param \axy\ml\Context $context
      * @return \axy\ml\tags\Base
      *         the tag instance or NULL
      */
-    public function create($name, $content)
+    public function create($name, $content, $context = null)
     {
         $params = $this->getParams($name);
         if (!$params) {
             return null;
         }
         $classname = $params['classname'];
-        return new $classname($params['name'], $content, $params['options'], $this->goptions);
+        return new $classname($params['name'], $content, $params['options'], $context);
     }
 
     /**
@@ -150,11 +148,6 @@ class TagsList
      * @var array
      */
     private $custom;
-
-    /**
-     * @var array
-     */
-    private $goptions;
 
     /**
      * @var array

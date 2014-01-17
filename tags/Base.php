@@ -24,14 +24,15 @@ abstract class Base
      *        the content of the tag
      * @param array $options [optional]
      *        the custom options
-     * @param array $goptions [optional]
-     *        the global options
+     * @param \axy\ml\Context $context [optional]
+     *        the parsing context
      */
-    public function __construct($name, $content, array $options = null, $goptions = null)
+    public function __construct($name, $content, array $options = null, $context = null)
     {
         $this->name = $name;
         $this->value = $content;
-        $this->goptions = $goptions ?: new Options();
+        $this->context = $context;
+        $this->sEscape = $context ? $context->options->escape : true;
         if ($options) {
             $this->options = \array_replace($this->options, $options);
         }
@@ -135,7 +136,7 @@ abstract class Base
      */
     protected function escape($text)
     {
-        if ($this->goptions['escape']) {
+        if ($this->sEscape) {
             $text = \htmlspecialchars($text, \ENT_COMPAT, 'UTF-8');
         }
         return $text;
@@ -158,11 +159,11 @@ abstract class Base
     protected $options = [];
 
     /**
-     * Global options
+     * The parsing context
      *
-     * @var array
+     * @var \axy\ml\Context
      */
-    protected $goptions;
+    protected $context;
 
     /**
      * Tag name
@@ -198,4 +199,11 @@ abstract class Base
      * @var string
      */
     protected $createBlock = true;
+
+    /**
+     * The text should be escaped
+     *
+     * @var boolean
+     */
+    private $sEscape;
 }

@@ -74,9 +74,10 @@ class Handlers
      * @param \axy\ml\helpers\Token $container
      * @param array $options
      * @param \axy\ml\TagsList $tags
+     * @param \axy\ml\Context $context
      * @param array &$errors
      */
-    public static function block(Token $container, $options, $tags, &$errors)
+    public static function block(Token $container, $options, $tags, $context, &$errors)
     {
         $blocks = [];
         $block = [];
@@ -91,7 +92,7 @@ class Handlers
                     $block[] = self::text($token->content, $options);
                     break;
                 case Token::TYPE_TAG:
-                    $tag = $tags->create($token->name, $token->content);
+                    $tag = $tags->create($token->name, $token->content, $context);
                     if ($tag) {
                         $html = $tag->getHtml();
                         foreach ($tag->getErrors() as $err) {

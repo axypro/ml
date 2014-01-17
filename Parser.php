@@ -22,11 +22,13 @@ class Parser
      *        the list of custom options
      * @param array $tags
      *        the list of custom tags
+     * @param mixed $custom
+     *        the custom context
      */
-    public function __construct(array $options = null, array $tags = null)
+    public function __construct(array $options = null, array $tags = null, $custom = null)
     {
         $this->options = new Options($options);
-        $this->tags = new TagsList($tags, $this->options->getSource());
+        $this->tags = new TagsList($tags);
     }
 
     /**
@@ -44,16 +46,27 @@ class Parser
         $content = Normalizer::toParse($content, $this->options);
         $tokenizer = new Tokenizer($content);
         $tokenizer->tokenize($cut);
-        return new Result($tokenizer, $this->options, $this->tags);
+        return new Result($tokenizer, $this->options, $this->tags, $this->custom);
     }
 
     /**
+     * The parsing options
+     *
      * @var \axy\ml\Options
      */
     private $options;
 
     /**
+     * The current tags list
+     *
      * @var \axy\ml\TagsList
      */
     private $tags;
+
+    /**
+     * The custom context
+     *
+     * @var mixed
+     */
+    private $custom;
 }

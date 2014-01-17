@@ -35,12 +35,14 @@ class Result
      *        the parsing options
      * @param \axy\ml\TagsList $tags
      *        the list of available tags
+     * @param mixed $custom
+     *        the custom context
      */
-    public function __construct(helpers\Tokenizer $tokenizer, Options $options, TagsList $tags)
+    public function __construct(helpers\Tokenizer $tokenizer, Options $options, TagsList $tags, $custom = null)
     {
         $this->tokenizer = $tokenizer;
-        $this->options = $options;
         $this->tags = $tags;
+        $this->context = new Context($this, $options, $tags, $custom);
         $this->magicFields = [
             'fields' => [
                 'meta' => $tokenizer->getMeta(),
@@ -99,7 +101,8 @@ class Result
      */
     private function createHtml()
     {
-        $options = $this->options->getSource();
+        $context = $this->context;
+        $options = $this->context->options->getSource();
         $tags = $this->tags;
         $errors = [];
         $blocks = [];
@@ -116,7 +119,7 @@ class Result
                     }
                     break;
                 case Token::TYPE_BLOCK:
-                    $blocks = \array_merge($blocks, Handlers::block($token, $options, $tags, $errors));
+                    $blocks = \array_merge($blocks, Handlers::block($token, $options, $tags, $context, $errors));
                     break;
             }
         }
@@ -130,7 +133,8 @@ class Result
      */
     private function createPlain()
     {
-        $options = $this->options->getSource();
+        $context = $this->context;
+        $options = $this->context->options->getSource();
         $tags = $this->tags;
         $blocks = [];
         foreach ($this->tokenizer->getTokens() as $token) {
@@ -150,7 +154,7 @@ class Result
                                 $els[] = $item->content;
                                 break;
                             case Token::TYPE_TAG:
-                                $tag = $tags->create($item->name, $item->content);
+                                $tag = $tags->create($item->name, $item->content, $context);
                                 if ($tag) {
                                     $els[] = $tag->getPlain();
                                 }
@@ -196,17 +200,23 @@ class Result
     }
 
     /**
+     * The tokenizer for the current document
+     *
      * @var \axy\ml\helpers\Tokenizer
      */
     private $tokenizer;
 
     /**
-     * @var \axy\ml\Options
-     */
-    private $options;
-
-    /**
+     * The current tags list
+     *
      * @var \axy\ml\TagsList
      */
     private $tags;
+
+    /**
+     * The parsing context
+     *
+     * @var \axy\ml\Context
+     */
+    private $context;
 }
