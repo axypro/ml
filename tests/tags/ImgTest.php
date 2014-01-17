@@ -31,14 +31,11 @@ class ImgTest extends \PHPUnit_Framework_TestCase
      */
     public function providerImg()
     {
-        $handler = function ($src) {
-            if (empty($src)) {
-                return null;
+        $handler = function ($params) {
+            if (\substr($params->src, 0, 1) === ':') {
+                $params->src = '/i/'.\substr($params->src, 1);
+                $params->css = 'i';
             }
-            if ($src[0] === ':') {
-                return '/i/'.\substr($src, 1);
-            }
-            return $src;
         };
         return [
             [
@@ -74,13 +71,13 @@ class ImgTest extends \PHPUnit_Framework_TestCase
             [
                 ' :q.png',
                 ['handler' => $handler],
-                '<img src="/i/q.png" alt="" />',
+                '<img src="/i/q.png" alt="" class="i" />',
                 '',
             ],
             [
                 ' :q.png Alt',
                 ['handler' => $handler],
-                '<img src="/i/q.png" alt="Alt" />',
+                '<img src="/i/q.png" alt="Alt" class="i" />',
                 'Alt',
             ],
             [
@@ -88,6 +85,12 @@ class ImgTest extends \PHPUnit_Framework_TestCase
                 ['css' => 'class'],
                 '<img src="/i/a.png" alt="" class="class" />',
                 '',
+            ],
+            [
+                ' :q.png Alt',
+                ['handler' => $handler, 'css' => 'class'],
+                '<img src="/i/q.png" alt="Alt" class="i" />',
+                'Alt',
             ],
         ];
     }

@@ -56,7 +56,7 @@ class Img extends Base
             'context' => $this->context,
         ];
         if ($this->options['handler']) {
-            $this->params->src = Callback::call($this->options['handler'], [$this->params->src]);
+            Callback::call($this->options['handler'], [$this->params]);
         }
         if (empty($this->params->src)) {
             $this->errors[] = 'empty src';
