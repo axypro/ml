@@ -17,8 +17,10 @@ use axy\ml\helpers\Config;
  * @property-read boolean $escape
  * @property-read callable $texthandler
  * @property-read int $hStart
- * @property-read array $pTags
- * @property-read callable $pHandler
+ * @property-read callable $hHandler
+ * @property-read array $bTags
+ * @property-read callable $bHandler
+ * @property-read string $blocks_separator
  */
 class Options extends \axy\magic\ArrayWrapper
 {
