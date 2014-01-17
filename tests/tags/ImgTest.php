@@ -83,6 +83,12 @@ class ImgTest extends \PHPUnit_Framework_TestCase
                 '<img src="/i/q.png" alt="Alt" />',
                 'Alt',
             ],
+            [
+                ' /i/a.png',
+                ['css' => 'class'],
+                '<img src="/i/a.png" alt="" class="class" />',
+                '',
+            ],
         ];
     }
 }

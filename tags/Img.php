@@ -22,10 +22,18 @@ class Img extends Base
      */
     public function getHTML()
     {
-        if (empty($this->src)) {
+        $params = $this->params;
+        if (empty($params->src)) {
             return '';
         }
-        return '<img src="'.$this->escape($this->src).'" alt="'.$this->escape($this->alt).'" />';
+        $attrs = [
+            'src="'.$this->escape($params->src).'"',
+            'alt="'.$this->escape($params->alt).'"',
+        ];
+        if ($params->css) {
+            $attrs[] = 'class="'.$this->escape($params->css).'"';
+        }
+        return '<img '.(\implode(' ', $attrs)).' />';
     }
 
     /**
@@ -33,7 +41,7 @@ class Img extends Base
      */
     public function getPlain()
     {
-        return $this->alt;
+        return $this->params->alt;
     }
 
     /**
@@ -41,12 +49,16 @@ class Img extends Base
      */
     protected function parse()
     {
-        $this->src = $this->getNextComponent();
-        $this->alt = $this->getLastComponent();
+        $this->params = (object)[
+            'src' => $this->getNextComponent(),
+            'alt' => $this->getLastComponent(),
+            'css' => $this->options['css'],
+            'context' => $this->context,
+        ];
         if ($this->options['handler']) {
-            $this->src = Callback::call($this->options['handler'], [$this->src]);
+            $this->params->src = Callback::call($this->options['handler'], [$this->params->src]);
         }
-        if (empty($this->src)) {
+        if (empty($this->params->src)) {
             $this->errors[] = 'empty src';
         }
     }
@@ -55,16 +67,12 @@ class Img extends Base
      * {@inheritdoc}
      */
     protected $options = [
+        'css' => null,
         'handler' => null,
     ];
 
     /**
-     * @var string
+     * @var object
      */
-    protected $src;
-
-    /**
-     * @var string
-     */
-    protected $alt;
+    protected $params;
 }
