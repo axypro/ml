@@ -143,6 +143,19 @@ abstract class Base
     }
 
     /**
+     * Get an argument by number
+     *
+     * @param int $num [optional]
+     * @param mixed $default [optional]
+     * @return string
+     */
+    protected function getArg($num = 0, $default = null)
+    {
+        $num = $num ?: 0;
+        return isset($this->args[$num]) ? $this->args[$num] : $default;
+    }
+
+    /**
      * The list of arguments
      * Initially - if FALSE - do not load the arguments
      *

@@ -29,6 +29,7 @@ class Parser
     {
         $this->options = new Options($options);
         $this->tags = new TagsList($tags);
+        $this->custom = $custom;
     }
 
     /**

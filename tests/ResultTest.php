@@ -217,6 +217,21 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test custom context and getArg()-method
+     */
+    public function testCustom()
+    {
+        $axyml = $this->getFile('custom.axyml');
+        $html = $this->getFile('custom.html');
+        $tags = [
+            'cus' => '\axy\ml\tests\nstst\tags\Cus',
+        ];
+        $parser = new Parser(null, $tags, ['value' => 2]);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */
