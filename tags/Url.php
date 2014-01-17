@@ -59,6 +59,7 @@ class Url extends Base
             'caption' => $this->escape($caption ?: $url),
             'plain' => $caption,
             'css' => $this->options['css'],
+            'context' => $this->context,
         ];
         if ($this->options['handler']) {
             $this->url = Callback::call($this->options['handler'], [$this->params]);
