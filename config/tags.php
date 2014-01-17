@@ -10,7 +10,7 @@ return [
     'b' => 'HtmlTag',
     'i' => 'HtmlTag',
     'u' => 'HtmlTag',
-    'br' => ['classname' => 'HtmlTag', 'options' => ['single' => true]],
+    'br' => ['HtmlTag', ['single' => true]],
     'ul' => 'HtmlTag',
     'ol' => 'HtmlTag',
     'li' => 'HtmlTag',

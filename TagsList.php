@@ -132,6 +132,13 @@ class TagsList
                 'name' => null,
             ];
         }
+        if (\array_key_exists(0, $params)) {
+            return [
+                'classname' => empty($params[0]) ? null : $params[0],
+                'options' => empty($params[1]) ? null : $params[1],
+                'name' => empty($params[2]) ? null : $params[2],
+            ];
+        }
         return [
             'classname' => empty($params['classname']) ? null : $params['classname'],
             'options' => empty($params['options']) ? null : $params['options'],
