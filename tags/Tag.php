@@ -19,11 +19,12 @@ class Tag extends Base
      */
     public function getHTML()
     {
-        if (empty($this->args[0])) {
+        $tag = $this->getArg();
+        if (empty($tag)) {
             $this->errors = ['empty html tag'];
             return '';
         }
-        return '<'.\strtolower($this->args[0]).($this->value ? ' '.$this->value : '').'>';
+        return '<'.\strtolower($tag).($this->value ? ' '.$this->value : '').'>';
     }
 
     /**

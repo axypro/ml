@@ -51,10 +51,8 @@ class Code extends Base
     {
         if ($this->options['lang']) {
             $this->lang = $this->options['lang'];
-        } elseif (isset($this->args[0])) {
-            $this->lang = $this->args[0];
         } else {
-            $this->lang = $this->options['default_lang'];
+            $this->lang = $this->getArg(0, $this->options['default_lang']);
         }
         $this->code = $this->value;
         if ($this->block) {
