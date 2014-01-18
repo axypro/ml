@@ -20,7 +20,7 @@ class TagParser
      */
     public static function loadAttrs(&$content)
     {
-        if (empty($content)) {
+        if ($content === '') {
             return [];
         }
         if ($content[0] === ':') {
@@ -49,14 +49,14 @@ class TagParser
     public static function loadNextComponent(&$content)
     {
         $content = \ltrim($content);
-        if (empty($content)) {
+        if ($content === '') {
             return '';
         }
         $first = $content[0];
         if (($first === '"') || ($first === "'")) {
-            $e = \explode($first, $content, 3);
-            $content = isset($e[2]) ? \ltrim($e[2]) : '';
-            return $e[1];
+            $parts = \explode($first, $content, 3);
+            $content = isset($parts[2]) ? \ltrim($parts[2]) : '';
+            return $parts[1];
         }
         if (!\preg_match('/^(\S*)\s*(.*)$/is', $content, $matches)) {
             return '';
@@ -74,7 +74,7 @@ class TagParser
     public static function loadLastComponent($content)
     {
         $content = \trim($content);
-        if (empty($content)) {
+        if ($content === '') {
             return '';
         }
         $first = $content[0];

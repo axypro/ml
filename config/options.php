@@ -7,31 +7,30 @@
  */
 
 return [
-
-    /* newline symbol(s) in result */
+    /* New-line symbol(s) in result */
     'nl' => "\n",
 
-    /* count of spaces for tab */
+    /* Count of spaces for tab */
     'tab' => 4,
 
-    /* escape html special chars */
+    /* Flag for escape html special chars */
     'escape' => true,
 
-    /* handler for text (callback) */
+    /* The handler for text (callable) */
     'textHandler' => null,
 
-    /* number of top level <h> (<h1> by default) */
+    /* Number of top level header (<h1> by default) */
     'hStart' => 1,
 
-    /* wrapper for header (callback) */
+    /* Wrapper for header (callable) */
     'hHandler' => null,
 
-    /* tags for block */
+    /* Opening and closing html-tags for text blocks */
     'bTags' => ['<p>', '</p>'],
 
-    /* wrapper for block (callback) */
+    /* Wrapper for block (callable) */
     'bHandler' => null,
 
-    /* separator of blocks */
+    /* Separator of blocks */
     'blocks_separator' => "\n\n",
 ];

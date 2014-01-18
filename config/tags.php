@@ -1,6 +1,6 @@
 <?php
 /**
- * The list of tags
+ * The list of standard tags
  *
  * @package axy\ml
  * @author Oleg Grigoriev <go.vasac@gmail.com>

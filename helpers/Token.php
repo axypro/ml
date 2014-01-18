@@ -11,24 +11,75 @@ namespace axy\ml\helpers;
  * @author Oleg Grigoriev <go.vasac@gmail.com>
  *
  * @property-read array $subs
+ *                the list of inline tokens for a block
  * @property-read string $name
+ *                the anchor name
  * @property-read string $content
+ *                the content of the token
+ * @property-read int $level
+ *                the level of a header
  */
 class Token extends \stdClass
 {
+    /**
+     * The header
+     * (name, level, content)
+     *
+     * @var string
+     */
     const TYPE_HEADER = 'header';
+
+    /**
+     * The anchor
+     * (name)
+     *
+     * @var string
+     */
     const TYPE_ANCHOR = 'anchor';
+
+    /**
+     * The block (paragraph)
+     * (subs)
+     *
+     * @var string
+     */
     const TYPE_BLOCK = 'block';
+
+    /**
+     * The piece of text
+     * (content)
+     *
+     * @var string
+     */
     const TYPE_TEXT = 'text';
+
+    /**
+     * The axyml-tag
+     * (name, content)
+     *
+     * @var string
+     */
     const TYPE_TAG = 'tag';
+
+    /**
+     * The list item marker
+     * (level, start)
+     *
+     * @var string
+     */
     const TYPE_LI = 'li';
 
     /**
+     * The type of token
+     * (constant Token::TYPE_*)
+     *
      * @var string
      */
     public $type;
 
     /**
+     * Line where the token was found
+     *
      * @var int
      */
     public $line;
@@ -46,7 +97,7 @@ class Token extends \stdClass
     }
 
     /**
-     * Append token to subs
+     * Append a token to the block subtokens list
      *
      * @param \axy\ml\helpers\Token $token
      */
@@ -75,14 +126,14 @@ class Token extends \stdClass
      */
     public function asArray()
     {
-        $a = (array)$this;
-        if (!empty($a['subs'])) {
-            foreach ($a['subs'] as &$item) {
+        $result = (array)$this;
+        if (!empty($result['subs'])) {
+            foreach ($result['subs'] as &$item) {
                 $item = $item->asArray();
             }
             unset($item);
         }
-        return $a;
+        return $result;
     }
 
     /**

@@ -20,9 +20,9 @@ class Parser
      *
      * @param array $options [optional]
      *        the list of custom options
-     * @param array $tags
+     * @param array $tags [optional]
      *        the list of custom tags
-     * @param mixed $custom
+     * @param mixed $custom [optional]
      *        the custom context
      */
     public function __construct(array $options = null, array $tags = null, $custom = null)
