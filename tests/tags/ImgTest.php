@@ -32,6 +32,11 @@ class ImgTest extends \PHPUnit_Framework_TestCase
     public function providerImg()
     {
         $handler = function ($params) {
+            if ($params->src === 'tohtml') {
+                $params->html = '<b>!!!</b>';
+                $params->plain = '!!!';
+                return;
+            }
             if (\substr($params->src, 0, 1) === ':') {
                 $params->src = '/i/'.\substr($params->src, 1);
                 $params->css = 'i';
@@ -91,6 +96,12 @@ class ImgTest extends \PHPUnit_Framework_TestCase
                 ['handler' => $handler, 'css' => 'class'],
                 '<img src="/i/q.png" alt="Alt" class="i" />',
                 'Alt',
+            ],
+            [
+                ' tohtml Alt',
+                ['handler' => $handler, 'css' => 'class'],
+                '<b>!!!</b>',
+                '!!!',
             ],
         ];
     }

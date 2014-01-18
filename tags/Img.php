@@ -23,6 +23,9 @@ class Img extends Base
     public function getHTML()
     {
         $params = $this->params;
+        if ($params->html !== null) {
+            return $params->html;
+        }
         if (empty($params->src)) {
             return '';
         }
@@ -41,7 +44,7 @@ class Img extends Base
      */
     public function getPlain()
     {
-        return $this->params->alt;
+        return $this->params->plain;
     }
 
     /**
@@ -54,7 +57,9 @@ class Img extends Base
             'alt' => $this->getLastComponent(),
             'css' => $this->options['css'],
             'context' => $this->context,
+            'html' => null,
         ];
+        $this->params->plain = $this->params->alt;
         if ($this->options['handler']) {
             Callback::call($this->options['handler'], [$this->params]);
         }
