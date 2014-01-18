@@ -24,6 +24,9 @@ class Url extends Base
     public function getHTML()
     {
         $params = $this->params;
+        if ($params->html !== null) {
+            return $params->html;
+        }
         if (empty($params->url)) {
             return '';
         }
@@ -60,6 +63,7 @@ class Url extends Base
             'plain' => $caption,
             'css' => $this->options['css'],
             'context' => $this->context,
+            'html' => null,
         ];
         if ($this->options['handler']) {
             $this->url = Callback::call($this->options['handler'], [$this->params]);

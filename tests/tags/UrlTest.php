@@ -33,6 +33,10 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     {
         $handler = function ($params) {
             $url = $params->url;
+            if ($url === '!!!') {
+                $params->html = '<b>!!!</b>';
+                $params->plain = '...';
+            }
             if (empty($url)) {
                 $params->url = '/';
                 $params->caption = '/';
@@ -102,6 +106,12 @@ class UrlTest extends \PHPUnit_Framework_TestCase
                 ['css' => 'link', 'handler' => $handler],
                 '<a href="http://mysite.loc/page" class="internal">Link!</a>',
                 'http://mysite.loc/page Link',
+            ],
+            [
+                ' !!! Link',
+                ['css' => 'link', 'handler' => $handler],
+                '<b>!!!</b>',
+                '!!! ...',
             ],
         ];
     }
