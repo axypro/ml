@@ -32,7 +32,7 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
         'ccc' => '=unknown',
         'php' => ['=cc', ['lang' => 'php']],
         'div' => 'HtmlTag',
-        'ftp' => 'Scheme',
+        'ftp' => ['Scheme', []],
         'line' => [
             'classname' => 'HtmlTag',
             'options' => ['single' => true],
