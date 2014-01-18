@@ -40,14 +40,7 @@ class Url extends Base
      */
     public function getPlain()
     {
-        $params = $this->params;
-        if (empty($params->url)) {
-            return '';
-        }
-        if ($params->plain) {
-            return $params->url.' '.$params->plain;
-        }
-        return $params->url;
+        return $this->params->plain;
     }
 
     /**
@@ -55,21 +48,51 @@ class Url extends Base
      */
     protected function parse()
     {
-        $url = $this->getNextComponent();
-        $caption = $this->getLastComponent();
         $this->params = (object)[
-            'url' => $url,
-            'caption' => $this->escape($caption ?: $url),
-            'plain' => $caption,
-            'css' => $this->options['css'],
+            'type' => \strtolower($this->getArg()),
+            'url' => $this->getNextComponent(),
+            'caption' => null,
             'context' => $this->context,
+            'plain' => null,
             'html' => null,
+            'css' => $this->options['css'],
         ];
+        $params = $this->params;
+        $params->plain = $params->url;
+        if ($params->type === 'img' && ($this->value !== '')) {
+            $this->loadImg();
+        } else {
+            $params->caption = $this->getLastComponent();
+            if ($params->caption !== '') {
+                $params->plain .= ' '.$params->caption;
+            } else {
+                $params->caption = $params->url;
+            }
+            if ($params->type !== 'html') {
+                $params->caption = $this->escape($params->caption);
+            }
+        }
         if ($this->options['handler']) {
-            $this->url = Callback::call($this->options['handler'], [$this->params]);
+            Callback::call($this->options['handler'], [$this->params]);
         }
         if (empty($this->params->url)) {
             $this->errors[] = 'empty url';
+        }
+    }
+
+    protected function loadImg()
+    {
+        $tag = $this->context->tags->create('img', $this->value, $this->context);
+        if (!$tag) {
+            return;
+        }
+        $this->params->caption = $tag->getHTML();
+        $plain = $tag->getPlain();
+        if ($plain) {
+            $this->params->plain .= ' '.$plain;
+        }
+        if ($this->options['css_img']) {
+            $this->params->css = $this->options['css_img'];
         }
     }
 
@@ -78,11 +101,12 @@ class Url extends Base
      */
     protected $options = [
         'css' => null,
+        'css_img' => null,
         'handler' => null,
     ];
 
     /**
-     * @var array
+     * @var object
      */
     protected $params;
 }

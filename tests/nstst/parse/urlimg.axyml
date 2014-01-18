@@ -1,0 +1,8 @@
+# Test [URL:IMG]
+
+[URL:Plain link a.png <alt>]
+[URL:HTML link a.png <alt>]
+[URL:IMG link a.png <alt>]
+[URL:IMG]
+[URL:IMG link]
+

@@ -232,6 +232,18 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test [URL:IMG]
+     */
+    public function testUrlImg()
+    {
+        $axyml = $this->getFile('urlimg.axyml');
+        $html = $this->getFile('urlimg.html');
+        $parser = new Parser();
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * @param string $fn
      * @return string
      */
