@@ -26,7 +26,11 @@ class Scheme extends Base
         }
         $url = $this->name.$this->url;
         $content = $this->content ?: $url;
-        return '<a href="'.$this->escape($url).'">'.$this->escape($content).'</a>';
+        $css = $this->options['css'];
+        if ($css !== null) {
+            $css = ' class="'.$css.'"';
+        }
+        return '<a href="'.$this->escape($url).'"'.$css.'>'.$this->escape($content).'</a>';
     }
 
     /**
@@ -57,6 +61,13 @@ class Scheme extends Base
      * {@inheritdoc}
      */
     protected $args = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $options = [
+        'css' => null,
+    ];
 
     /**
      * @var string

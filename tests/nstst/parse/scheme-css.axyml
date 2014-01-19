@@ -1,0 +1,13 @@
+# Test css for scheme links
+
+[http://site.loc]
+[http://site.loc caption]
+[https://site.loc]
+[https://site.loc caption]
+[ftp://site.loc]
+[ftp://site.loc caption]
+[al://site.loc]
+[al://site.loc caption]
+[al2://site.loc]
+[al2://site.loc caption]
+

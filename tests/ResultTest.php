@@ -243,6 +243,34 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($html, \rtrim($result->html));
     }
 
+
+    /**
+     * Test css option for Scheme
+     */
+    public function testSchemeCSS()
+    {
+        $axyml = $this->getFile('scheme-css.axyml');
+        $html = $this->getFile('scheme-css.html');
+        $tags = [
+            'http' => [
+                'options' => [
+                    'css' => 'cc',
+                ],
+            ],
+            'ftp' => 'Scheme',
+            'al' => '=http',
+            'al2' => [
+                'classname' => '=http',
+                'options' => [
+                    'css' => 'al2',
+                ],
+            ],
+        ];
+        $parser = new Parser(null, $tags);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
     /**
      * @param string $fn
      * @return string
