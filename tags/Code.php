@@ -21,12 +21,17 @@ class Code extends Base
     {
         if ($this->block) {
             $tag = $this->options['tag_block'];
+            $css = $this->options['css_block'];
         } else {
             $tag = $this->options['tag_inline'];
+            $css = $this->options['css_inline'];
         }
         $res = [
             '<'.$tag
         ];
+        if ($css) {
+            $res[] .= ' class="'.$this->escape($css).'"';
+        }
         if (($this->lang) && ($this->options['attr_lang'])) {
             $res[] .= ' '.$this->options['attr_lang'].'="'.$this->escape($this->lang).'"';
         }
@@ -76,6 +81,8 @@ class Code extends Base
     protected $options = [
         'tag_block' => 'pre',
         'tag_inline' => 'code',
+        'css_block' => null,
+        'css_inline' => null,
         'attr_lang' => 'rel',
         'lang' => null,
         'default_lang' => null,

@@ -108,6 +108,22 @@ class CodeTest extends \PHPUnit_Framework_TestCase
                 true,
                 false,
             ],
+            [
+                ":php \necho 2 + 2;",
+                ['css_block' => 'cblock', 'css_inline' => 'cinline'],
+                "<pre class=\"cblock\" rel=\"php\">\necho 2 + 2;\n</pre>",
+                'echo 2 + 2;',
+                true,
+                false,
+            ],
+            [
+                ":php echo 2 + 2;",
+                ['css_block' => 'cblock', 'css_inline' => 'cinline'],
+                '<code class="cinline" rel="php">echo 2 + 2;</code>',
+                'echo 2 + 2;',
+                false,
+                true,
+            ],
         ];
     }
 }
