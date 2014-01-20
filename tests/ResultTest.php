@@ -106,7 +106,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
             'textHandler' => $textHandler,
             'hStart' => 2,
             'bTags' => ['<div>', '</div>'],
-            'blocks_separator' => "\n",
+            'beauty' => false,
         ];
         $tags = [
             'code' => [

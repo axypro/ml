@@ -31,6 +31,6 @@ return [
     /* Wrapper for block (callable) */
     'bHandler' => null,
 
-    /* Separator of blocks */
-    'blocks_separator' => "\n\n",
+    /* Beautiful output */
+    'beauty' => true,
 ];

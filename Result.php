@@ -124,7 +124,8 @@ class Result
             }
         }
         $this->magicFields['fields']['errors'] = $this->mergeErrors($errors);
-        $html = \implode($options['blocks_separator'], $blocks);
+        $sep = $options['beauty'] ? "\n\n" : "\n";
+        $html = \implode($sep, $blocks);
         return Normalizer::toResult($html, $options);
     }
 
