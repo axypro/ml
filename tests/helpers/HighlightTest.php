@@ -5,14 +5,14 @@
 
 namespace axy\ml\tests\helpers;
 
-use axy\ml\helpers\Handlers;
+use axy\ml\helpers\Highlight;
 use axy\ml\Options;
 use axy\ml\helpers\Token;
 
 /**
- * @coversDefaultClass axy\ml\helpers\Handlers
+ * @coversDefaultClass axy\ml\helpers\Highlight
  */
-class HandlersTest extends \PHPUnit_Framework_TestCase
+class HighlightTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::text
@@ -24,7 +24,7 @@ class HandlersTest extends \PHPUnit_Framework_TestCase
     public function testText($text, $options, $expected)
     {
         $options = $this->createOptions($options);
-        $this->assertSame($expected, Handlers::text($text, $options));
+        $this->assertSame($expected, Highlight::text($text, $options));
     }
 
     /**
@@ -78,7 +78,7 @@ class HandlersTest extends \PHPUnit_Framework_TestCase
             $token->$k = $v;
         }
         $options = $this->createOptions($options);
-        $this->assertSame($expected, Handlers::header($token, $options));
+        $this->assertSame($expected, Highlight::header($token, $options));
     }
 
     /**

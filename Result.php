@@ -6,7 +6,7 @@
 namespace axy\ml;
 
 use axy\ml\helpers\Token;
-use axy\ml\helpers\Handlers;
+use axy\ml\helpers\Highlight;
 use axy\ml\helpers\Normalizer;
 
 /**
@@ -110,16 +110,16 @@ class Result
             switch ($token->type) {
                 case Token::TYPE_HEADER:
                     if ($token->content !== '') {
-                        $blocks[] = Handlers::header($token, $options);
+                        $blocks[] = Highlight::header($token, $options);
                     }
                     break;
                 case Token::TYPE_ANCHOR:
                     if ($token->name) {
-                        $blocks[] = '<a name="'.Handlers::escape($token->name).'"></a>';
+                        $blocks[] = '<a name="'.Highlight::escape($token->name).'"></a>';
                     }
                     break;
                 case Token::TYPE_BLOCK:
-                    $blocks = \array_merge($blocks, Handlers::block($token, $options, $tags, $context, $errors));
+                    $blocks = \array_merge($blocks, Highlight::block($token, $options, $tags, $context, $errors));
                     break;
             }
         }

@@ -13,7 +13,7 @@ use axy\ml\Error;
  *
  * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
-class Handlers
+class Highlight
 {
     /**
      * Escape html special characters in the text
