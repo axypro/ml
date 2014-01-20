@@ -29,11 +29,20 @@ class Code extends Base
         $res = [
             '<'.$tag
         ];
+        if (($this->lang !== null) && ($this->options['attr_lang'] !== null)) {
+            $attr = $this->options['attr_lang'];
+            if ($attr === 'class') {
+                if ($css !== null) {
+                    $css = $this->lang.' '.$css;
+                } else {
+                    $css = $this->lang;
+                }
+            } else {
+                $res[] .= ' '.$attr.'="'.$this->escape($this->lang).'"';
+            }
+        }
         if ($css !== null) {
             $res[] .= ' class="'.$this->escape($css).'"';
-        }
-        if (($this->lang !== null) && ($this->options['attr_lang'] !== null)) {
-            $res[] .= ' '.$this->options['attr_lang'].'="'.$this->escape($this->lang).'"';
         }
         $res[] = '>'.($this->block ? "\n" : '');
         $res[] = $this->escape($this->code);
