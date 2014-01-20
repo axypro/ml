@@ -133,7 +133,7 @@ class Highlight
                         $list = ($token->start === null) ? 'ul' : 'ol';
                         for ($i = 0; $i < $delta; $i++) {
                             $s = ($token->start > 1) ? ' start="'.$token->start.'"' : '';
-                            $block[] = '<'.$list.$s.'>'.$lnl.'<li>';
+                            $block[] = (empty($block) ? '' : $lnl).'<'.$list.$s.'>'.$lnl.'<li>';
                             $lists[] = $list;
                         }
                     } elseif ($delta < 0) {
