@@ -85,6 +85,7 @@ class Handlers
         $listlevel = 0;
         $list = null;
         $lists = [];
+        $lnl = $options['beauty'] ? "\n" : '';
         foreach ($container->subs as $token) {
             switch ($token->type) {
                 case Token::TYPE_TEXT:
@@ -107,7 +108,7 @@ class Handlers
                         } else {
                             if ($tag->shouldSplitBlock()) {
                                 foreach (\array_reverse($lists) as $l) {
-                                    $block[] = '</li></'.$l.'>';
+                                    $block[] = '</li>'.$lnl.'</'.$l.'>'.$lnl;
                                 }
                                 $listlevel = 0;
                                 $lists = [];
@@ -132,18 +133,18 @@ class Handlers
                         $list = ($token->start === null) ? 'ul' : 'ol';
                         for ($i = 0; $i < $delta; $i++) {
                             $s = ($token->start > 1) ? ' start="'.$token->start.'"' : '';
-                            $block[] = '<'.$list.$s.'><li>';
+                            $block[] = '<'.$list.$s.'>'.$lnl.'<li>';
                             $lists[] = $list;
                         }
                     } elseif ($delta < 0) {
                         $rlists = \array_reverse(\array_slice($lists, $token->level));
                         $lists = \array_slice($lists, 0, $token->level);
                         foreach ($rlists as $l) {
-                            $block[] = '</li></'.$l.'>';
+                            $block[] = '</li>'.$lnl.'</'.$l.'>';
                         }
-                        $block[] = '</li><li>';
+                        $block[] = '</li>'.$lnl.'<li>';
                     } else {
-                        $block[] = '</li><li>';
+                        $block[] = '</li>'.$lnl.'<li>';
                     }
                     $listlevel = $token->level;
                     break;
@@ -151,7 +152,7 @@ class Handlers
         }
         if (!empty($block)) {
             foreach (\array_reverse($lists) as $l) {
-                $block[] = '</li></'.$l.'>';
+                $block[] = '</li>'.$lnl.'</'.$l.'>';
             }
             $blocks[] = self::wrapBlock($block, $options, $lastCr);
         }
