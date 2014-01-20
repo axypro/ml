@@ -140,7 +140,7 @@ class Result
         foreach ($this->tokenizer->getTokens() as $token) {
             switch ($token->type) {
                 case Token::TYPE_HEADER:
-                    if (!empty($token->content)) {
+                    if ($token->content !== '') {
                         $blocks[] = $token->content;
                     }
                     break;

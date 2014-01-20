@@ -189,9 +189,11 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         $axyml = $this->getFile('empty0.axyml');
         $html = $this->getFile('empty0.html');
+        $plain = $this->getFile('empty0.txt');
         $parser = new Parser();
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($plain, $result->plain);
         $this->assertEmpty($result->errors);
     }
 

@@ -38,6 +38,13 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
             'options' => ['single' => true],
             'name' => 'hr',
         ],
+        '0' => [
+            'classname' => 'Scheme',
+        ],
+        '1' => [
+            'classname' => 'Scheme',
+            'name' => '0',
+        ],
     ];
 
     /**
@@ -162,6 +169,22 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
                     'classname' => 'axy\ml\tags\HtmlTag',
                     'options' => ['single' => true],
                     'name' => 'hr',
+                ],
+            ],
+            [
+                '0',
+                [
+                    'classname' => 'axy\ml\tags\Scheme',
+                    'options' => [],
+                    'name' => '0',
+                ],
+            ],
+            [
+                '1',
+                [
+                    'classname' => 'axy\ml\tags\Scheme',
+                    'options' => [],
+                    'name' => '0',
                 ],
             ],
         ];
