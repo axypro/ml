@@ -148,6 +148,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($options, $tags);
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
     }
 
     /**
@@ -178,6 +179,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($options, $tags);
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
     }
 
     /**
@@ -190,6 +192,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
     }
 
     /**
@@ -202,6 +205,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
     }
 
     /**
@@ -214,6 +218,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
     }
 
     /**
@@ -229,6 +234,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser(null, $tags, ['value' => 2]);
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
     }
 
     /**
@@ -241,6 +247,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertCount(1, $result->errors);
     }
 
 
@@ -269,6 +276,46 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser(null, $tags);
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
+    }
+
+    /**
+     * Check options for empty("0")
+     */
+    public function testOptionsEmpty0()
+    {
+        $axyml = $this->getFile('empty0-options.axyml');
+        $html = $this->getFile('empty0-options.html');
+        $tags = [
+            'code' => [
+                'options' => [
+                    'css_block' => '0',
+                    'css_inline' => '0',
+                    'default_lang' => '0',
+                    'attr_lang' => '0',
+                ],
+            ],
+            'img' => [
+                'options' => [
+                    'css' => '0',
+                ],
+            ],
+            'http' => [
+                'options' => [
+                    'css' => '0',
+                ],
+            ],
+            'url' => [
+                'options' => [
+                    'css' => '0',
+                    'css_img' => '0',
+                ],
+            ],
+        ];
+        $parser = new Parser(null, $tags);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+        $this->assertCount(1, $result->errors);
     }
 
     /**

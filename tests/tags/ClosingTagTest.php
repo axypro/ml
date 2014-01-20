@@ -53,6 +53,10 @@ class ClosingTagTest extends \PHPUnit_Framework_TestCase
                 '"Ss Qq" Ww',
                 '</ss qq Ww>',
             ],
+            [
+                '0',
+                '</0>',
+            ],
         ];
     }
 }

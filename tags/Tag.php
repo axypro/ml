@@ -20,7 +20,7 @@ class Tag extends Base
     public function getHTML()
     {
         $tag = $this->getArg();
-        if (empty($tag)) {
+        if ($tag === null) {
             $this->errors = ['empty html tag'];
             return '';
         }

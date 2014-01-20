@@ -27,11 +27,14 @@ class Url extends Base
         if ($params->html !== null) {
             return $params->html;
         }
-        if (empty($params->url)) {
+        if ($params->url === '') {
             return '';
         }
         $url = $this->escape($params->url);
-        $css = $params->css ? ' class="'.$this->escape($params->css).'"' : '';
+        $css = $params->css;
+        if ($css !== null) {
+            $css = ' class="'.$this->escape($params->css).'"';
+        }
         return '<a href="'.$url.'"'.$css.'>'.$params->caption.'</a>';
     }
 
@@ -75,7 +78,7 @@ class Url extends Base
         if ($this->options['handler']) {
             Callback::call($this->options['handler'], [$this->params]);
         }
-        if (empty($this->params->url)) {
+        if ($this->params->url === '') {
             $this->errors[] = 'empty url';
         }
     }
@@ -91,7 +94,7 @@ class Url extends Base
         if ($plain) {
             $this->params->plain .= ' '.$plain;
         }
-        if ($this->options['css_img']) {
+        if ($this->options['css_img'] !== null) {
             $this->params->css = $this->options['css_img'];
         }
     }

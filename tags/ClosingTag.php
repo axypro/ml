@@ -17,7 +17,7 @@ class ClosingTag extends Base
      */
     public function getHTML()
     {
-        if (!$this->tagname) {
+        if ($this->tagname === '') {
             return '';
         }
         return '</'.$this->tagname.($this->tagattrs ? ' '.$this->tagattrs : '').'>';
@@ -38,7 +38,7 @@ class ClosingTag extends Base
     {
         $this->tagname = \strtolower($this->getNextComponent());
         $this->tagattrs = $this->getLastComponent();
-        if (!$this->tagname) {
+        if ($this->tagname === '') {
             $this->errors[] = 'empty closing tag';
         }
     }

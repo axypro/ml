@@ -21,7 +21,7 @@ class Scheme extends Base
      */
     public function getHTML()
     {
-        if (empty($this->url)) {
+        if ($this->url === '') {
             return '';
         }
         $url = $this->name.$this->url;
@@ -38,7 +38,7 @@ class Scheme extends Base
      */
     public function getPlain()
     {
-        if (empty($this->url)) {
+        if ($this->url === '') {
             return '';
         }
         $url = $this->name.$this->url;
@@ -52,7 +52,7 @@ class Scheme extends Base
     {
         $this->url = $this->getNextComponent();
         $this->content = $this->getLastComponent();
-        if (empty($this->url)) {
+        if ($this->url === '') {
             $this->errors[] = 'empty url';
         }
     }

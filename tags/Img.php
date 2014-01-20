@@ -26,14 +26,14 @@ class Img extends Base
         if ($params->html !== null) {
             return $params->html;
         }
-        if (empty($params->src)) {
+        if ($params->src === '') {
             return '';
         }
         $attrs = [
             'src="'.$this->escape($params->src).'"',
             'alt="'.$this->escape($params->alt).'"',
         ];
-        if ($params->css) {
+        if ($params->css !== null) {
             $attrs[] = 'class="'.$this->escape($params->css).'"';
         }
         return '<img '.(\implode(' ', $attrs)).' />';
@@ -63,7 +63,7 @@ class Img extends Base
         if ($this->options['handler']) {
             Callback::call($this->options['handler'], [$this->params]);
         }
-        if (empty($this->params->src)) {
+        if ($this->params->src === '') {
             $this->errors[] = 'empty src';
         }
     }

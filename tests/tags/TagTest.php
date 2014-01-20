@@ -41,6 +41,14 @@ class TagTest extends \PHPUnit_Framework_TestCase
                 'attr',
                 '',
             ],
+            [
+                ':0',
+                '<0>',
+            ],
+            [
+                ':0 a="v"',
+                '<0 a="v">',
+            ],
         ];
     }
 }

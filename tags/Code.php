@@ -29,10 +29,10 @@ class Code extends Base
         $res = [
             '<'.$tag
         ];
-        if ($css) {
+        if ($css !== null) {
             $res[] .= ' class="'.$this->escape($css).'"';
         }
-        if (($this->lang) && ($this->options['attr_lang'])) {
+        if (($this->lang !== null) && ($this->options['attr_lang'] !== null)) {
             $res[] .= ' '.$this->options['attr_lang'].'="'.$this->escape($this->lang).'"';
         }
         $res[] = '>'.($this->block ? "\n" : '');

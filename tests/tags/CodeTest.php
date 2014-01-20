@@ -124,6 +124,14 @@ class CodeTest extends \PHPUnit_Framework_TestCase
                 false,
                 true,
             ],
+            [
+                ':0 0',
+                ['css_inline' => '0'],
+                '<code class="0" rel="0">0</code>',
+                '0',
+                false,
+                true,
+            ],
         ];
     }
 }
