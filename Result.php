@@ -104,6 +104,7 @@ class Result
     {
         $context = $this->context;
         $options = $this->context->options->getSource();
+        $context->errors = $this->tokenizer->getErrors();
         $tags = $this->tags;
         $errors = [];
         $blocks = [];
@@ -121,11 +122,11 @@ class Result
                     break;
                 case Token::TYPE_BLOCK:
                     $block = new Block($token, $context);
-                    $blocks = \array_merge($blocks, $block->getHTMLBlocks($errors));
+                    $blocks = \array_merge($blocks, $block->getHTMLBlocks());
                     break;
             }
         }
-        $this->magicFields['fields']['errors'] = $this->mergeErrors($errors);
+        $this->magicFields['fields']['errors'] = $this->sortErrors($context->errors);
         $sep = $options['beauty'] ? "\n\n" : "\n";
         $html = \implode($sep, $blocks);
         return Normalizer::toResult($html, $options);
@@ -138,6 +139,7 @@ class Result
     {
         $context = $this->context;
         $options = $this->context->options->getSource();
+        $context->errors = $this->tokenizer->getErrors();
         $tags = $this->tags;
         $blocks = [];
         foreach ($this->tokenizer->getTokens() as $token) {
@@ -175,13 +177,9 @@ class Result
      * @param array $errors
      * @return array
      */
-    private function mergeErrors(array $errors)
+    private function sortErrors(array $errors)
     {
-        $tokerr = $this->tokenizer->getErrors();
-        if (!empty($tokerr)) {
-            $errors = \array_merge($errors, $tokerr);
-            \usort($errors, [$this, 'sortErrors']);
-        }
+        \usort($errors, [$this, 'cmpErrors']);
         return $errors;
     }
 
@@ -192,7 +190,7 @@ class Result
      * @param object $b
      * @return int
      */
-    private function sortErrors($a, $b)
+    private function cmpErrors($a, $b)
     {
         if ($a->line > $b->line) {
             return 1;

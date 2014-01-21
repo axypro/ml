@@ -21,6 +21,13 @@ class Context
     use \axy\magic\ReadOnly;
 
     /**
+     * The list of errors of last parsing
+     *
+     * @var array
+     */
+    public $errors;
+
+    /**
      * Constructor
      *
      * @param \axy\ml\Result $result

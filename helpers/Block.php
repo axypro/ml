@@ -36,7 +36,7 @@ class Block
      *        a list of parsing errors
      * @return string
      */
-    public function getHTMLBlocks(array &$errors)
+    public function getHTMLBlocks()
     {
         $context = $this->context;
         $options = $context->options->getSource();
@@ -63,7 +63,7 @@ class Block
                                 'tag' => $token->name,
                                 'info' => $err,
                             ];
-                            $errors[] = new Error(Error::TAG_INVALID, $token->line, $data);
+                            $context->errors[] = new Error(Error::TAG_INVALID, $token->line, $data);
                         }
                         if (empty($block)) {
                             $block[] = $html;
@@ -86,7 +86,7 @@ class Block
                         $data = [
                             'tag' => $token->name,
                         ];
-                        $errors[] = new Error(Error::TAG_UNKNOWN, $token->line, $data);
+                        $context->errors[] = new Error(Error::TAG_UNKNOWN, $token->line, $data);
                     }
                     break;
                 case Token::TYPE_LI:
