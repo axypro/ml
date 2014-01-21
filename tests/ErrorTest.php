@@ -46,6 +46,21 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::sortListByLine
+     */
+    public function testSortListByLine()
+    {
+        $e10 = new Error(Error::HEADER_EMPTY, 10);
+        $e25 = new Error(Error::META_EMPTY, 25);
+        $e8 = new Error(Error::TAG_INVALID, 8);
+        $e17 = new Error(Error::TAG_NOT_CLOSED, 17);
+        $e11 = new Error(Error::TAG_UNKNOWN, 11);
+        $list = [$e10, $e25, $e8, $e17, $e11];
+        $expected = [$e8, $e10, $e11, $e17, $e25];
+        $this->assertEquals($expected, Error::sortListByLine($list));
+    }
+
+    /**
      * @covers ::__toString
      */
     public function testToString()
