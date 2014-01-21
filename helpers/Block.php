@@ -70,7 +70,7 @@ class Block
                                 'tag' => $token->name,
                                 'info' => $err,
                             ];
-                            $context->errors[] = new Error(Error::TAG_INVALID, $token->line, $data);
+                            $context->addError(new Error(Error::TAG_INVALID, $token->line, $data));
                         }
                         if ($content === '') {
                             $content = $html;
@@ -95,7 +95,7 @@ class Block
                         $data = [
                             'tag' => $token->name,
                         ];
-                        $context->errors[] = new Error(Error::TAG_UNKNOWN, $token->line, $data);
+                        $context->addError(new Error(Error::TAG_UNKNOWN, $token->line, $data));
                     }
                     break;
                 case Token::TYPE_LI:

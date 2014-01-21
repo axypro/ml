@@ -9,6 +9,7 @@ use axy\ml\helpers\Token;
 use axy\ml\helpers\Highlight;
 use axy\ml\helpers\Normalizer;
 use axy\ml\helpers\Block;
+use axy\ml\Error;
 
 /**
  * The result of parsing of an axyml document
@@ -104,7 +105,7 @@ class Result
     {
         $context = $this->context;
         $options = $this->context->options->getSource();
-        $context->errors = $this->tokenizer->getErrors();
+        $context->initErrorsList($this->tokenizer->getErrors());
         $tags = $this->tags;
         $errors = [];
         $blocks = [];
@@ -126,7 +127,7 @@ class Result
                     break;
             }
         }
-        $this->magicFields['fields']['errors'] = $this->sortErrors($context->errors);
+        $this->magicFields['fields']['errors'] = Error::sortListByLine($this->context->errors);
         $sep = $options['beauty'] ? "\n\n" : "\n";
         $html = \implode($sep, $blocks);
         return Normalizer::toResult($html, $options);
@@ -139,7 +140,7 @@ class Result
     {
         $context = $this->context;
         $options = $this->context->options->getSource();
-        $context->errors = $this->tokenizer->getErrors();
+        $context->initErrorsList($this->tokenizer->getErrors());
         $tags = $this->tags;
         $blocks = [];
         foreach ($this->tokenizer->getTokens() as $token) {
@@ -171,33 +172,6 @@ class Result
             }
         }
         return \implode("\n", $blocks);
-    }
-
-    /**
-     * @param array $errors
-     * @return array
-     */
-    private function sortErrors(array $errors)
-    {
-        \usort($errors, [$this, 'cmpErrors']);
-        return $errors;
-    }
-
-    /**
-     * Callback for sorting the errors list
-     *
-     * @param object $a
-     * @param object $b
-     * @return int
-     */
-    private function cmpErrors($a, $b)
-    {
-        if ($a->line > $b->line) {
-            return 1;
-        } elseif ($a->line < $b->line) {
-            return -1;
-        }
-        return 0;
     }
 
     /**

@@ -57,6 +57,26 @@ class Error
     }
 
     /**
+     * Sort the list of errors by the lines
+     *
+     * @param array $errors
+     * @return array
+     */
+    public static function sortListByLine(array $errors)
+    {
+        $cmp = function ($a, $b) {
+            if ($a->line > $b->line) {
+                return 1;
+            } elseif ($a->line < $b->line) {
+                return -1;
+            }
+            return 0;
+        };
+        \usort($errors, $cmp);
+        return $errors;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected $magicDefaults = [

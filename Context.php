@@ -11,21 +11,20 @@ namespace axy\ml;
  * @author Oleg Grigoriev <go.vasac@gmail.com>
  *
  * @property-read \axy\ml\Result $result
+ *                The result of parsing the current document
  * @property-read \axy\ml\Options $options
+ *                The options of parsing
  * @property-read \axy\ml\TagsList $tags
+ *                The list of available tags
  * @property-read mixed $custom
+ *                The custom context
+ * @property-read array $errors
+ *                The list of errors of last parsing
  */
 class Context
 {
     use \axy\magic\LazyField;
     use \axy\magic\ReadOnly;
-
-    /**
-     * The list of errors of last parsing
-     *
-     * @var array
-     */
-    public $errors;
 
     /**
      * Constructor
@@ -42,6 +41,27 @@ class Context
             'options' => $options,
             'tags' => $tags,
             'custom' => $custom,
+            'errors' => [],
         ];
+    }
+
+    /**
+     * Initialization the errors list before rendering
+     *
+     * @param array $errors [optional]
+     */
+    public function initErrorsList(array $errors = [])
+    {
+        $this->magicFields['fields']['errors'] = $errors;
+    }
+
+    /**
+     * Append an error to the errors list
+     *
+     * @param \axy\ml\Error $error
+     */
+    public function addError($error)
+    {
+        $this->magicFields['fields']['errors'][] = $error;
     }
 }
