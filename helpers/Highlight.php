@@ -6,7 +6,6 @@
 namespace axy\ml\helpers;
 
 use axy\callbacks\Callback;
-use axy\ml\Error;
 
 /**
  * The helper for handling and wrapping blocks and values
@@ -66,115 +65,5 @@ class Highlight
             $attr = '';
         }
         return '<h'.$level.$attr.'>'.self::text($token->content, $options).'</h'.$level.'>';
-    }
-
-    /**
-     * Create HTML for a block
-     *
-     * @param \axy\ml\helpers\Token $container
-     * @param array $options
-     * @param \axy\ml\TagsList $tags
-     * @param \axy\ml\Context $context
-     * @param array &$errors
-     */
-    public static function block(Token $container, $options, $tags, $context, &$errors)
-    {
-        $blocks = [];
-        $block = [];
-        $lastCr = true;
-        $listlevel = 0;
-        $list = null;
-        $lists = [];
-        $lnl = $options['beauty'] ? "\n" : '';
-        foreach ($container->subs as $token) {
-            switch ($token->type) {
-                case Token::TYPE_TEXT:
-                    $lastCr = true;
-                    $block[] = self::text($token->content, $options);
-                    break;
-                case Token::TYPE_TAG:
-                    $tag = $tags->create($token->name, $token->content, $context);
-                    if ($tag) {
-                        $html = $tag->getHtml();
-                        foreach ($tag->getErrors() as $err) {
-                            $data = [
-                                'tag' => $token->name,
-                                'info' => $err,
-                            ];
-                            $errors[] = new Error(Error::TAG_INVALID, $token->line, $data);
-                        }
-                        if (empty($block)) {
-                            $block[] = $html;
-                        } else {
-                            if ($tag->shouldSplitBlock()) {
-                                foreach (\array_reverse($lists) as $l) {
-                                    $block[] = '</li>'.$lnl.'</'.$l.'>'.$lnl;
-                                }
-                                $listlevel = 0;
-                                $lists = [];
-                                $blocks[] = self::wrapBlock($block, $options, $lastCr);
-                                $blocks[] = self::wrapBlock([$html], $options, $tag->shouldCreateBlock());
-                                $block = [];
-                            } else {
-                                $block[] = $html;
-                            }
-                        }
-                        $lastCr = $tag->shouldCreateBlock();
-                    } else {
-                        $data = [
-                            'tag' => $token->name,
-                        ];
-                        $errors[] = new Error(Error::TAG_UNKNOWN, $token->line, $data);
-                    }
-                    break;
-                case Token::TYPE_LI:
-                    $delta = $token->level - $listlevel;
-                    if ($delta > 0) {
-                        $list = ($token->start === null) ? 'ul' : 'ol';
-                        for ($i = 0; $i < $delta; $i++) {
-                            $s = ($token->start > 1) ? ' start="'.$token->start.'"' : '';
-                            $block[] = (empty($block) ? '' : $lnl).'<'.$list.$s.'>'.$lnl.'<li>';
-                            $lists[] = $list;
-                        }
-                    } elseif ($delta < 0) {
-                        $rlists = \array_reverse(\array_slice($lists, $token->level));
-                        $lists = \array_slice($lists, 0, $token->level);
-                        foreach ($rlists as $l) {
-                            $block[] = '</li>'.$lnl.'</'.$l.'>';
-                        }
-                        $block[] = '</li>'.$lnl.'<li>';
-                    } else {
-                        $block[] = '</li>'.$lnl.'<li>';
-                    }
-                    $listlevel = $token->level;
-                    break;
-            }
-        }
-        if (!empty($block)) {
-            foreach (\array_reverse($lists) as $l) {
-                $block[] = '</li>'.$lnl.'</'.$l.'>';
-            }
-            $blocks[] = self::wrapBlock($block, $options, $lastCr);
-        }
-        return $blocks;
-    }
-
-    /**
-     * @param array $block
-     * @param array $options
-     * @param boolean $lastCr
-     * @return string
-     */
-    private static function wrapBlock(array $block, $options, $lastCr)
-    {
-        if ((!$lastCr) && (\count($block) === 1)) {
-            return $block[0];
-        }
-        $block = \trim(\implode('', $block));
-        if ($options['bHandler']) {
-            return Callback::call($options['bHandler'], [$block]);
-        }
-        $t = $options['bTags'];
-        return $t[0].$block.$t[1];
     }
 }

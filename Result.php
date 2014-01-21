@@ -8,6 +8,7 @@ namespace axy\ml;
 use axy\ml\helpers\Token;
 use axy\ml\helpers\Highlight;
 use axy\ml\helpers\Normalizer;
+use axy\ml\helpers\Block;
 
 /**
  * The result of parsing of an axyml document
@@ -119,7 +120,8 @@ class Result
                     }
                     break;
                 case Token::TYPE_BLOCK:
-                    $blocks = \array_merge($blocks, Highlight::block($token, $options, $tags, $context, $errors));
+                    $block = new Block($token, $context);
+                    $blocks = \array_merge($blocks, $block->getHTMLBlocks($errors));
                     break;
             }
         }
