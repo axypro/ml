@@ -25,5 +25,6 @@ return [
     'img' => 'Img',
     'code' => 'Code',
     'html' => 'Html',
+    'opt' => 'Opt',
     '' => 'Html',
 ];

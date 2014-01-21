@@ -252,7 +252,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $result->errors);
     }
 
-
     /**
      * Test css option for Scheme
      */
@@ -318,6 +317,20 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
         $this->assertCount(1, $result->errors);
+    }
+
+    /**
+     * Test [OPT]
+     */
+    public function testOpt()
+    {
+        $axyml = $this->getFile('opt.axyml');
+        $html = $this->getFile('opt.html');
+        $parser = new Parser();
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+        $this->assertCount(1, $result->errors);
+        $this->assertSame('Invalid [opt]: unknown "unk" on line 7', (string)$result->errors[0]);
     }
 
     /**

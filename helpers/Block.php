@@ -30,6 +30,13 @@ class Block
     public $split;
 
     /**
+     * The flag that the block should be wrapped
+     *
+     * @var boolean
+     */
+    public $wrap;
+
+    /**
      * Construct
      *
      * @param \axy\ml\helpers\Token $container
@@ -53,6 +60,7 @@ class Block
     public function getHTMLBlocks()
     {
         $this->split = false;
+        $this->wrap = true;
         $context = $this->context;
         $context->setCurrentBlock($this);
         $options = $context->options->getSource();
@@ -93,8 +101,8 @@ class Block
                                 }
                                 $listlevel = 0;
                                 $lists = [];
-                                $blocks[] = self::wrapBlock($content, $options, $crblock);
-                                $blocks[] = self::wrapBlock($html, $options, $tag->shouldCreateBlock());
+                                $blocks[] = $this->wrapBlock($content, $options, $crblock);
+                                $blocks[] = $this->wrapBlock($html, $options, $tag->shouldCreateBlock());
                                 $content = '';
                                 $this->split = false;
                             } else {
@@ -135,7 +143,7 @@ class Block
             foreach (\array_reverse($lists) as $l) {
                 $content .= '</li>'.$lnl.'</'.$l.'>';
             }
-            $blocks[] = self::wrapBlock($content, $options, $crblock);
+            $blocks[] = $this->wrapBlock($content, $options, $crblock);
         }
         $context->setCurrentBlock(null);
         return $blocks;
@@ -147,10 +155,13 @@ class Block
      * @param boolean $crblock
      * @return array
      */
-    private static function wrapBlock($content, $options, $crblock)
+    private function wrapBlock($content, $options, $crblock)
     {
         $content = \trim($content);
         if ((!$crblock) || ($content === '')) {
+            return $content;
+        }
+        if (!$this->wrap) {
             return $content;
         }
         if ($options['bHandler']) {

@@ -1,0 +1,10 @@
+# Test [OPT]
+
+[tag:pre]
+This is pre-text
+[/pre]
+
+[opt:nop:unk][tag:pre]
+This is pre-text
+[/pre]
+
