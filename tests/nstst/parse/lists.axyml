@@ -1,33 +1,33 @@
 # UL
 
-* One
-* Two
-* Three
+[*] One
+[*] Two
+[*] Three
 
 # OL
 
-*1 Four
-*3 Five
-*5 Six
+[*:1] Four
+[*:3] Five
+[*:5] Six
 
 # Tree
 
-** One [B]bold
+[**] One [B]bold
 [/B]!
-** Two
-**1 Three
-***3 Four
-*** Five
-* Six
-* Seven
+[**] Two
+[**:1] Three
+[***:3] Four
+[***] Five
+[*] Six
+[*] Seven
 
 
 Qwe
-* Rty
+[*] Rty
 
-* One
-* Two [code
+[*] One
+[*] Two [code
 echo 2 + 2]
-* Three
-* Four
+[*] Three
+[*] Four
 

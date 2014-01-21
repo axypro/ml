@@ -50,6 +50,8 @@ class Block
      */
     public $endListeners;
 
+    public $ltrim;
+
     /**
      * Construct
      *
@@ -72,6 +74,7 @@ class Block
         $this->split = false;
         $this->wrap = true;
         $this->endListeners = [];
+        $this->ltrim = false;
         $this->blocks = [];
         $context = $this->context;
         $context->setCurrentBlock($this);
@@ -79,17 +82,19 @@ class Block
         $content = &$this->content;
         $content = '';
         $tags = $context->tags;
-        $listlevel = 0;
-        $list = null;
-        $lists = [];
-        $lnl = $options['beauty'] ? "\n" : '';
         foreach ($this->container->subs as $token) {
             $crblock = true;
             switch ($token->type) {
                 case Token::TYPE_TEXT:
-                    $content .= Highlight::text($token->content, $options);
+                    $text = Highlight::text($token->content, $options);
+                    if ($this->ltrim) {
+                        $text = \ltrim($text);
+                        $this->ltrim = false;
+                    }
+                    $content .= $text;
                     break;
                 case Token::TYPE_TAG:
+                    $this->ltrim = false;
                     $tag = $tags->create($token->name, $token->content, $context);
                     if ($tag) {
                         $html = $tag->getHtml();
@@ -107,11 +112,6 @@ class Block
                             }
                         } else {
                             if ($this->split) {
-                                foreach (\array_reverse($lists) as $l) {
-                                    $content .= '</li>'.$lnl.'</'.$l.'>'.$lnl;
-                                }
-                                $listlevel = 0;
-                                $lists = [];
                                 $this->addBlock($options, $crblock);
                                 $content = $html;
                                 $this->addBlock($options, $tag->shouldCreateBlock());
@@ -129,31 +129,7 @@ class Block
                         $context->addError(new Error(Error::TAG_UNKNOWN, $token->line, $data));
                     }
                     break;
-                case Token::TYPE_LI:
-                    $delta = $token->level - $listlevel;
-                    if ($delta > 0) {
-                        $list = ($token->start === null) ? 'ul' : 'ol';
-                        for ($i = 0; $i < $delta; $i++) {
-                            $s = ($token->start > 1) ? ' start="'.$token->start.'"' : '';
-                            $content .= (($content !== '') ? $lnl : '').'<'.$list.$s.'>'.$lnl.'<li>';
-                            $lists[] = $list;
-                        }
-                    } elseif ($delta < 0) {
-                        $rlists = \array_reverse(\array_slice($lists, $token->level));
-                        $lists = \array_slice($lists, 0, $token->level);
-                        foreach ($rlists as $l) {
-                            $content .= '</li>'.$lnl.'</'.$l.'>';
-                        }
-                        $content .= '</li>'.$lnl.'<li>';
-                    } else {
-                        $content .= '</li>'.$lnl.'<li>';
-                    }
-                    $listlevel = $token->level;
-                    break;
             }
-        }
-        foreach (\array_reverse($lists) as $l) {
-            $content .= '</li>'.$lnl.'</'.$l.'>';
         }
         $this->addBlock($options, $crblock);
         $context->setCurrentBlock(null);
