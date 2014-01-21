@@ -44,6 +44,13 @@ class Block
     public $blocks;
 
     /**
+     * The list of listeners of finish block render
+     *
+     * @var array
+     */
+    public $endListeners;
+
+    /**
      * Construct
      *
      * @param \axy\ml\helpers\Token $container
@@ -64,6 +71,7 @@ class Block
     {
         $this->split = false;
         $this->wrap = true;
+        $this->endListeners = [];
         $this->blocks = [];
         $context = $this->context;
         $context->setCurrentBlock($this);
@@ -104,10 +112,12 @@ class Block
                                 }
                                 $listlevel = 0;
                                 $lists = [];
-                                $this->addBlock($content, $options, $crblock);
-                                $this->addBlock($html, $options, $tag->shouldCreateBlock());
+                                $this->addBlock($options, $crblock);
+                                $content = $html;
+                                $this->addBlock($options, $tag->shouldCreateBlock());
                                 $content = '';
                                 $this->split = false;
+                                $this->wrap = true;
                             } else {
                                 $content .= $html;
                             }
@@ -142,24 +152,27 @@ class Block
                     break;
             }
         }
-        if ($content !== '') {
-            foreach (\array_reverse($lists) as $l) {
-                $content .= '</li>'.$lnl.'</'.$l.'>';
-            }
-            $this->addBlock($content, $options, $crblock);
+        foreach (\array_reverse($lists) as $l) {
+            $content .= '</li>'.$lnl.'</'.$l.'>';
         }
+        $this->addBlock($options, $crblock);
         $context->setCurrentBlock(null);
     }
 
     /**
-     * @param string $content
      * @param array $options
      * @param boolean $crblock
      * @return array
      */
-    private function addBlock($content, $options, $crblock)
+    private function addBlock($options, $crblock)
     {
-        $content = \trim($content);
+        if (!empty($this->endListeners)) {
+            foreach ($this->endListeners as $listener) {
+                \call_user_func($listener, $this);
+            }
+            $this->endListeners = [];
+        }
+        $content = \trim($this->content);
         if ($content === '') {
             return;
         }
