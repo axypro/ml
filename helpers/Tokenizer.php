@@ -99,16 +99,10 @@ class Tokenizer
             $this->block = null;
             return;
         }
-        switch ($line[0]) {
-            case '#':
-                $this->loadSpecLine($line);
-                break;
-            case '*':
-                $this->loadLI($line);
-                $this->loadBlockLine($line);
-                break;
-            default:
-                $this->loadBlockLine($line);
+        if ($line[0] === '#') {
+            $this->loadSpecLine($line);
+        } else {
+            $this->loadBlockLine($line);
         }
     }
 
@@ -247,22 +241,22 @@ class Tokenizer
             /* The tag ends on the current line */
             $this->parseTag($parts[0]);
             $line = $parts[1];
-            return;
-        }
-        /* The tag is multiline */
-        $parts = \explode($close, $this->content, 2);
-        $tagcontent = $line."\n".$parts[0];
-        $isclosed = isset($parts[1]); // tag is correctly closed
-        $this->parseTag($tagcontent, !$isclosed);
-        $this->numline += \substr_count($tagcontent, "\n") - 1;
-        if ($isclosed) {
-            $parts = \explode("\n", $parts[1], 2);
-            $line = ($parts[0]);
-            $this->content = isset($parts[1]) ? $parts[1] : '';
-            $this->numline++;
         } else {
-            $this->content = '';
-            $line = '';
+            /* The tag is multiline */
+            $parts = \explode($close, $this->content, 2);
+            $tagcontent = $line."\n".$parts[0];
+            $isclosed = isset($parts[1]); // tag is correctly closed
+            $this->parseTag($tagcontent, !$isclosed);
+            $this->numline += \substr_count($tagcontent, "\n") - 1;
+            if ($isclosed) {
+                $parts = \explode("\n", $parts[1], 2);
+                $line = ($parts[0]);
+                $this->content = isset($parts[1]) ? $parts[1] : '';
+                $this->numline++;
+            } else {
+                $this->content = '';
+                $line = '';
+            }
         }
     }
 
@@ -276,58 +270,32 @@ class Tokenizer
      */
     private function parseTag($content, $notclosed = false)
     {
-        $token = new Token(Token::TYPE_TAG, $this->numline);
-        $this->block->append($token);
         if ($content === '') {
             return;
         }
-        if ($content[0] === '/') {
-            $token->name = '/';
-            $token->content = \substr($content, 1);
-            if ($notclosed) {
-                $this->errors[] = new Error(Error::TAG_NOT_CLOSED, $this->numline, ['tag' => '/']);
-            }
-            return;
-        }
-        if (\preg_match('/^([a-z0-9_]+)(.*?)$/is', $content, $matches)) {
-            $token->name = \strtolower($matches[1]);
-            $token->content = $matches[2];
-        } else {
-            $token->name = null;
-            $token->content = $content;
+        $token = new Token(Token::TYPE_TAG, $this->numline);
+        $this->block->append($token);
+        switch ($content[0]) {
+            case '/':
+                $token->name = '/';
+                $token->content = \substr($content, 1);
+                break;
+            case '*':
+                $token->name = '*';
+                $token->content = $content;
+                break;
+            default:
+                if (\preg_match('/^([a-z0-9_]+)(.*?)$/is', $content, $matches)) {
+                    $token->name = \strtolower($matches[1]);
+                    $token->content = $matches[2];
+                } else {
+                    $token->name = null;
+                    $token->content = $content;
+                }
         }
         if ($notclosed) {
             $this->errors[] = new Error(Error::TAG_NOT_CLOSED, $this->numline, ['tag' => $token->name]);
         }
-    }
-
-    /**
-     * Load a LI-token
-     *
-     * @param string &$line
-     */
-    private function loadLI(&$line)
-    {
-        if (!\preg_match('/^(\*+)(\d*)\s+(.*?)$/', $line, $matches)) {
-            return;
-        }
-        if ($matches[3] === '') {
-            return;
-        }
-        if (!$this->block) {
-            $this->block = new Token(Token::TYPE_BLOCK, $this->numline);
-            $this->listblock = true;
-            $this->tokens[] = $this->block;
-        } elseif (!$this->listblock) {
-            return;
-        }
-        $this->text = null;
-        $line = $matches[3];
-        $token = new Token(Token::TYPE_LI, $this->numline);
-        $token->level = \strlen($matches[1]);
-        $token->start = ($matches[2] === '') ? null : (int)$matches[2];
-        $this->block->append($token);
-        $this->endtag = false;
     }
 
     /**

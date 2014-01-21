@@ -26,5 +26,6 @@ return [
     'code' => 'Code',
     'html' => 'Html',
     'opt' => 'Opt',
+    '*' => 'Li',
     '' => 'Html',
 ];

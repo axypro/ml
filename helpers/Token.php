@@ -62,14 +62,6 @@ class Token extends \stdClass
     const TYPE_TAG = 'tag';
 
     /**
-     * The list item marker
-     * (level, start)
-     *
-     * @var string
-     */
-    const TYPE_LI = 'li';
-
-    /**
      * The type of token
      * (constant Token::TYPE_*)
      *
