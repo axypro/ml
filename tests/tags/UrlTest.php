@@ -6,11 +6,7 @@
 namespace axy\ml\tests\tags;
 
 use axy\ml\tags\Url;
-use axy\ml\Result;
-use axy\ml\Options;
-use axy\ml\TagsList;
-use axy\ml\Context;
-use axy\ml\helpers\Tokenizer;
+use axy\ml\tests\nstst\Factory;
 
 /**
  * @coversDefaultClass axy\ml\tags\Url
@@ -130,12 +126,8 @@ class UrlTest extends \PHPUnit_Framework_TestCase
      */
     public function testInlineImg($customTags, $content, $html, $plain)
     {
-        $tokenizer = new Tokenizer('');
-        $options = new Options();
-        $tags = new TagsList($customTags);
-        $result = new Result($tokenizer, $options, $tags);
-        $context = new Context($result, $options, $tags, null);
-        $tag = $tags->create('url', $content, $context);
+        $context = Factory::createContext(null, $customTags);
+        $tag = $context->tags->create('url', $content, $context);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
     }
