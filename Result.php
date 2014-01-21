@@ -123,7 +123,8 @@ class Result
                     break;
                 case Token::TYPE_BLOCK:
                     $block = new Block($token, $context);
-                    $blocks = \array_merge($blocks, $block->getHTMLBlocks());
+                    $block->render();
+                    $blocks = \array_merge($blocks, $block->blocks);
                     break;
             }
         }

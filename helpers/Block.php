@@ -37,6 +37,13 @@ class Block
     public $wrap;
 
     /**
+     * The list of resulting blocks
+     *
+     * @var array
+     */
+    public $blocks;
+
+    /**
      * Construct
      *
      * @param \axy\ml\helpers\Token $container
@@ -52,22 +59,18 @@ class Block
 
     /**
      * Render block
-     *
-     * @param array &$errors
-     *        a list of parsing errors
-     * @return string
      */
-    public function getHTMLBlocks()
+    public function render()
     {
         $this->split = false;
         $this->wrap = true;
+        $this->blocks = [];
         $context = $this->context;
         $context->setCurrentBlock($this);
         $options = $context->options->getSource();
         $content = &$this->content;
         $content = '';
         $tags = $context->tags;
-        $blocks = [];
         $listlevel = 0;
         $list = null;
         $lists = [];
@@ -101,8 +104,8 @@ class Block
                                 }
                                 $listlevel = 0;
                                 $lists = [];
-                                $blocks[] = $this->wrapBlock($content, $options, $crblock);
-                                $blocks[] = $this->wrapBlock($html, $options, $tag->shouldCreateBlock());
+                                $this->addBlock($content, $options, $crblock);
+                                $this->addBlock($html, $options, $tag->shouldCreateBlock());
                                 $content = '';
                                 $this->split = false;
                             } else {
@@ -143,32 +146,32 @@ class Block
             foreach (\array_reverse($lists) as $l) {
                 $content .= '</li>'.$lnl.'</'.$l.'>';
             }
-            $blocks[] = $this->wrapBlock($content, $options, $crblock);
+            $this->addBlock($content, $options, $crblock);
         }
         $context->setCurrentBlock(null);
-        return $blocks;
     }
 
     /**
-     * @param array $block
+     * @param string $content
      * @param array $options
      * @param boolean $crblock
      * @return array
      */
-    private function wrapBlock($content, $options, $crblock)
+    private function addBlock($content, $options, $crblock)
     {
         $content = \trim($content);
-        if ((!$crblock) || ($content === '')) {
-            return $content;
+        if ($content === '') {
+            return;
         }
-        if (!$this->wrap) {
-            return $content;
+        if ($crblock && $this->wrap) {
+            if ($options['bHandler']) {
+                $content = Callback::call($options['bHandler'], [$content]);
+            } else {
+                $t = $options['bTags'];
+                $content = $t[0].$content.$t[1];
+            }
         }
-        if ($options['bHandler']) {
-            return Callback::call($options['bHandler'], [$content]);
-        }
-        $t = $options['bTags'];
-        return $t[0].$content.$t[1];
+        $this->blocks[] = $content;
     }
 
     /**
