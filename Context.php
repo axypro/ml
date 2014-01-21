@@ -22,6 +22,8 @@ namespace axy\ml;
  *                A current block (during render)
  * @property-read array $errors
  *                The list of errors of last parsing
+ * @property-read object $vars
+ *                Custom variables of parsing
  */
 class Context
 {
@@ -45,7 +47,29 @@ class Context
             'custom' => $custom,
             'errors' => [],
             'block' => null,
+            'vars' => null,
         ];
+    }
+
+    /**
+     * Initialization for start render
+     *
+     * @param array $errors [optional]
+     *        the errors list of tokenize
+     */
+    public function startRender(array $errors = [])
+    {
+        $this->magicFields['fields']['vars'] = (object)[];
+        $this->magicFields['fields']['errors'] = $errors;
+    }
+
+    /**
+     * End parsing
+     */
+    public function endRender()
+    {
+        $this->magicFields['fields']['vars'] = (object)[];
+        $this->magicFields['fields']['errors'] = [];
     }
 
     /**
@@ -56,16 +80,6 @@ class Context
     public function setCurrentBlock(\axy\ml\helpers\Block $block = null)
     {
         $this->magicFields['fields']['block'] = $block;
-    }
-
-    /**
-     * Initialization the errors list before rendering
-     *
-     * @param array $errors [optional]
-     */
-    public function initErrorsList(array $errors = [])
-    {
-        $this->magicFields['fields']['errors'] = $errors;
     }
 
     /**

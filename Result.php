@@ -105,7 +105,7 @@ class Result
     {
         $context = $this->context;
         $options = $this->context->options->getSource();
-        $context->initErrorsList($this->tokenizer->getErrors());
+        $context->startRender($this->tokenizer->getErrors());
         $tags = $this->tags;
         $errors = [];
         $blocks = [];
@@ -131,6 +131,7 @@ class Result
         $this->magicFields['fields']['errors'] = Error::sortListByLine($this->context->errors);
         $sep = $options['beauty'] ? "\n\n" : "\n";
         $html = \implode($sep, $blocks);
+        $this->context->endRender();
         return Normalizer::toResult($html, $options);
     }
 
@@ -141,7 +142,7 @@ class Result
     {
         $context = $this->context;
         $options = $this->context->options->getSource();
-        $context->initErrorsList($this->tokenizer->getErrors());
+        $context->startRender($this->tokenizer->getErrors());
         $tags = $this->tags;
         $blocks = [];
         foreach ($this->tokenizer->getTokens() as $token) {
@@ -172,6 +173,7 @@ class Result
                     break;
             }
         }
+        $context->endRender();
         return \implode("\n", $blocks);
     }
 
