@@ -6,6 +6,7 @@
 namespace axy\ml\tests\tags;
 
 use axy\ml\tags\Code;
+use axy\ml\tests\nstst\Factory;
 
 /**
  * @coversDefaultClass axy\ml\tags\Code
@@ -23,10 +24,11 @@ class CodeTest extends \PHPUnit_Framework_TestCase
      */
     public function testCode($content, $options, $html, $plain, $split, $create)
     {
-        $tag = new Code('code', $content, $options);
+        $context = Factory::createContext();
+        $tag = new Code('code', $content, $options, $context);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
-        $this->assertSame($split, $tag->shouldSplitBlock());
+        $this->assertSame($split, $context->block->split);
         $this->assertSame($create, $tag->shouldCreateBlock());
     }
 

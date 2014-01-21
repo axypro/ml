@@ -23,6 +23,13 @@ class Block
     public $content;
 
     /**
+     * The flag that the block should be splitted in the current place
+     *
+     * @var boolean
+     */
+    public $split;
+
+    /**
      * Construct
      *
      * @param \axy\ml\helpers\Token $container
@@ -45,7 +52,9 @@ class Block
      */
     public function getHTMLBlocks()
     {
+        $this->split = false;
         $context = $this->context;
+        $context->setCurrentBlock($this);
         $options = $context->options->getSource();
         $content = &$this->content;
         $content = '';
@@ -78,7 +87,7 @@ class Block
                                 $crblock = false;
                             }
                         } else {
-                            if ($tag->shouldSplitBlock()) {
+                            if ($this->split) {
                                 foreach (\array_reverse($lists) as $l) {
                                     $content .= '</li>'.$lnl.'</'.$l.'>'.$lnl;
                                 }
@@ -87,6 +96,7 @@ class Block
                                 $blocks[] = self::wrapBlock($content, $options, $crblock);
                                 $blocks[] = self::wrapBlock($html, $options, $tag->shouldCreateBlock());
                                 $content = '';
+                                $this->split = false;
                             } else {
                                 $content .= $html;
                             }
@@ -127,6 +137,7 @@ class Block
             }
             $blocks[] = self::wrapBlock($content, $options, $crblock);
         }
+        $context->setCurrentBlock(null);
         return $blocks;
     }
 

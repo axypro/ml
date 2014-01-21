@@ -18,6 +18,8 @@ namespace axy\ml;
  *                The list of available tags
  * @property-read mixed $custom
  *                The custom context
+ * @property-read \axy\ml\helpers\Block $block
+ *                A current block (during render)
  * @property-read array $errors
  *                The list of errors of last parsing
  */
@@ -42,7 +44,18 @@ class Context
             'tags' => $tags,
             'custom' => $custom,
             'errors' => [],
+            'block' => null,
         ];
+    }
+
+    /**
+     * Set a current block (during render)
+     *
+     * @param \axy\ml\helpers\Block $block
+     */
+    public function setCurrentBlock(\axy\ml\helpers\Block $block = null)
+    {
+        $this->magicFields['fields']['block'] = $block;
     }
 
     /**

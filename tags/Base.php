@@ -68,17 +68,6 @@ abstract class Base
     }
 
     /**
-     * Should the block be broken?
-     * (for inline tags)
-     *
-     * @return boolean
-     */
-    public function shouldSplitBlock()
-    {
-        return $this->splitBlock;
-    }
-
-    /**
      * Should the block be created?
      * (for standalone tags)
      *
@@ -198,13 +187,6 @@ abstract class Base
      * @var array
      */
     protected $errors = [];
-
-    /**
-     * Should the block be broken?
-     *
-     * @var string
-     */
-    protected $splitBlock = false;
 
     /**
      * Should the block be created?

@@ -22,6 +22,7 @@ class Code extends Base
         if ($this->block) {
             $tag = $this->options['tag_block'];
             $css = $this->options['css_block'];
+            $this->context->block->split = true;
         } else {
             $tag = $this->options['tag_inline'];
             $css = $this->options['css_inline'];
@@ -70,7 +71,6 @@ class Code extends Base
         }
         $this->code = $this->value;
         if ($this->block) {
-            $this->splitBlock = true;
             $this->createBlock = false;
         }
     }
