@@ -6,9 +6,7 @@
 namespace axy\ml\tags;
 
 /**
- * Tag [Opt]
- *
- * @example [Opt:nop]
+ * Tag [*]
  *
  * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
@@ -19,8 +17,9 @@ class Li extends Base
      */
     public function getHTML()
     {
-        $block = $this->context->block;
-        $vars = $this->context->vars;
+        $context = $this->context;
+        $block = $context->block;
+        $vars = $context->vars;
         if (empty($vars->lists)) {
             if (($block->content !== '') && (\ltrim($block->content) !== '')) {
                 return '';
@@ -29,14 +28,16 @@ class Li extends Base
             $block->endListeners[] = [$this, 'onEndBlock'];
             $levellist = null;
             $block->wrap = false;
+            $nl = $context->options['beauty'] ? "\n" : '';
+            $vars->listnl = $nl;
         } else {
             $levellist = $vars->levellist;
+            $nl = $vars->listnl;
         }
         if (!\preg_match('/^([*]+)(:?)(.*?)$/s', $this->value, $matches)) {
-            $this->lists = '';
+            $this->lists = null;
             return '';
         }
-        $nl = "\n";
         $level = \strlen($matches[1]);
         $delta = $level - $levellist;
         $result = '';
@@ -90,7 +91,7 @@ class Li extends Base
         $vars = $this->context->vars;
         if (!empty($vars->lists)) {
             $r = '';
-            $nl = "\n";
+            $nl = $vars->listnl;
             foreach (\array_reverse($vars->lists) as $l) {
                 $r .= '</li>'.$nl.'</'.$l.'>';
             }
