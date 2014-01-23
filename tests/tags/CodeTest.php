@@ -37,6 +37,14 @@ class CodeTest extends \PHPUnit_Framework_TestCase
      */
     public function providerCode()
     {
+        $handler = function ($params) {
+            $params->plain .= '!';
+            if ($params->block) {
+                $params->html = '<div rel="'.$params->lang.'" class="pre">'.$params->source.'</div>';
+            } else {
+                $params->html = '<span rel="'.$params->lang.'">'.$params->source.'</span>';
+            }
+        };
         return [
             [
                 ':php echo 5 > 4;',
@@ -63,41 +71,25 @@ class CodeTest extends \PHPUnit_Framework_TestCase
                 true,
             ],
             [
-                ":js  \n  x = 2;\n  y = 2;\n",
+                ":js  \n  x = 2;\n  y = 2;",
                 null,
-                "<pre rel=\"js\">\n  x = 2;\n  y = 2;\n\n</pre>",
-                "  x = 2;\n  y = 2;\n",
+                "<pre><code rel=\"js\">  x = 2;\n  y = 2;\n</code></pre>",
+                "  x = 2;\n  y = 2;",
                 true,
                 false,
             ],
             [
-                "  \n  x = 2;\n  y = 2;\n",
+                "  \n  x = 2;\n  y = 2;",
                 null,
-                "<pre>\n  x = 2;\n  y = 2;\n\n</pre>",
-                "  x = 2;\n  y = 2;\n",
-                true,
-                false,
-            ],
-            [
-                ':php   echo 2 + 2;',
-                ['tag_block' => 'div', 'tag_inline' => 'span', 'attr_lang' => 'lang'],
-                '<span lang="php">echo 2 + 2;</span>',
-                'echo 2 + 2;',
-                false,
-                true,
-            ],
-            [
-                ":php \necho 2 + 2;",
-                ['tag_block' => 'div', 'tag_inline' => 'span', 'attr_lang' => 'lang'],
-                "<div lang=\"php\">\necho 2 + 2;\n</div>",
-                'echo 2 + 2;',
+                "<pre><code>  x = 2;\n  y = 2;\n</code></pre>",
+                "  x = 2;\n  y = 2;",
                 true,
                 false,
             ],
             [
                 " \necho 2 + 2;",
                 ['lang' => 'php'],
-                "<pre rel=\"php\">\necho 2 + 2;\n</pre>",
+                "<pre><code rel=\"php\">echo 2 + 2;\n</code></pre>",
                 'echo 2 + 2;',
                 true,
                 false,
@@ -105,7 +97,7 @@ class CodeTest extends \PHPUnit_Framework_TestCase
             [
                 ":javascript \necho 2 + 2;",
                 ['lang' => 'php'],
-                "<pre rel=\"php\">\necho 2 + 2;\n</pre>",
+                "<pre><code rel=\"php\">echo 2 + 2;\n</code></pre>",
                 'echo 2 + 2;',
                 true,
                 false,
@@ -113,7 +105,7 @@ class CodeTest extends \PHPUnit_Framework_TestCase
             [
                 ":php \necho 2 + 2;",
                 ['css_block' => 'cblock', 'css_inline' => 'cinline'],
-                "<pre rel=\"php\" class=\"cblock\">\necho 2 + 2;\n</pre>",
+                "<pre class=\"cblock\"><code rel=\"php\">echo 2 + 2;\n</code></pre>",
                 'echo 2 + 2;',
                 true,
                 false,
@@ -136,9 +128,33 @@ class CodeTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 ':php echo 2 + 2;',
-                ['css_inline' => 'cinline', 'attr_lang' => 'class'],
+                ['css_inline' => 'cinline', 'css_block' => 'cblock', 'attr_lang' => 'class'],
                 '<code class="php cinline">echo 2 + 2;</code>',
                 'echo 2 + 2;',
+                false,
+                true,
+            ],
+            [
+                ":php\necho 2 + 2;",
+                ['css_inline' => 'cinline', 'css_block' => 'cblock', 'attr_lang' => 'class'],
+                "<pre class=\"cblock\"><code class=\"php\">echo 2 + 2;\n</code></pre>",
+                'echo 2 + 2;',
+                true,
+                false,
+            ],
+            [
+                ":php\necho 1;\necho 1 > 2;",
+                ['handler' => $handler],
+                "<div rel=\"php\" class=\"pre\">echo 1;\necho 1 &gt; 2;</div>",
+                "echo 1;\necho 1 > 2;!",
+                true,
+                false,
+            ],
+            [
+                ":php echo 1 > 2",
+                ['handler' => $handler],
+                '<span rel="php">echo 1 &gt; 2</span>',
+                "echo 1 > 2!",
                 false,
                 true,
             ],

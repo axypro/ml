@@ -5,6 +5,8 @@
 
 namespace axy\ml\tags;
 
+use axy\callbacks\Callback;
+
 /**
  * Tag [CODE]
  *
@@ -19,36 +21,36 @@ class Code extends Base
      */
     public function getHTML()
     {
-        if ($this->block) {
-            $tag = $this->options['tag_block'];
-            $css = $this->options['css_block'];
+        $params = $this->params;
+        if ($params->block) {
             $this->context->block->split = true;
-        } else {
-            $tag = $this->options['tag_inline'];
-            $css = $this->options['css_inline'];
         }
-        $res = [
-            '<'.$tag
-        ];
-        if (($this->lang !== null) && ($this->options['attr_lang'] !== null)) {
-            $attr = $this->options['attr_lang'];
-            if ($attr === 'class') {
-                if ($css !== null) {
-                    $css = $this->lang.' '.$css;
-                } else {
-                    $css = $this->lang;
-                }
-            } else {
-                $res[] .= ' '.$attr.'="'.$this->escape($this->lang).'"';
+        if ($params->html !== null) {
+            return $params->html;
+        }
+        $html = '';
+        $aeclass = false;
+        if (($params->attr !== null) && ($params->lang !== null)) {
+            $val = $this->escape($params->lang);
+            if (($params->attr === 'class') && ($params->css !== null) && (!$params->block)) {
+                $val .= ' '.$this->escape($params->css);
+                $aeclass = true;
             }
+            $alang = ' '.$params->attr.'="'.$val.'"';
+        } else {
+            $alang = '';
         }
-        if ($css !== null) {
-            $res[] .= ' class="'.$this->escape($css).'"';
+        if (($params->css !== null) && (!$aeclass)) {
+            $acss = ' class="'.$this->escape($params->css).'"';
+        } else {
+            $acss = '';
         }
-        $res[] = '>'.($this->block ? "\n" : '');
-        $res[] = $this->escape($this->code);
-        $res[] = ($this->block ? "\n" : '').'</'.$tag.'>';
-        return \implode('', $res);
+        if ($params->block) {
+            $html .= '<pre'.$acss.'><code'.$alang.'>'.$params->source."\n</code></pre>";
+        } else {
+            $html .= '<code'.$alang.$acss.'>'.$params->source.'</code>';
+        }
+        return $html;
     }
 
     /**
@@ -56,7 +58,7 @@ class Code extends Base
      */
     public function getPlain()
     {
-        return $this->code;
+        return $this->params->plain;
     }
 
     /**
@@ -64,14 +66,21 @@ class Code extends Base
      */
     protected function parse()
     {
+        $params = $this->params;
         if ($this->options['lang']) {
-            $this->lang = $this->options['lang'];
+            $params->lang = $this->options['lang'];
         } else {
-            $this->lang = $this->getArg(0, $this->options['default_lang']);
+            $params->lang = $this->getArg(0, $this->options['default_lang']);
         }
-        $this->code = $this->value;
-        if ($this->block) {
+        $params->source = $this->escape($this->value);
+        $params->plain = $this->value;
+        $params->css = $params->block ? $this->options['css_block'] : $this->options['css_inline'];
+        $this->params->attr = $this->options['attr_lang'];
+        if ($this->params->block) {
             $this->createBlock = false;
+        }
+        if ($this->options['handler']) {
+            Callback::call($this->options['handler'], [$this->params]);
         }
     }
 
@@ -80,7 +89,15 @@ class Code extends Base
      */
     protected function preparse()
     {
-        $this->block = (\strpos($this->value, "\n") !== false);
+        $this->params = (object)[
+            'block' => (\strpos($this->value, "\n") !== false),
+            'lang' => null,
+            'source' => null,
+            'plain' => null,
+            'css' => null,
+            'attr' => null,
+            'html' => null,
+        ];
         parent::preparse();
     }
 
@@ -88,8 +105,7 @@ class Code extends Base
      * {@inheritdoc}
      */
     protected $options = [
-        'tag_block' => 'pre',
-        'tag_inline' => 'code',
+        'handler' => null,
         'css_block' => null,
         'css_inline' => null,
         'attr_lang' => 'rel',
@@ -98,17 +114,7 @@ class Code extends Base
     ];
 
     /**
-     * @var string
+     * @var object
      */
-    protected $lang;
-
-    /**
-     * @var string
-     */
-    protected $code;
-
-    /**
-     * @var boolean
-     */
-    protected $block;
+    private $params;
 }
