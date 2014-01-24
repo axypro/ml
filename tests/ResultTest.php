@@ -283,10 +283,16 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $tags = [
             'http' => [
                 'options' => [
+                    'use_url' => false,
                     'css' => 'cc',
                 ],
             ],
-            'ftp' => 'Scheme',
+            'ftp' => [
+                'classname' => 'Scheme',
+                'options' => [
+                    'use_url' => false,
+                ],
+            ],
             'al' => '=http',
             'al2' => [
                 'classname' => '=http',

@@ -21,16 +21,16 @@ class Scheme extends Base
      */
     public function getHTML()
     {
-        if ($this->url === '') {
-            return '';
+        if ($this->urltag) {
+            return $this->urltag->getHTML();
+        } else {
+            $url = $this->escape($this->url);
+            $css = $this->options['css'];
+            if ($css !== null) {
+                $css = ' class="'.$this->escape($css).'"';
+            }
+            return '<a href="'.$url.'"'.$css.'>'.$url.'</a>';
         }
-        $url = $this->name.$this->url;
-        $content = $this->content ?: $url;
-        $css = $this->options['css'];
-        if ($css !== null) {
-            $css = ' class="'.$css.'"';
-        }
-        return '<a href="'.$this->escape($url).'"'.$css.'>'.$this->escape($content).'</a>';
     }
 
     /**
@@ -38,11 +38,11 @@ class Scheme extends Base
      */
     public function getPlain()
     {
-        if ($this->url === '') {
-            return '';
+        if ($this->urltag) {
+            return $this->urltag->getPlain();
+        } else {
+            return $this->url;
         }
-        $url = $this->name.$this->url;
-        return $url.($this->content ? ' '.$this->content : '');
     }
 
     /**
@@ -50,10 +50,11 @@ class Scheme extends Base
      */
     public function parse()
     {
-        $this->url = $this->getNextComponent();
-        $this->content = $this->getLastComponent();
-        if ($this->url === '') {
-            $this->errors[] = 'empty url';
+        $this->url = $this->name.$this->getNextComponent();
+        $content = $this->getLastComponent();
+        if ($this->options['use_url']) {
+            $content = ':plain "'.$this->url.'" '.$content;
+            $this->urltag = $this->context->tags->create('url', $content, $this->context);
         }
     }
 
@@ -66,6 +67,7 @@ class Scheme extends Base
      * {@inheritdoc}
      */
     protected $options = [
+        'use_url' => true,
         'css' => null,
     ];
 
@@ -75,7 +77,7 @@ class Scheme extends Base
     private $url;
 
     /**
-     * @var string
+     * @var \axy\ml\tags\Url
      */
-    private $content;
+    private $urltag;
 }

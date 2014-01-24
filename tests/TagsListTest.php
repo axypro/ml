@@ -6,6 +6,7 @@
 namespace axy\ml\tests;
 
 use axy\ml\TagsList;
+use axy\ml\tests\nstst\Factory;
 
 /**
  * @coversDefaultClass axy\ml\TagsList
@@ -55,8 +56,8 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParams($name, $expected)
     {
-        $list = new TagsList($this->custom);
-        $this->assertEquals($expected, $list->getParams($name));
+        $context = Factory::createContext(null, $this->custom);
+        $this->assertEquals($expected, $context->tags->getParams($name));
     }
 
     /**
@@ -199,8 +200,8 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreate($name, $content, $html)
     {
-        $list = new TagsList($this->custom);
-        $tag = $list->create($name, $content);
+        $context = Factory::createContext(null, $this->custom);
+        $tag = $context->tags->create($name, $content, $context);
         if ($html !== null) {
             $this->assertInstanceOf('axy\ml\tags\Base', $tag);
             $this->assertSame($html, $tag->getHTML());

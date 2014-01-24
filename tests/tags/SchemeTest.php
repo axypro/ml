@@ -6,6 +6,7 @@
 namespace axy\ml\tests\tags;
 
 use axy\ml\tags\Scheme;
+use axy\ml\tests\nstst\Factory;
 
 /**
  * @coversDefaultClass axy\ml\tags\Scheme
@@ -13,56 +14,35 @@ use axy\ml\tags\Scheme;
 class SchemeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider providerHttp
+     * @dataProvider providerScheme
      * @param string $content
      * @param string $html
      * @param string $plain
      */
-    public function testHttp($content, $html, $plain)
+    public function testScheme($name, $content, $html, $plain)
     {
-        $tag = new Scheme('http', $content);
-        $this->assertSame($html, $tag->getHTML());
-        $this->assertSame($plain, $tag->getPlain());
-    }
-
-    /**
-     * @return array
-     */
-    public function providerHttp()
-    {
-        return [
-            [
-                '://example.com/?x=1',
-                '<a href="http://example.com/?x=1">http://example.com/?x=1</a>',
-                'http://example.com/?x=1',
+        $handler = function ($params) {
+            if ($params->url === 'http://e') {
+                $params->url = 'e';
+            }
+        };
+        $tags = [
+            'url' => [
+                'options' => [
+                    'css' => 'urlclass',
+                    'handler' => $handler,
+                ],
             ],
-            [
-                '://example.com Link <caption>',
-                '<a href="http://example.com">Link &lt;caption&gt;</a>',
-                'http://example.com Link <caption>',
-            ],
-            [
-                '"://example.com Link" <caption>',
-                '<a href="http://example.com Link">&lt;caption&gt;</a>',
-                'http://example.com Link <caption>',
-            ],
-            [
-                '',
-                '',
-                '',
+            'ftp' => [
+                'classname' => 'Scheme',
+                'options' => [
+                    'use_url' => false,
+                    'css' => 'ftpclass',
+                ],
             ],
         ];
-    }
-
-    /**
-     * @dataProvider providerHttps
-     * @param string $content
-     * @param string $html
-     * @param string $plain
-     */
-    public function testHttps($content, $html, $plain)
-    {
-        $tag = new Scheme('https', $content);
+        $context = Factory::createContext(null, $tags);
+        $tag = $context->tags->create($name, $content, $context);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
     }
@@ -70,28 +50,44 @@ class SchemeTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerHttps()
+    public function providerScheme()
     {
         return [
             [
-                '://example.com/?x=1',
-                '<a href="https://example.com/?x=1">https://example.com/?x=1</a>',
-                'https://example.com/?x=1',
+                'http',
+                '://yandex.ru/',
+                '<a href="http://yandex.ru/" class="urlclass">http://yandex.ru/</a>',
+                'http://yandex.ru/',
             ],
             [
-                '://example.com Link <caption>',
-                '<a href="https://example.com">Link &lt;caption&gt;</a>',
-                'https://example.com Link <caption>',
+                'https',
+                '://yandex.ru',
+                '<a href="https://yandex.ru" class="urlclass">https://yandex.ru</a>',
+                'https://yandex.ru',
             ],
             [
-                '"://example.com Link" <caption>',
-                '<a href="https://example.com Link">&lt;caption&gt;</a>',
-                'https://example.com Link <caption>',
+                'http',
+                '://yandex.ru this is <alt>',
+                '<a href="http://yandex.ru" class="urlclass">this is &lt;alt&gt;</a>',
+                'http://yandex.ru this is <alt>',
             ],
             [
-                '',
-                '',
-                '',
+                'http',
+                '://e this is <alt>',
+                '<a href="e" class="urlclass">this is &lt;alt&gt;</a>',
+                'http://e this is <alt>',
+            ],
+            [
+                'ftp',
+                '://server.loc this is alt',
+                '<a href="ftp://server.loc" class="ftpclass">ftp://server.loc</a>',
+                'ftp://server.loc',
+            ],
+            [
+                'ftp',
+                '"://server.loc this is alt"',
+                '<a href="ftp://server.loc this is alt" class="ftpclass">ftp://server.loc this is alt</a>',
+                'ftp://server.loc this is alt',
             ],
         ];
     }
