@@ -211,6 +211,27 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test lists and CSS
+     */
+    public function testListsCSS()
+    {
+        $axyml = $this->getFile('lists-css.axyml');
+        $html = $this->getFile('lists-css.html');
+        $tags = [
+            '*' => [
+                'options' => [
+                    'css' => 'cl',
+                    'css_li' => 'cli',
+                ],
+            ],
+        ];
+        $parser = new Parser(null, $tags);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+        $this->assertEmpty($result->errors);
+    }
+
+    /**
      * Test lists
      */
     public function testLists()

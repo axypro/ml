@@ -5,6 +5,8 @@
  * @package axy\ml
  * @author Oleg Grigoriev <go.vasac@gmail.com>
  * @license https://raw.github.com/axypro/ml/master/LICENSE MIT
+ * @link https://github.com/axypro/ml repository
+ * @link https://github.com/axypro/ml/wiki documentation
  * @uses PHP5.4+
  */
 

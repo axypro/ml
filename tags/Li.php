@@ -34,20 +34,23 @@ class Li extends Base
             $levellist = $vars->levellist;
             $nl = $vars->listnl;
         }
-        if (!\preg_match('/^([*]+)(:?)(.*?)$/s', $this->value, $matches)) {
-            $this->lists = null;
-            return '';
-        }
-        $level = \strlen($matches[1]);
-        $delta = $level - $levellist;
+        $delta = $this->level - $levellist;
         $result = '';
+        $csslist = ($this->options['css'] === null) ? '' : ' class="'.$this->escape($this->options['css']).'"';
+        if ($this->value !== '') {
+            $cssli = ' class="'.$this->escape($this->value).'"';
+        } elseif ($this->options['css_li'] !== null) {
+            $cssli = ' class="'.$this->escape($this->options['css_li']).'"';
+        } else {
+            $cssli = null;
+        }
         if ($delta === 0) {
             $block->content = \rtrim($block->content);
             $block->ltrim = true;
-            $result = '</li>'.$nl.'<li>';
+            $result = '</li>'.$nl.'<li'.$cssli.'>';
         } else {
-            $attr = \strtolower($matches[3]);
-            $vars->levellist = $level;
+            $type = $this->getArg();
+            $vars->levellist = $this->level;
             $result = '';
             $block->ltrim = true;
             if ($delta < 0) {
@@ -55,22 +58,22 @@ class Li extends Base
                 for ($i = $delta; $i <= $delta + 1; $i++) {
                     $result .= '</li>'.$nl.'</'.\array_pop($vars->lists).'>';
                 }
-                $result .= '</li>'.$nl.'<li>';
+                $result .= '</li>'.$nl.'<li'.$cssli.'>';
             } else {
                 for ($i = 0; $i < $delta - 1; $i++) {
                     $vars->lists[] = 'ul';
-                    $result .= '<ul>'.$nl.'<li>';
+                    $result .= '<ul'.$csslist.'>'.$nl.'<li'.$cssli.'>';
                 }
-                if ((empty($attr)) || ($attr === 'ul')) {
+                if ((empty($type)) || ($type === 'ul')) {
                     $vars->lists[] = 'ul';
-                    $result .= '<ul>'.$nl.'<li>';
+                    $result .= '<ul'.$csslist.'>'.$nl.'<li'.$cssli.'>';
                 } else {
                     $vars->lists[] = 'ol';
-                    $start = (int)$attr;
+                    $start = (int)$type;
                     if ($start > 1) {
-                        $result .= '<ol start="'.$start.'">'.$nl.'<li>';
+                        $result .= '<ol start="'.$start.'"'.$csslist.'>'.$nl.'<li'.$cssli.'>';
                     } else {
-                        $result .= '<ol>'.$nl.'<li>';
+                        $result .= '<ol'.$csslist.'>'.$nl.'<li'.$cssli.'>';
                     }
                 }
             }
@@ -103,13 +106,25 @@ class Li extends Base
     /**
      * {@inheritdoc}
      */
-    protected function parse()
+    protected function preparse()
     {
-        return '';
+        if (\preg_match('/^([*]+)(.*?)$/s', $this->value, $matches)) {
+            $this->level = \strlen($matches[1]);
+            $this->value = $matches[2];
+        }
+        parent::preparse();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected $args = false;
+    protected $options = [
+        'css' => null,
+        'css_li' => null,
+    ];
+
+    /**
+     * @var int
+     */
+    protected $level = 0;
 }

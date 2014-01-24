@@ -1,0 +1,18 @@
+# Test CSS for lists
+
+[*]One
+[*]Two
+[*]Three
+
+[*:ol]One
+[*]Two
+[*]Three
+
+[* custom]One
+[*]Two
+[* custom]Three
+
+[*:5 custom]One
+[*]Two
+[* custom]Three
+
