@@ -23,7 +23,9 @@ class Code extends Base
     {
         $params = $this->params;
         if ($params->block) {
-            $this->context->block->split = true;
+            $block = $this->context->block;
+            $block->split = true;
+            $block->create = false;
         }
         if ($params->html !== null) {
             return $params->html;
@@ -76,9 +78,6 @@ class Code extends Base
         $params->plain = $this->value;
         $params->css = $params->block ? $this->options['css_block'] : $this->options['css_inline'];
         $this->params->attr = $this->options['attr_lang'];
-        if ($this->params->block) {
-            $this->createBlock = false;
-        }
         if ($this->options['handler']) {
             Callback::call($this->options['handler'], [$this->params]);
         }

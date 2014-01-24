@@ -68,17 +68,6 @@ abstract class Base
     }
 
     /**
-     * Should the block be created?
-     * (for standalone tags)
-     *
-     * @return boolean
-     */
-    public function shouldCreateBlock()
-    {
-        return $this->createBlock;
-    }
-
-    /**
      * Parse (called from the constructor)
      */
     protected function parse()
@@ -187,13 +176,6 @@ abstract class Base
      * @var array
      */
     protected $errors = [];
-
-    /**
-     * Should the block be created?
-     *
-     * @var string
-     */
-    protected $createBlock = true;
 
     /**
      * The text should be escaped

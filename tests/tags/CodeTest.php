@@ -29,7 +29,7 @@ class CodeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
         $this->assertSame($split, $context->block->split);
-        $this->assertSame($create, $tag->shouldCreateBlock());
+        $this->assertSame($create, $context->block->create);
     }
 
     /**

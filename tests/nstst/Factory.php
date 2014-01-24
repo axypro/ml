@@ -36,6 +36,7 @@ class Factory
             $block = new Block($container, $context);
             $block->content = '';
             $block->split = false;
+            $block->create = true;
             $context->setCurrentBlock($block);
         }
         return $context;

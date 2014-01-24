@@ -30,6 +30,13 @@ class Block
     public $split;
 
     /**
+     * The flag that the current single tag must be wrapped to paragraph
+     *
+     * @var boolean
+     */
+    public $create;
+
+    /**
      * The flag that the block should be wrapped
      *
      * @var boolean
@@ -50,6 +57,11 @@ class Block
      */
     public $endListeners;
 
+    /**
+     * The flag that the current text must be trimmed
+     *
+     * @var boolean
+     */
     public $ltrim;
 
     /**
@@ -72,6 +84,7 @@ class Block
     public function render()
     {
         $this->split = false;
+        $this->create = true;
         $this->wrap = true;
         $this->endListeners = [];
         $this->ltrim = false;
@@ -82,8 +95,10 @@ class Block
         $content = &$this->content;
         $content = '';
         $tags = $context->tags;
+        $first = null;
+        $lastcreate = true;
         foreach ($this->container->subs as $token) {
-            $crblock = true;
+            $first = ($first === null) ? true : false;
             switch ($token->type) {
                 case Token::TYPE_TEXT:
                     $text = Highlight::text($token->content, $options);
@@ -105,16 +120,16 @@ class Block
                             ];
                             $context->addError(new Error(Error::TAG_INVALID, $token->line, $data));
                         }
+                        $lastcreate = $first ? $this->create : true;
                         if ($content === '') {
                             $content = $html;
-                            if (!$tag->shouldCreateBlock()) {
-                                $crblock = false;
-                            }
                         } else {
                             if ($this->split) {
-                                $this->addBlock($options, $crblock);
+                                $this->addBlock($options, $lastcreate);
                                 $content = $html;
-                                $this->addBlock($options, $tag->shouldCreateBlock());
+                                $this->addBlock($options, $this->create);
+                                $lastcreate = true;
+                                $first = null;
                                 $content = '';
                                 $this->split = false;
                                 $this->wrap = true;
@@ -131,7 +146,7 @@ class Block
                     break;
             }
         }
-        $this->addBlock($options, $crblock);
+        $this->addBlock($options, $lastcreate);
         $context->setCurrentBlock(null);
     }
 

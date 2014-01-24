@@ -5,7 +5,10 @@ Start.> [php echo 2 + 2;]. End.
 Start. [php
     echo 2 + 2;
     echo 2 + 3;
-]. End.
+]. Middle. [php
+    echo 2 + 2;
+    echo 2 + 3;
+]. End.    
 
 [php echo 2 + 2;]
 

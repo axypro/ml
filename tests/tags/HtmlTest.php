@@ -6,6 +6,7 @@
 namespace axy\ml\tests\tags;
 
 use axy\ml\tags\Html;
+use axy\ml\tests\nstst\Factory;
 
 /**
  * @coversDefaultClass axy\ml\tags\Html
@@ -19,7 +20,8 @@ class HtmlTest extends \PHPUnit_Framework_TestCase
      */
     public function testHtml($content, $html, $plain)
     {
-        $tag = new Html('html', $content);
+        $context = Factory::createContext();
+        $tag = new Html('code', $content, [], $context);
         $this->assertSame($html, $tag->getHTML());
         $this->assertSame($plain, $tag->getPlain());
     }

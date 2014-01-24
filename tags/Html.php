@@ -19,6 +19,7 @@ class Html extends Base
      */
     public function getHTML()
     {
+        $this->context->block->create = false;
         return \trim($this->value);
     }
 
@@ -34,9 +35,4 @@ class Html extends Base
      * {@inheritdoc}
      */
     protected $args = false;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected $createBlock = false;
 }
