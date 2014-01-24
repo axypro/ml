@@ -15,7 +15,7 @@
 [**] One [B]bold
 [/B]!
 [**] Two
-[**:1] Three
+[**:ol] Three
 [***:3] Four
 [***] Five
 [*] Six
@@ -25,8 +25,8 @@
 Qwe
 [*] Rty
 
-[*] One
-[*] Two [code
+[*:ul] One
+[*:ol] Two [code
 echo 2 + 2]
 [*] Three
 [*] Four
