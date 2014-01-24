@@ -17,13 +17,12 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "axy/magic": "~0.1.2",
-        "axy/callbacks": "~0.0.1"
+        "axy/magic": "~0.1.4",
+        "axy/callbacks": "~0.0.2"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "axy\\ml\\": ""
         }
-    },
-    "target-dir": "axy/ml"
+    }
 }
