@@ -10,7 +10,7 @@ namespace axy\ml\tags;
  *
  * @example [html <script>alert(1);</script>]
  *
- * @author Oleg Grigoriev
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Html extends Base
 {

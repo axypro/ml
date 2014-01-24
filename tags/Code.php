@@ -12,7 +12,7 @@ use axy\callbacks\Callback;
  *
  * @example [code:php echo 2 + 2;]
  *
- * @author Oleg Grigoriev
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Code extends Base
 {

@@ -12,7 +12,7 @@ namespace axy\ml\tags;
  * @example [http://example.loc/ Example link]
  * @example [http"://link with space" Caption]
  *
- * @author Oleg Grigoriev
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class HtmlTag extends Base
 {

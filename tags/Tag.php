@@ -10,7 +10,7 @@ namespace axy\ml\tags;
  *
  * @example [tag:div style="color:red"]
  *
- * @author Oleg Grigoriev
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Tag extends Base
 {
