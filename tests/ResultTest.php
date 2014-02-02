@@ -347,6 +347,18 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Bug \n
+     */
+    public function testTable()
+    {
+        $axyml = $this->getFile('table.axyml');
+        $html = $this->getFile('table.html');
+        $parser = new Parser();
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
      * Test [OPT]
      */
     public function testOpt()

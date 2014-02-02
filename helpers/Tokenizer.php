@@ -222,6 +222,7 @@ class Tokenizer
                     $this->block->append($this->text);
                     if ($this->endtag) {
                         $text = "\n".$text;
+                        $this->endtag = false;
                     }
                     $this->text->content = $text;
                 }
@@ -233,6 +234,7 @@ class Tokenizer
                     $text->content = "\n";
                     $this->block->append($text);
                 }
+                $this->endtag = false;
             }
             if (!$etag) {
                 /* A tag was not found - end of line */
