@@ -18,10 +18,27 @@ class Tokenizer
      * Constructor
      *
      * @param string $content
+     * @param array $options [optional]
      */
-    public function __construct($content)
+    public function __construct($content, $options = null)
     {
         $this->content = $content;
+        if ($options) {
+            $brackets = $options['brackets'];
+            $this->openBracket = $brackets[0];
+            $this->closeBracket = $brackets[1];
+        } else {
+            $this->openBracket = '[';
+            $this->closeBracket = ']';
+        }
+        $len = \strlen($this->openBracket);
+        if ($len > 1) {
+            $this->openLength = $len;
+            $this->openPattern = '/^(('.\preg_quote($this->openBracket, '/').')*)(.*)$/s';
+        } else {
+            $this->openLength = null;
+            $this->openPattern = '/^('.\preg_quote($this->openBracket, '/').'*)(.*)$/s';
+        }
     }
 
     /**
@@ -182,6 +199,7 @@ class Tokenizer
      */
     private function loadBlockLine($line)
     {
+        $open = $this->openBracket;
         $firstline = (!$this->block); // this is a first line of the block
         if ($firstline) {
             /* create new block token */
@@ -193,7 +211,7 @@ class Tokenizer
         }
         $firstpart = true; // this is a first part of this line
         do {
-            $parts = \explode('[', $line, 2);
+            $parts = \explode($open, $line, 2);
             $text = ($firstline && $firstpart) ? \ltrim($parts[0]) : $parts[0];
             $etag = isset($parts[1]); // on this line was found a tag
             if ($text !== '') {
@@ -240,14 +258,23 @@ class Tokenizer
     private function loadTag(&$line)
     {
         /* Determine the size of the opening bracket */
-        if (\preg_match('/^(\[*)(.*)$/s', $line, $matches)) {
-            $len = \strlen($matches[1]) + 1;
-            $line = $matches[2];
+        if (\preg_match($this->openPattern, $line, $matches)) {
+            if ($this->openLength) {
+                if ($matches[1] !== '') {
+                    $len = (int)(\strlen($matches[1]) / $this->openLength) + 1;
+                    $line = $matches[3];
+                } else {
+                    $len = 1;
+                }
+            } else {
+                $len = \strlen($matches[1]) + 1;
+                $line = $matches[2];
+            }
         } else {
             $len = 1;
             $line = '';
         }
-        $close = \str_repeat(']', $len);
+        $close = \str_repeat($this->closeBracket, $len);
         $parts = \explode($close, $line, 2);
         if (isset($parts[1])) {
             /* The tag ends on the current line */
@@ -400,4 +427,32 @@ class Tokenizer
      * @var float
      */
     private $duration;
+
+    /**
+     * The open bracket ("[" by default)
+     *
+     * @var boolean
+     */
+    private $openBracket;
+
+    /**
+     * The close bracket ("]" by default)
+     *
+     * @var boolean
+     */
+    private $closeBracket;
+
+    /**
+     * The length of the open bracket ("[" - 1)
+     *
+     * @var int
+     */
+    private $openLength;
+
+    /**
+     * The PCRE-pattern for open brackets
+     *
+     * @var string
+     */
+    private $openPattern;
 }

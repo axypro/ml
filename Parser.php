@@ -45,7 +45,7 @@ class Parser
     public function parse($content, $cut = null)
     {
         $content = Normalizer::toParse($content, $this->options);
-        $tokenizer = new Tokenizer($content);
+        $tokenizer = new Tokenizer($content, $this->options);
         $tokenizer->tokenize($cut);
         return new Result($tokenizer, $this->options, $this->tags, $this->custom);
     }

@@ -7,6 +7,9 @@
  */
 
 return [
+    /* The tag brackets */
+    'brackets' => ['[', ']'],
+
     /* New-line symbol(s) in result */
     'nl' => "\n",
 
