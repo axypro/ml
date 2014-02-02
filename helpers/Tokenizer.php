@@ -37,9 +37,11 @@ class Tokenizer
         $this->cut = $cut;
         $this->meta = new \axy\ml\Meta();
         $this->process = true;
+        $mt = \microtime(true);
         while ($this->process) {
             $this->loadNextLine();
         }
+        $this->duration = \microtime(true) - $mt;
     }
 
     /**
@@ -80,6 +82,16 @@ class Tokenizer
     public function isCutted()
     {
         return $this->cutted;
+    }
+
+    /**
+     * Get a duration of the parsing
+     *
+     * @return float
+     */
+    public function getDuration()
+    {
+        return $this->duration;
     }
 
     /**
@@ -381,4 +393,11 @@ class Tokenizer
      * @var boolean
      */
     private $endtag;
+
+    /**
+     * The parsing duration
+     *
+     * @var float
+     */
+    private $duration;
 }

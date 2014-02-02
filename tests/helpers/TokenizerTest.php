@@ -59,6 +59,17 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getDuration
+     */
+    public function testGetDuration()
+    {
+        $tokenizer = new Tokenizer('content');
+        $this->assertNull($tokenizer->getDuration());
+        $tokenizer->tokenize();
+        $this->assertInternalType('float', $tokenizer->getDuration());
+    }
+
+    /**
      * @param string $name
      * @return string
      */
