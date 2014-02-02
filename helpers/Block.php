@@ -65,6 +65,13 @@ class Block
     public $ltrim;
 
     /**
+     * Options (changes by [OPT])
+     *
+     * @var array
+     */
+    public $opts = [];
+
+    /**
      * Construct
      *
      * @param \axy\ml\helpers\Token $container
@@ -86,6 +93,7 @@ class Block
         $this->split = false;
         $this->create = true;
         $this->wrap = true;
+        $this->opts = [];
         $this->endListeners = [];
         $this->ltrim = false;
         $this->blocks = [];
@@ -133,6 +141,7 @@ class Block
                                 $content = '';
                                 $this->split = false;
                                 $this->wrap = true;
+                                $this->opts = [];
                             } else {
                                 $content .= $html;
                             }
@@ -169,8 +178,8 @@ class Block
         }
         if ($crblock && $this->wrap) {
             if ($options['bHandler']) {
-                $content = Callback::call($options['bHandler'], [$content]);
-            } else {
+                $content = Callback::call($options['bHandler'], [$content, $this->opts]);
+            } elseif (empty($this->opts['nop'])) {
                 $t = $options['bTags'];
                 $content = $t[0].$content.$t[1];
             }

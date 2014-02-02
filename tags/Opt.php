@@ -23,14 +23,10 @@ class Opt extends Base
         if (empty($args)) {
             $this->errors[] = 'empty arguments list';
         } else {
+            $block = $this->context->block;
             foreach ($args as $arg) {
-                switch (\strtolower($arg)) {
-                    case 'nop':
-                        $this->context->block->wrap = false;
-                        break;
-                    default:
-                        $this->errors[] = 'unknown "'.$arg.'"';
-                }
+                $arg = \strtolower($arg);
+                $block->opts[$arg] = true;
             }
         }
         return '';

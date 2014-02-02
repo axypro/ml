@@ -368,8 +368,27 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
-        $this->assertCount(1, $result->errors);
-        $this->assertSame('Invalid [opt]: unknown "unk" on line 7', (string)$result->errors[0]);
+    }
+
+    /**
+     * Test [OPT] and bHandler
+     */
+    public function testOptHandler()
+    {
+        $bHandler = function ($content, $options) {
+            if (!empty($options['unk'])) {
+                return '<p class="unk">U: '.$content.'</p>';
+            }
+            return $content;
+        };
+        $options = [
+            'bHandler' => $bHandler,
+        ];
+        $axyml = $this->getFile('opt.axyml');
+        $html = $this->getFile('opt-handler.html');
+        $parser = new Parser($options);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
     }
 
     /**
