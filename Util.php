@@ -30,7 +30,17 @@ class Util
      */
     public static function extractHead(array $options)
     {
-        $content = $options['content'];
+        if (isset($options['content'])) {
+            $content = $options['content'];
+            $fp = null;
+        } elseif (isset($options['filename'])) {
+            $fp = @\fopen($options['filename'], 'rt');
+            if (!$fp) {
+                throw new \RuntimeException('File not found');
+            }
+        } else {
+            throw new \InvalidArgumentException('extractHead require content or filename');
+        }
         $result = (object)[
             'title' => null,
             'meta' => null,
@@ -42,12 +52,17 @@ class Util
         }
         $process = true;
         while ($process) {
-            $parts = \explode("\n", $content, 2);
-            $line = \rtrim($parts[0]);
-            if (isset($parts[1])) {
-                $content = $parts[1];
+            if ($fp) {
+                $line = \rtrim(\fgets($fp));
+                $process = !\feof($fp);
             } else {
-                $process = false;
+                $parts = \explode("\n", $content, 2);
+                $line = \rtrim($parts[0]);
+                if (isset($parts[1])) {
+                    $content = $parts[1];
+                } else {
+                    $process = false;
+                }
             }
             if ($line === '') {
                 continue;
@@ -78,6 +93,9 @@ class Util
                     }
             }
         }
+        if ($fp) {
+            \fclose($fp);
+        }
         if ($meta !== null) {
             $result->meta = new Meta($meta);
         }
@@ -87,7 +105,10 @@ class Util
                 if (!($parser instanceof Parser)) {
                     $parser = new Parser();
                 }
-                $presult = $parser->parse($options['content']);
+                if ($fp) {
+                    $content = \file_get_contents($options['filename']);
+                }
+                $presult = $parser->parse($content);
                 $result->title = $presult->title;
                 $result->meta = $presult->meta;
             }
