@@ -17,12 +17,21 @@ use axy\ml\Error;
  * @author Oleg Grigoriev <go.vasac@gmail.com>
  *
  * @property-read string $html
+ *                a html representation
  * @property-read string $plain
+ *                a plain text representaion
  * @property-read string $title
+ *                a title of the document
  * @property-read \axy\ml\Meta $meta
+ *                a meta data
  * @property-read boolead $isCutted
+ *                a flag that the document was cutted
  * @property-read array $tokens
+ *                a list of tokens
  * @property-read array $errors
+ *                a list of errors
+ * @property-read \axy\ml\Profiler $profiler
+ *                a profiler
  */
 class Result
 {
@@ -45,12 +54,15 @@ class Result
         $this->tokenizer = $tokenizer;
         $this->tags = $tags;
         $this->context = new Context($this, $options, $tags, $custom);
+        $profiler = new Profiler();
+        $profiler->tokenize = $tokenizer->getDuration();
         $this->magicFields = [
             'fields' => [
                 'meta' => $tokenizer->getMeta(),
                 'isCutted' => $tokenizer->isCutted(),
                 'tokens' => $tokenizer->getTokens(),
                 'errors' => $tokenizer->getErrors(),
+                'profiler' => $profiler,
             ],
             'loaders' => [
                 'title' => '::loadTitle',
@@ -103,6 +115,7 @@ class Result
      */
     private function createHtml()
     {
+        $mt = \microtime(true);
         $context = $this->context;
         $options = $this->context->options->getSource();
         $context->startRender($this->tokenizer->getErrors());
@@ -131,8 +144,11 @@ class Result
         $this->magicFields['fields']['errors'] = Error::sortListByLine($this->context->errors);
         $sep = $options['beauty'] ? "\n\n" : "\n";
         $html = \implode($sep, $blocks);
+        $html = Normalizer::toResult($html, $options);
         $this->context->endRender();
-        return Normalizer::toResult($html, $options);
+        $mt = \microtime(true) - $mt;
+        $this->magicFields['fields']['profiler']->html = $mt;
+        return $html;
     }
 
     /**
@@ -140,6 +156,7 @@ class Result
      */
     private function createPlain()
     {
+        $mt = \microtime(true);
         $context = $this->context;
         $options = $this->context->options->getSource();
         $context->startRender($this->tokenizer->getErrors());
@@ -174,7 +191,10 @@ class Result
             }
         }
         $context->endRender();
-        return \implode("\n", $blocks);
+        $result = \implode("\n", $blocks);
+        $mt = \microtime(true) - $mt;
+        $this->magicFields['fields']['profiler']->plain = $mt;
+        return $result;
     }
 
     /**
