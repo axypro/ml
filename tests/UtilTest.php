@@ -17,8 +17,12 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtractHeadTitleOnly()
     {
-        $content = \file_get_contents(__DIR__.'/nstst/util/head.ml');
-        $result = Util::extractHead($content, false, false);
+        $options = [
+            'content' => \file_get_contents(__DIR__.'/nstst/util/head.ml'),
+            'meta' => false,
+            'parser' => false,
+        ];
+        $result = Util::extractHead($options);
         $this->assertSame('This is title', $result->title);
         $this->assertNull($result->meta);
     }
@@ -28,8 +32,11 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtractHeadMeta()
     {
-        $content = \file_get_contents(__DIR__.'/nstst/util/head.ml');
-        $result = Util::extractHead($content, true, false);
+        $options = [
+            'content' => \file_get_contents(__DIR__.'/nstst/util/head.ml'),
+            'parser' => false,
+        ];
+        $result = Util::extractHead($options);
         $this->assertSame('This is title', $result->title);
         $expected = [
             'one' => '1',
@@ -43,11 +50,17 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtractHeadParser()
     {
-        $content = \file_get_contents(__DIR__.'/nstst/util/head-parser.ml');
-        $result1 = Util::extractHead($content, true, false);
+        $options1 = [
+            'content' => \file_get_contents(__DIR__.'/nstst/util/head-parser.ml'),
+            'parser' => false,
+        ];
+        $result1 = Util::extractHead($options1);
         $this->assertNull($result1->title);
         $this->assertEmpty($result1->meta->getSource());
-        $result2 = Util::extractHead($content, true, true);
+        $options2 = [
+            'content' => \file_get_contents(__DIR__.'/nstst/util/head-parser.ml'),
+        ];
+        $result2 = Util::extractHead($options2);
         $this->assertSame('This is title', $result2->title);
         $expected = [
             'one' => '1',

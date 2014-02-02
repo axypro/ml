@@ -18,34 +18,34 @@ class Util
     /**
      * Extract head information without tokenize (for fast processing)
      *
-     * @param string $content
-     *        a file name (must exists)
-     * @param boolean $meta [optional]
-     *        extract a meta data
-     * @param boolean|\axy\ml\Parser $parser [optional]
-     *        use the system parser if a title is not found
-     * @param boolean $normalized [optional]
-     *        flag that the content is normalized ("\n" and etc)
+     * Options:
+     * "content" - a content of the document
+     * "filename" - a file name of the document
+     * "meta" - extract meta data (true by default)
+     * "parser" - use the system parser if a title is not found (true by default)
+     *
+     * @param array $options
      * @return object
      *         (title, meta)
      */
-    public static function extractHead($content, $meta = true, $parser = true, $normalized = false)
+    public static function extractHead(array $options)
     {
-        if (!$normalized) {
-            $content = helpers\Normalizer::toParse($content, Config::getOptions());
-        }
+        $content = $options['content'];
         $result = (object)[
             'title' => null,
             'meta' => null,
         ];
-        $meta = $meta ? [] : null;
+        if ((!isset($options['meta'])) || $options['meta']) {
+            $meta = [];
+        } else {
+            $meta = null;
+        }
         $process = true;
-        $remain = $content;
         while ($process) {
-            $parts = \explode("\n", $remain, 2);
+            $parts = \explode("\n", $content, 2);
             $line = \rtrim($parts[0]);
             if (isset($parts[1])) {
-                $remain = $parts[1];
+                $content = $parts[1];
             } else {
                 $process = false;
             }
@@ -81,13 +81,16 @@ class Util
         if ($meta !== null) {
             $result->meta = new Meta($meta);
         }
-        if (($result->title === null) && $parser) {
-            if (!($parser instanceof Parser)) {
-                $parser = new Parser();
+        if ($result->title === null) {
+            $parser = isset($options['parser']) ? $options['parser'] : true;
+            if ($parser) {
+                if (!($parser instanceof Parser)) {
+                    $parser = new Parser();
+                }
+                $presult = $parser->parse($options['content']);
+                $result->title = $presult->title;
+                $result->meta = $presult->meta;
             }
-            $presult = $parser->parse($content);
-            $result->title = $presult->title;
-            $result->meta = $presult->meta;
         }
         return $result;
     }
