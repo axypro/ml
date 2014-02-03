@@ -9,7 +9,7 @@ use axy\ml\Error;
 use axy\callbacks\Callback;
 
 /**
- * Parameters of current block (during render)
+ * Parameters of a current block (during render)
  *
  * @autor Oleg Grigoriev <go.vasac@gmail.com>
  */

@@ -37,7 +37,7 @@ return [
     /* The opening and closing html-tags for text blocks */
     'bTags' => ['<p>', '</p>'],
 
-    /* The wrapper for block (callable) */
+    /* The wrapper for a block (callable) */
     'bHandler' => null,
 
     /* The beautiful output flag */

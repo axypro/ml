@@ -5,6 +5,11 @@
 
 namespace axy\ml;
 
+/**
+ * A simple profiler of parsing
+ *
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
+ */
 class Profiler extends \stdClass
 {
     /**
