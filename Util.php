@@ -140,6 +140,29 @@ class Util
     }
 
     /**
+     * Render a menu
+     *
+     * @param mixed $result
+     *        a Result instance, an array of headers or a menu struct
+     * @param string $nl [optional]
+     *        a line break
+     * @param int $min [optional]
+     * @param int $max [optional]
+     * @return string
+     *         a result html
+     */
+    public static function renderMenu($result, $nl = \PHP_EOL, $min = 2, $max = null)
+    {
+        if ((!\is_array($result)) || (!isset($result[0])) || (!isset($result['subs']))) {
+            $result = self::createMenu($result, $min, $max);
+        }
+        if (empty($result)) {
+            return '';
+        }
+        return self::renderMenuSubs($result, $nl);
+    }
+
+    /**
      * @param int $level
      * @param array &$headers
      * @return array
@@ -174,5 +197,31 @@ class Util
             }
         }
         return $subs;
+    }
+
+    /**
+     * @param array $subs
+     * @param string $nl
+     * @return string
+     */
+    private static function renderMenuSubs($subs, $nl)
+    {
+        $result = '';
+        foreach ($subs as $item) {
+            $result .= '<li>';
+            $title = \htmlspecialchars($item['title'], \ENT_COMPAT, 'UTF-8');
+            if ($item['link'] !== null) {
+                $link = \htmlspecialchars($item['link'], \ENT_COMPAT, 'UTF-8');
+                $result .= '<a href="#'.$link.'">'.$title.'</a>';
+            } else {
+                $result .= $title;
+            }
+            if (!empty($item['subs'])) {
+                $s = self::renderMenuSubs($item['subs'], $nl);
+                $result .= $nl.$s.$nl;
+            }
+            $result .= '</li>'.$nl;
+        }
+        return '<ol>'.$nl.$result.'</ol>';
     }
 }

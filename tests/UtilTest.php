@@ -14,7 +14,7 @@ use axy\ml\Parser;
 class UtilTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers extractHead
+     * @covers ::extractHead
      */
     public function testExtractHeadTitleOnly()
     {
@@ -29,7 +29,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers extractHead
+     * @covers ::extractHead
      */
     public function testExtractHeadMeta()
     {
@@ -47,7 +47,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers extractHead
+     * @covers ::extractHead
      */
     public function testExtractHeadParser()
     {
@@ -72,7 +72,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers extractHead
+     * @covers ::extractHead
      */
     public function testExtractHeadFile()
     {
@@ -90,7 +90,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers extractHead
+     * @covers ::extractHead
      */
     public function testExtractHeadParserFile()
     {
@@ -115,7 +115,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers createMenu
+     * @covers ::createMenu
      */
     public function testCreateMenu()
     {
@@ -170,5 +170,36 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             ],
         ];
         $this->assertEquals($expected, Util::createMenu($result, 2, 5));
+    }
+
+    /**
+     * @covers ::renderMenu
+     */
+    public function testRenderMenu()
+    {
+        $content = \file_get_contents(__DIR__.'/nstst/util/menu.ml');
+        $parser = new Parser();
+        $result = $parser->parse($content);
+        $expected = [
+            '<ol>',
+            '<li><a href="#t">Two</a>',
+            '<ol>',
+            '<li>Three</li>',
+            '<li>Four</li>',
+            '</ol>',
+            '</li>',
+            '<li><a href="#f">Five</a>',
+            '<ol>',
+            '<li>',
+            '<ol>',
+            '<li>Six</li>',
+            '</ol>',
+            '</li>',
+            '</ol>',
+            '</li>',
+            '<li><a href="#e">Eight</a></li>',
+            '</ol>',
+        ];
+        $this->assertEquals(\implode(\PHP_EOL, $expected), Util::renderMenu($result, \PHP_EOL, 2, 5));
     }
 }
