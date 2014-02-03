@@ -44,6 +44,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                 'name' => null,
                 'content' => 'Title of document',
                 'level' => 1,
+                'link' => null,
             ],
             [
                 'type' => Token::TYPE_BLOCK,

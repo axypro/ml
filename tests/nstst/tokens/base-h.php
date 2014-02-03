@@ -10,7 +10,7 @@ return [
             'name' => null,
             'content' => 'This is header',
             'level' => 1,
-            'link' => null,
+            'link' => 'p-h-1',
         ],
         [
             'type' => Token::TYPE_HEADER,
@@ -18,7 +18,7 @@ return [
             'name' => 'h2',
             'content' => 'This is subheader',
             'level' => 2,
-            'link' => 'h2',
+            'link' => 'p-h2',
         ],
         [
             'type' => Token::TYPE_BLOCK,
@@ -68,7 +68,7 @@ return [
             'type' => Token::TYPE_ANCHOR,
             'name' => 'cut',
             'line' => 20,
-            'link' => 'cut',
+            'link' => 'p-cut',
         ],
         [
             'type' => Token::TYPE_BLOCK,

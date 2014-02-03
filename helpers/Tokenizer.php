@@ -27,6 +27,10 @@ class Tokenizer
             $brackets = $options['brackets'];
             $this->openBracket = $brackets[0];
             $this->closeBracket = $brackets[1];
+            if (isset($options['hLinkPrefix'])) {
+                $this->hLinkPrefix = $options['hLinkPrefix'];
+            }
+            $this->hLinkNeed = !empty($options['hLinkNeed']);
         } else {
             $this->openBracket = '[';
             $this->closeBracket = ']';
@@ -174,10 +178,19 @@ class Tokenizer
             $token->content = $content;
             $token->name = $name;
             $token->level = \strlen($matches[1]);
+            if ($defname) {
+                $token->link = $this->hLinkPrefix.$name;
+            } elseif ($this->hLinkNeed) {
+                $this->hLinkNum++;
+                $token->link = $this->hLinkPrefix.'h-'.$this->hLinkNum;
+            } else {
+                $token->link = null;
+            }
         } elseif ($defname) {
             /* content is empty, but exists name - anchor */
             $token = new Token(Token::TYPE_ANCHOR, $this->numline);
             $token->name = $name;
+            $token->link = $this->hLinkPrefix.$token->name;
         } else {
             /* empty header */
             $this->errors[] = new Error(Error::HEADER_EMPTY, $this->numline);
@@ -457,4 +470,25 @@ class Tokenizer
      * @var string
      */
     private $openPattern;
+
+    /**
+     * The prefix for a header link
+     *
+     * @var string
+     */
+    private $hLinkPrefix = '';
+
+    /**
+     * The flag that a header link is necessary
+     *
+     * @var boolean
+     */
+    private $hLinkNeed = false;
+
+    /**
+     * The number of anonymous headers
+     *
+     * @var int
+     */
+    private $hLinkNum = 0;
 }

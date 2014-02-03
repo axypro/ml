@@ -10,30 +10,36 @@ return [
     /* The tag brackets */
     'brackets' => ['[', ']'],
 
-    /* New-line symbol(s) in result */
+    /* The new-line symbol(s) in result */
     'nl' => "\n",
 
-    /* Count of spaces for tab */
+    /* The count of spaces for a tab */
     'tab' => 4,
 
-    /* Flag for escape html special chars */
+    /* The flag that escape html special chars */
     'escape' => true,
 
     /* The handler for text (callable) */
     'textHandler' => null,
 
-    /* Number of top level header (<h1> by default) */
+    /* Number of a top level header (<h1> by default) */
     'hStart' => 1,
 
-    /* Wrapper for header (callable) */
+    /* The wrapper for header (callable) */
     'hHandler' => null,
 
-    /* Opening and closing html-tags for text blocks */
+    /* The prefix for a header link */
+    'hLinkPrefix' => null,
+
+    /* The flag that a header link is necessary */
+    'hLinkNeed' => false,
+
+    /* The opening and closing html-tags for text blocks */
     'bTags' => ['<p>', '</p>'],
 
-    /* Wrapper for block (callable) */
+    /* The wrapper for block (callable) */
     'bHandler' => null,
 
-    /* Beautiful output */
+    /* The beautiful output flag */
     'beauty' => true,
 ];

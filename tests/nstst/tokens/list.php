@@ -10,6 +10,7 @@ return [
             'name' => null,
             'content' => 'Lists test',
             'level' => 1,
+            'link' => null,
         ],
         [
             'type' => Token::TYPE_BLOCK,

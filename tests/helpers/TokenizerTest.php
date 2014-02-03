@@ -59,6 +59,26 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::tokenize
+     */
+    public function testTokenizeH()
+    {
+        $noptions = [
+            'hLinkPrefix' => 'p-',
+            'hLinkNeed' => true,
+        ];
+        $options = new Options($noptions);
+        $content = Normalizer::toParse($this->getTokensContent('base'), $options);
+        $data = $this->getTokensData('base-h');
+        $tokenizer = new Tokenizer($content, $options);
+        $tokenizer->tokenize();
+        $this->assertEquals($data['meta'], $tokenizer->getMeta()->getSource());
+        $tokens = $tokenizer->getTokens();
+        $this->assertEquals($data['tokens'], $this->tokens2array($tokens));
+        $this->assertFalse($tokenizer->isCutted());
+    }
+
+    /**
      * @covers ::getDuration
      */
     public function testGetDuration()

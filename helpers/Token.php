@@ -18,6 +18,8 @@ namespace axy\ml\helpers;
  *                the content of the token
  * @property-read int $level
  *                the level of a header
+ * @property-read string $link
+ *                the link of a header
  */
 class Token extends \stdClass
 {
