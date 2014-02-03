@@ -32,8 +32,12 @@ class HighlightTest extends \PHPUnit_Framework_TestCase
      */
     public function providerText()
     {
-        $formatter = function ($text) {
-            return \str_replace('-', '-->', $text);
+        $formatter = function ($params) {
+            $params->content = \str_replace('-', '-->', $params->content);
+        };
+        $formatter2 = function ($params) {
+            $params->content .= '!';
+            $params->escape = !$params->escape;
         };
         return [
             [
@@ -60,6 +64,16 @@ class HighlightTest extends \PHPUnit_Framework_TestCase
                 '<b>One</b> - <b>two</b>',
                 ['textHandler' => $formatter],
                 '&lt;b&gt;One&lt;/b&gt; --&gt; &lt;b&gt;two&lt;/b&gt;',
+            ],
+            [
+                'Con&ent',
+                ['textHandler' => $formatter2],
+                'Con&ent!',
+            ],
+            [
+                'Con&ent',
+                ['textHandler' => $formatter2, 'escape' => false],
+                'Con&amp;ent!',
             ],
         ];
     }

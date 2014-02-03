@@ -35,9 +35,16 @@ class Highlight
     public static function text($text, $options)
     {
         if ($options['textHandler']) {
-            $text = Callback::call($options['textHandler'], [$text]);
-        }
-        if ($options['escape']) {
+            $params = (object)[
+                'content' => $text,
+                'escape' => $options['escape'],
+            ];
+            Callback::call($options['textHandler'], [$params]);
+            $text = $params->content;
+            if ($params->escape) {
+                $text = self::escape($text);
+            }
+        } elseif ($options['escape']) {
             $text = self::escape($text);
         }
         return $text;

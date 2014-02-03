@@ -98,8 +98,8 @@ class ResultTest extends \PHPUnit_Framework_TestCase
      */
     public function testMany()
     {
-        $textHandler = function ($text) {
-            return \str_replace(2, 3, $text);
+        $textHandler = function ($params) {
+            $params->content = \str_replace(2, 3, $params->content);
         };
         $options = [
             'escape' => false,
