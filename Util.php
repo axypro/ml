@@ -5,9 +5,6 @@
 
 namespace axy\ml;
 
-use axy\ml\helpers\Config;
-use axy\ml\helpers\Normalizer;
-
 /**
  * Some utilites
  *
@@ -114,5 +111,68 @@ class Util
             }
         }
         return $result;
+    }
+
+    /**
+     * Creates a menu from a headers list
+     *
+     * @param array|\axy\ml\Result $result
+     * @param int $min [optional]
+     * @param int $max [optional]
+     * @return array
+     */
+    public static function createMenu($result, $min = 2, $max = null)
+    {
+        if ($result instanceof \axy\ml\Result) {
+            $result = $result->getHeaders($max);
+        }
+        if (!\is_array($result)) {
+            throw new \InvalidArgumentException();
+        }
+        $headers = [];
+        foreach ($result as $header) {
+            $level = $header['level'];
+            if (($level >= $min) && ((!$max) || ($level <= $max))) {
+                $headers[] = $header;
+            }
+        }
+        return self::loadMenuSubs($min - 1, $headers);
+    }
+
+    /**
+     * @param int $level
+     * @param array &$headers
+     * @return array
+     */
+    private static function loadMenuSubs($level, &$headers)
+    {
+        $subs = [];
+        while (true) {
+            if (empty($headers)) {
+                break;
+            }
+            $current = $headers[0];
+            $delta = $current['level'] - $level;
+            if ($delta <= 0) {
+                break;
+            }
+            if ($delta === 1) {
+                \array_shift($headers);
+                $subs[] = [
+                    'title' => $current['content'],
+                    'link' => $current['link'],
+                    'level' => $current['level'],
+                    'subs' => self::loadMenuSubs($current['level'], $headers),
+                ];
+            } else {
+                $subs[] = [
+                    'title' => null,
+                    'link' => null,
+                    'level' => $level + 1,
+                    'subs' => self::loadMenuSubs($level + 1, $headers),
+                ];
+            }
+        }
+        return $subs;
     }
 }

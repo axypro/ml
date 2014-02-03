@@ -92,6 +92,7 @@ class Result
                 'content' => $token->content,
                 'level' => $token->level,
                 'name' => $token->name,
+                'link' => $token->link,
             ];
         }
         return $headers;

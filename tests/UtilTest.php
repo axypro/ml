@@ -6,6 +6,7 @@
 namespace axy\ml\tests;
 
 use axy\ml\Util;
+use axy\ml\Parser;
 
 /**
  * @coversDefaultClass axy\ml\Util
@@ -111,5 +112,63 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             'three' => '3',
         ];
         $this->assertEquals($expected, $result2->meta->getSource());
+    }
+
+    /**
+     * @covers createMenu
+     */
+    public function testCreateMenu()
+    {
+        $content = \file_get_contents(__DIR__.'/nstst/util/menu.ml');
+        $parser = new Parser();
+        $result = $parser->parse($content);
+        $expected = [
+            [
+                'title' => 'Two',
+                'link' => 't',
+                'level' => 2,
+                'subs' => [
+                    [
+                        'title' => 'Three',
+                        'link' => null,
+                        'level' => 3,
+                        'subs' => [],
+                    ],
+                    [
+                        'title' => 'Four',
+                        'link' => null,
+                        'level' => 3,
+                        'subs' => [],
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Five',
+                'link' => 'f',
+                'level' => 2,
+                'subs' => [
+                    [
+                        'title' => null,
+                        'link' => null,
+                        'level' => 3,
+                        'subs' => [
+                            [
+                                'title' => 'Six',
+                                'link' => null,
+                                'level' => 4,
+                                'subs' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'title' => 'Eight',
+                'link' => 'e',
+                'level' => 2,
+                'subs' => [],
+            ],
+        ];
+        $this->assertEquals($expected, Util::createMenu($result, 2, 5));
     }
 }

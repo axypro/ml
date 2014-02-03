@@ -41,21 +41,25 @@ class ResultTest extends \PHPUnit_Framework_TestCase
                 'content' => 'Title of the document',
                 'level' => 1,
                 'name' => null,
+                'link' => null,
             ],
             [
                 'content' => 'Subtitle',
                 'level' => 2,
                 'name' => 'cut',
+                'link' => 'cut',
             ],
             [
                 'content' => 'Header of level 3',
                 'level' => 3,
                 'name' => null,
+                'link' => null,
             ],
             [
                 'content' => '2 level > header',
                 'level' => 2,
                 'name' => null,
+                'link' => null,
             ],
         ];
         $this->assertEquals($expected, $result->getHeaders());
@@ -64,16 +68,19 @@ class ResultTest extends \PHPUnit_Framework_TestCase
                 'content' => 'Title of the document',
                 'level' => 1,
                 'name' => null,
+                'link' => null,
             ],
             [
                 'content' => 'Subtitle',
                 'level' => 2,
                 'name' => 'cut',
+                'link' => 'cut',
             ],
             [
                 'content' => '2 level > header',
                 'level' => 2,
                 'name' => null,
+                'link' => null,
             ],
         ];
         $this->assertEquals($expected, $result->getHeaders(2));
