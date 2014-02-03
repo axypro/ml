@@ -153,7 +153,7 @@ class Util
      */
     public static function renderMenu($result, $nl = \PHP_EOL, $min = 2, $max = null)
     {
-        if ((!\is_array($result)) || (!isset($result[0])) || (!isset($result['subs']))) {
+        if ((!\is_array($result)) || (!isset($result[0])) || (!isset($result[0]['subs']))) {
             $result = self::createMenu($result, $min, $max);
         }
         if (empty($result)) {

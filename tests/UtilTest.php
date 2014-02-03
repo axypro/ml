@@ -200,6 +200,10 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             '<li><a href="#e">Eight</a></li>',
             '</ol>',
         ];
-        $this->assertEquals(\implode(\PHP_EOL, $expected), Util::renderMenu($result, \PHP_EOL, 2, 5));
+        $expected = \implode(\PHP_EOL, $expected);
+        $this->assertEquals($expected, Util::renderMenu($result, \PHP_EOL, 2, 5));
+        $this->assertEquals($expected, Util::renderMenu($result->getHeaders(), \PHP_EOL, 2, 5));
+        $menu = Util::createMenu($result, 2, 5);
+        $this->assertEquals($expected, Util::renderMenu($menu, \PHP_EOL, 2, 5));
     }
 }
