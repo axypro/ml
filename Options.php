@@ -8,19 +8,20 @@ namespace axy\ml;
 use axy\ml\helpers\Config;
 
 /**
- * Options of parser
+ * The options list of a parser
  *
  * @author Oleg Grigoriev <go.vasac@gmail.com>
  *
+ * @property-read array $brackets
  * @property-read string $nl
  * @property-read int $tab
  * @property-read boolean $escape
- * @property-read callable $texthandler
+ * @property-read callable $textHandler
  * @property-read int $hStart
  * @property-read callable $hHandler
  * @property-read array $bTags
  * @property-read callable $bHandler
- * @property-read string $blocks_separator
+ * @property-read boolean $beauty
  */
 class Options extends \axy\magic\ArrayWrapper
 {
