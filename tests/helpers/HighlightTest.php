@@ -145,12 +145,12 @@ class HighlightTest extends \PHPUnit_Framework_TestCase
                 '<h3>This is > header</h3>',
             ],
             [
-                ['content' => 'This is > header', 'level' => 3, 'name' => ''],
+                ['content' => 'This is > header', 'level' => 3, 'link' => ''],
                 ['escape' => false],
                 '<h3>This is > header</h3>',
             ],
             [
-                ['content' => 'This is > header', 'level' => 3, 'name' => 'hname'],
+                ['content' => 'This is > header', 'level' => 3, 'link' => 'hname'],
                 ['escape' => false],
                 '<h3 id="hname">This is > header</h3>',
             ],

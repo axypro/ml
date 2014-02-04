@@ -66,8 +66,8 @@ class Highlight
         if ($level > 6) {
             $level = 6;
         }
-        if (isset($token->name) && ($token->name !== '')) {
-            $attr = ' id="'.self::escape($token->name).'"';
+        if (isset($token->link) && ($token->link !== '')) {
+            $attr = ' id="'.self::escape($token->link).'"';
         } else {
             $attr = '';
         }

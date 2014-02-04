@@ -398,6 +398,20 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($html, \rtrim($result->html));
     }
 
+    public function testHeaders()
+    {
+        $axyml = $this->getFile('headers.axyml');
+        $html = $this->getFile('headers.html');
+        $options = [
+            'hStart' => 2,
+            'hLinkPrefix' => 'p-',
+            'hLinkNeed' => true,
+        ];
+        $parser = new Parser($options);
+        $result = $parser->parse($axyml);
+        $this->assertSame($html, \rtrim($result->html));
+    }
+
     /**
      * @param string $fn
      * @return string
