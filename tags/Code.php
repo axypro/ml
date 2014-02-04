@@ -74,6 +74,9 @@ class Code extends Base
         } else {
             $params->lang = $this->getArg(0, $this->options['default_lang']);
         }
+        if (!$this->params->block) {
+            $this->value = \rtrim($this->value);
+        }
         $params->source = $this->escape($this->value);
         $params->plain = $this->value;
         $params->css = $params->block ? $this->options['css_block'] : $this->options['css_inline'];

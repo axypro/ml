@@ -158,6 +158,14 @@ class CodeTest extends \PHPUnit_Framework_TestCase
                 false,
                 true,
             ],
+            [
+                ' [B] ',
+                null,
+                '<code>[B]</code>',
+                '[B]',
+                false,
+                true,
+            ],
         ];
     }
 }
