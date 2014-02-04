@@ -97,6 +97,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $options1 = [
             'filename' => __DIR__.'/nstst/util/head-parser.ml',
             'parser' => false,
+            'fullload' => true,
         ];
         $result1 = Util::extractHead($options1);
         $this->assertNull($result1->title);

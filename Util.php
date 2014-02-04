@@ -20,6 +20,7 @@ class Util
      * "filename" - a file name of the document
      * "meta" - extract meta data (true by default)
      * "parser" - use the system parser if a title is not found (true by default)
+     * "fullload" - a file full load
      *
      * @param array $options
      * @return object
@@ -27,13 +28,17 @@ class Util
      */
     public static function extractHead(array $options)
     {
+        $fp = null;
         if (isset($options['content'])) {
             $content = $options['content'];
-            $fp = null;
         } elseif (isset($options['filename'])) {
-            $fp = @\fopen($options['filename'], 'rt');
-            if (!$fp) {
-                throw new \RuntimeException('File not found');
+            if (empty($options['fullload'])) {
+                $fp = @\fopen($options['filename'], 'rt');
+                if (!$fp) {
+                    throw new \RuntimeException('File not found');
+                }
+            } else {
+                $content = \file_get_contents($options['filename']);
             }
         } else {
             throw new \InvalidArgumentException('extractHead require content or filename');
