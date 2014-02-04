@@ -8,11 +8,14 @@ namespace axy\ml\tests;
 use axy\ml\Parser;
 use axy\ml\helpers\Token;
 
+/**
+ * @coversDefaultClass axy\ml\Parser
+ */
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers axy\ml\Parser::__construct
-     * @covers axy\ml\Parser::parse
+     * @covers ::__construct
+     * @covers ::parse
      * covers axy\ml\Result::$tokens
      * covers axy\ml\Result::$meta
      * covers axy\ml\Result::$title
@@ -69,5 +72,17 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             $tokens[] = $token->asArray();
         }
         $this->assertEquals($expected, $tokens);
+    }
+
+    /**
+     * @covers ::parseTest
+     */
+    public function testParseTest()
+    {
+        $filename = __DIR__.'/nstst/parse/base.axyml';
+        $parser = new Parser();
+        $result = $parser->parseFile($filename, 'cut');
+        $expected = "<h1>Title of the document</h1>\n\n<p>This is <b>short</b> text.</p>";
+        $this->assertSame($expected, \trim($result->html));
     }
 }

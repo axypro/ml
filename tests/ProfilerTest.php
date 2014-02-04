@@ -5,7 +5,6 @@
 
 namespace axy\ml\tests\ProfilerTest;
 
-use axy\ml\Profiler;
 use axy\ml\Parser;
 
 /**

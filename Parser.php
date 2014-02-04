@@ -51,6 +51,21 @@ class Parser
     }
 
     /**
+     * Parsing of an axyml document from a file
+     *
+     * @param string $filename
+     *        the file name of the document (must exist)
+     * @param string $cut [optional]
+     *        the anchor for document cutting
+     * @return \axy\ml\Result
+     *         the result of parsing
+     */
+    public function parseFile($filename, $cut = null)
+    {
+        return $this->parse(\file_get_contents($filename), $cut);
+    }
+
+    /**
      * The parsing options
      *
      * @var \axy\ml\Options
