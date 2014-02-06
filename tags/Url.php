@@ -35,7 +35,17 @@ class Url extends Base
         if ($css !== null) {
             $css = ' class="'.$this->escape($params->css).'"';
         }
-        return '<a href="'.$url.'"'.$css.'>'.$params->caption.'</a>';
+        if ($params->type === 'code') {
+            if ($this->options['css_code'] !== null) {
+                $codecss = ' class="'.$this->escape($this->options['css_code']).'"';
+            } else {
+                $codecss = '';
+            }
+            $caption = '<code'.$codecss.'>'.$params->caption.'</code>';
+        } else {
+            $caption = $params->caption;
+        }
+        return '<a href="'.$url.'"'.$css.'>'.$caption.'</a>';
     }
 
     /**
@@ -105,6 +115,7 @@ class Url extends Base
     protected $options = [
         'css' => null,
         'css_img' => null,
+        'css_code' => null,
         'handler' => null,
     ];
 

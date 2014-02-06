@@ -114,6 +114,12 @@ class UrlTest extends \PHPUnit_Framework_TestCase
                 '<b>!!!</b>',
                 '...',
             ],
+            [
+                ':code :page Link',
+                ['css_code' => 'ucode', 'handler' => $handler],
+                '<a href="http://mysite.loc/page" class="internal"><code class="ucode">Link!</code></a>',
+                ':page Link',
+            ],
         ];
     }
 
