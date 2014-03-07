@@ -207,4 +207,37 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $menu = Util::createMenu($result, 2, 5);
         $this->assertEquals($expected, Util::renderMenu($menu, \PHP_EOL, 2, 5));
     }
+
+    /**
+     * @covers ::mergeCustomTagsList
+     */
+    public function testMergeCustomTagsList()
+    {
+        $a = [
+            'a' => 'cname',
+            'c' => null,
+            'd' => ['=dd'],
+            'e' => ['c', ['x' => 1, 'y' => 2], 'ee'],
+            'f' => 'ff',
+        ];
+        $b = [
+            'b' => ['cn', ['x' => 1]],
+            'c' => ['cc'],
+            'e' => ['zz', ['y' => 3, 'z' => 4]],
+            'f' => null,
+        ];
+        $expected = [
+            'a' => 'cname',
+            'b' => ['cn', ['x' => 1]],
+            'c' => ['cc'],
+            'd' => ['=dd'],
+            'e' => [
+                'classname' => 'zz',
+                'options' => ['x' => 1, 'y' => 3, 'z' => 4],
+                'name' => 'ee',
+            ],
+            'f' => null,
+        ];
+        $this->assertEquals($expected, Util::mergeCustomTagsList($a, $b));
+    }
 }

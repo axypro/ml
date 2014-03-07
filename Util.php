@@ -170,6 +170,42 @@ class Util
     }
 
     /**
+     * Merges two custom tags list
+     *
+     * @param array $a
+     * @param array $b
+     * @return array
+     */
+    public static function mergeCustomTagsList(array $a, array $b)
+    {
+        foreach ($b as $k => $v) {
+            if (!isset($a[$k])) {
+                $a[$k] = $v;
+            } elseif ($v === null) {
+                $a[$k] = null;
+            } else {
+                $aa = self::normalizeTag($a[$k]);
+                $v = self::normalizeTag($v);
+                if (\array_key_exists('classname', $v)) {
+                    $aa['classname'] = $v['classname'];
+                }
+                if (\array_key_exists('name', $v)) {
+                    $aa['name'] = $v['name'];
+                }
+                if (isset($v['options'])) {
+                    if (isset($aa['options'])) {
+                        $aa['options'] = \array_replace($aa['options'], $v['options']);
+                    } else {
+                        $aa['options'] = $v['options'];
+                    }
+                }
+                $a[$k] = $aa;
+            }
+        }
+        return $a;
+    }
+
+    /**
      * @param int $level
      * @param array &$headers
      * @return array
@@ -230,5 +266,29 @@ class Util
             $result .= '</li>'.$nl;
         }
         return '<ol>'.$nl.$result.'</ol>';
+    }
+
+    /**
+     * @param mixed $tag
+     * @return array
+     */
+    private static function normalizeTag($tag)
+    {
+        if (!\is_array($tag)) {
+            return ['classname' => $tag];
+        }
+        if (!\array_key_exists(0, $tag)) {
+            return $tag;
+        }
+        $result = [
+            'classname' => $tag[0],
+        ];
+        if (isset($tag[1]) && \is_array($tag[1])) {
+            $result['options'] = $tag[1];
+        }
+        if (\array_key_exists(2, $tag)) {
+            $result['name'] = $tag[2];
+        }
+        return $result;
     }
 }
