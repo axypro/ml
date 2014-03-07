@@ -25,6 +25,8 @@ class Util
      * @param array $options
      * @return object
      *         (title, meta)
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public static function extractHead(array $options)
     {
