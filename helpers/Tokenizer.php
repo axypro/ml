@@ -116,6 +116,16 @@ class Tokenizer
     }
 
     /**
+     * Replaces a tokens list
+     *
+     * @param array $tokens
+     */
+    public function replaceTokens(array $tokens)
+    {
+        $this->tokens = $tokens;
+    }
+
+    /**
      * Load and parse a next line from the content
      */
     private function loadNextLine()

@@ -90,6 +90,28 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::replaceTokens
+     */
+    public function testReplaceTokens()
+    {
+        $tokenizer = new Tokenizer('content');
+        $tokenizer->tokenize();
+        $tokens = [
+            [
+                'type' => 'header',
+                'line' => 2,
+                'name' => null,
+                'content' => 'This is header',
+                'level' => 1,
+                'link' => 'p-h-1',
+            ],
+        ];
+        $this->assertNotEquals($tokens, $tokenizer->getTokens());
+        $tokenizer->replaceTokens($tokens);
+        $this->assertEquals($tokens, $tokenizer->getTokens());
+    }
+
+    /**
      * @param string $name
      * @return string
      */
