@@ -153,6 +153,8 @@ class Block
                         $context->addError(new Error(Error::TAG_UNKNOWN, $token->line, $data));
                     }
                     break;
+                case Token::TYPE_HTML:
+                    $content .= $token->content;
             }
         }
         $this->addBlock($options, $lastcreate);

@@ -156,6 +156,8 @@ class Result
                     $block->render();
                     $blocks = \array_merge($blocks, $block->blocks);
                     break;
+                case Token::TYPE_HTML:
+                    $blocks[] = $token->content;
             }
         }
         $this->magicFields['fields']['errors'] = Error::sortListByLine($this->context->errors);

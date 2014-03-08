@@ -64,6 +64,14 @@ class Token extends \stdClass
     const TYPE_TAG = 'tag';
 
     /**
+     * HTML insert (replaceTokens)
+     * (content)
+     *
+     * @var string
+     */
+    const TYPE_HTML = 'html';
+
+    /**
      * The type of token
      * (constant Token::TYPE_*)
      *

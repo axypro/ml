@@ -425,14 +425,15 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $content = "# Title\n#= x: y\nContent\n";
         $result = $parser->parse($content);
         $tokens = $result->tokens;
-        $block = new Token(Token::TYPE_BLOCK, 4);
-        $ntoken = new Token(Token::TYPE_TEXT, 4);
+        $ntoken = new Token(Token::TYPE_HTML, 4);
         $ntoken->content = '<b>1</b>';
-        $block->append($ntoken);
-        $tokens[] = $block;
+        $tokens[] = $ntoken;
+        $ntoken2 = new Token(Token::TYPE_HTML, 3);
+        $ntoken2->content = '<hr />';
+        $tokens[1]->subs[] = $ntoken2;
         $result->replaceTokens($tokens);
         $this->assertEquals($tokens, $result->tokens);
-        $expected = "<h2>Title</h2>\n\n<p>Content</p>\n\n<p>&lt;b&gt;1&lt;/b&gt;</p>";
+        $expected = "<h2>Title</h2>\n\n<p>Content<hr /></p>\n\n<b>1</b>";
         $this->assertSame($expected, $result->html);
     }
 
