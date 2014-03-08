@@ -56,11 +56,12 @@ class Result
         $this->context = new Context($this, $options, $tags, $custom);
         $profiler = new Profiler();
         $profiler->tokenize = $tokenizer->getDuration();
+        $this->tokens = $tokenizer->getTokens();
         $this->magicFields = [
             'fields' => [
                 'meta' => $tokenizer->getMeta(),
                 'isCutted' => $tokenizer->isCutted(),
-                'tokens' => $tokenizer->getTokens(),
+                'tokens' => $this->tokens,
                 'errors' => $tokenizer->getErrors(),
                 'profiler' => $profiler,
             ],
@@ -81,7 +82,7 @@ class Result
     public function getHeaders($max = null)
     {
         $headers = [];
-        foreach ($this->tokenizer->getTokens() as $token) {
+        foreach ($this->tokens as $token) {
             if ($token->type !== Token::TYPE_HEADER) {
                 continue;
             }
@@ -99,11 +100,26 @@ class Result
     }
 
     /**
+     * Replace a tokens list
+     *
+     * @param array $tokens
+     * @return \axy\ml\Result
+     */
+    public function replaceTokens(array $tokens)
+    {
+        $this->tokens = $tokens;
+        unset($this->magicFields['fields']['title']);
+        unset($this->magicFields['fields']['html']);
+        unset($this->magicFields['fields']['plain']);
+        $this->magicFields['fields']['tokens'] = $tokens;
+    }
+
+    /**
      * @return string
      */
     private function loadTitle()
     {
-        foreach ($this->tokenizer->getTokens() as $token) {
+        foreach ($this->tokens as $token) {
             if (($token->type === Token::TYPE_HEADER) && ($token->level === 1)) {
                 return $token->content;
             }
@@ -123,7 +139,7 @@ class Result
         $tags = $this->tags;
         $errors = [];
         $blocks = [];
-        foreach ($this->tokenizer->getTokens() as $token) {
+        foreach ($this->tokens as $token) {
             switch ($token->type) {
                 case Token::TYPE_HEADER:
                     if ($token->content !== '') {
@@ -163,7 +179,7 @@ class Result
         $context->startRender($this->tokenizer->getErrors());
         $tags = $this->tags;
         $blocks = [];
-        foreach ($this->tokenizer->getTokens() as $token) {
+        foreach ($this->tokens as $token) {
             switch ($token->type) {
                 case Token::TYPE_HEADER:
                     if ($token->content !== '') {
@@ -218,4 +234,9 @@ class Result
      * @var \axy\ml\Context
      */
     private $context;
+
+    /**
+     * @var array
+     */
+    private $tokens;
 }

@@ -6,6 +6,7 @@
 namespace axy\ml\tests;
 
 use axy\ml\Parser;
+use axy\ml\helpers\Token;
 
 /**
  * @coversDefaultClass axy\ml\Result
@@ -410,6 +411,29 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser($options);
         $result = $parser->parse($axyml);
         $this->assertSame($html, \rtrim($result->html));
+    }
+
+    /**
+     * @covers ::replaceTokens
+     */
+    public function testReplaceTokens()
+    {
+        $options = [
+            'hStart' => 2,
+        ];
+        $parser = new Parser($options);
+        $content = "# Title\n#= x: y\nContent\n";
+        $result = $parser->parse($content);
+        $tokens = $result->tokens;
+        $block = new Token(Token::TYPE_BLOCK, 4);
+        $ntoken = new Token(Token::TYPE_TEXT, 4);
+        $ntoken->content = '<b>1</b>';
+        $block->append($ntoken);
+        $tokens[] = $block;
+        $result->replaceTokens($tokens);
+        $this->assertEquals($tokens, $result->tokens);
+        $expected = "<h2>Title</h2>\n\n<p>Content</p>\n\n<p>&lt;b&gt;1&lt;/b&gt;</p>";
+        $this->assertSame($expected, $result->html);
     }
 
     /**
