@@ -240,4 +240,18 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         ];
         $this->assertEquals($expected, Util::mergeCustomTagsList($a, $b));
     }
+
+    /**
+     * @covers ::insertHTMLAfterTitle
+     */
+    public function testInsertHTMLAfterTitle()
+    {
+        $parser = new Parser();
+        $content = "# This is title\n#= x:y\n## h2\ntext";
+        $result = $parser->parse($content);
+        $html = '<div>!</div>';
+        Util::insertHTMLAfterTitle($result, $html);
+        $expected = "<h1>This is title</h1>\n\n<div>!</div>\n\n<h2>h2</h2>\n\n<p>text</p>";
+        $this->assertSame($expected, $result->html);
+    }
 }

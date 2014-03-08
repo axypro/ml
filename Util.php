@@ -5,6 +5,8 @@
 
 namespace axy\ml;
 
+use axy\ml\helpers\Token;
+
 /**
  * Some utilites
  *
@@ -203,6 +205,32 @@ class Util
             }
         }
         return $a;
+    }
+
+    /**
+     * Inserts a HTML code after a title in a result
+     *
+     * @param \axy\ml\Result $result
+     * @param string $html
+     */
+    public static function insertHTMLAfterTitle(Result $result, $html)
+    {
+        $tokens = $result->tokens;
+        $ktitle = null;
+        foreach ($tokens as $k => $token) {
+            if (($token->type === Token::TYPE_HEADER) && ($token->level === 1)) {
+                $ktitle = $k;
+                break;
+            }
+        }
+        $htoken = new Token(Token::TYPE_HTML);
+        $htoken->content = $html;
+        if ($ktitle !== null) {
+            \array_splice($tokens, $ktitle + 1, 0, [$htoken]);
+        } else {
+            \array_unshift($tokens, $htoken);
+        }
+        $result->replaceTokens($tokens);
     }
 
     /**
