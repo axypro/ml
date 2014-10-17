@@ -64,13 +64,17 @@ class Li extends Base
                     $vars->lists[] = 'ul';
                     $result .= '<ul'.$csslist.'>'.$nl.'<li'.$cssli.'>';
                 }
-                if ((empty($type)) || ($type === 'ul')) {
+                if ((empty($type) && ($type !== '0')) || (\strtolower($type) === 'ul')) {
                     $vars->lists[] = 'ul';
                     $result .= '<ul'.$csslist.'>'.$nl.'<li'.$cssli.'>';
                 } else {
                     $vars->lists[] = 'ol';
-                    $start = (int)$type;
-                    if ($start > 1) {
+                    if ((string)(int)$type == $type) {
+                        $start = (int)$type;
+                    } else {
+                        $start = 1;
+                    }
+                    if ($start !== 1) {
                         $result .= '<ol start="'.$start.'"'.$csslist.'>'.$nl.'<li'.$cssli.'>';
                     } else {
                         $result .= '<ol'.$csslist.'>'.$nl.'<li'.$cssli.'>';

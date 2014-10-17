@@ -10,6 +10,12 @@
 [*:3] Five
 [*:5] Six
 
+# OL start=0
+
+[*:0] zero
+[*] one
+[*] two
+
 # Tree
 
 [**] One [B]bold
@@ -25,7 +31,7 @@
 Qwe
 [*] Rty
 
-[*:ul] One
+[*:UL] One
 [*:ol] Two [code
 echo 2 + 2]
 [*] Three
