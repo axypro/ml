@@ -60,5 +60,5 @@ class Options extends \axy\magic\ArrayWrapper
     /**
      * {@inheritdoc}
      */
-    protected $rigidly = true;
+    protected $fixed = true;
 }
