@@ -9,12 +9,12 @@ use axy\ml\helpers\Normalizer;
 use axy\ml\Options;
 
 /**
- * @coversDefaultClass axy\ml\helpers\Normalizer
+ * coversDefaultClass axy\ml\helpers\Normalizer
  */
 class NormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::toParse
+     * covers ::toParse
      * @dataProvider providerToParse
      * @param string $content
      * @param array $options
@@ -49,7 +49,7 @@ class NormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::toResult
+     * covers ::toResult
      * @dataProvider providerToResult
      * @param string $content
      * @param array $options

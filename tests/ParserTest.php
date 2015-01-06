@@ -9,13 +9,13 @@ use axy\ml\Parser;
 use axy\ml\helpers\Token;
 
 /**
- * @coversDefaultClass axy\ml\Parser
+ * coversDefaultClass axy\ml\Parser
  */
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
-     * @covers ::parse
+     * covers ::__construct
+     * covers ::parse
      * covers axy\ml\Result::$tokens
      * covers axy\ml\Result::$meta
      * covers axy\ml\Result::$title
@@ -75,7 +75,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::parseTest
+     * covers ::parseTest
      */
     public function testParseTest()
     {

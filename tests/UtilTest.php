@@ -9,12 +9,12 @@ use axy\ml\Util;
 use axy\ml\Parser;
 
 /**
- * @coversDefaultClass axy\ml\Util
+ * coversDefaultClass axy\ml\Util
  */
 class UtilTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::extractHead
+     * covers ::extractHead
      */
     public function testExtractHeadTitleOnly()
     {
@@ -29,7 +29,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::extractHead
+     * covers ::extractHead
      */
     public function testExtractHeadMeta()
     {
@@ -47,7 +47,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::extractHead
+     * covers ::extractHead
      */
     public function testExtractHeadParser()
     {
@@ -72,7 +72,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::extractHead
+     * covers ::extractHead
      */
     public function testExtractHeadFile()
     {
@@ -90,7 +90,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::extractHead
+     * covers ::extractHead
      */
     public function testExtractHeadParserFile()
     {
@@ -116,7 +116,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::createMenu
+     * covers ::createMenu
      */
     public function testCreateMenu()
     {
@@ -174,7 +174,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::renderMenu
+     * covers ::renderMenu
      */
     public function testRenderMenu()
     {
@@ -209,7 +209,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::mergeCustomTagsList
+     * covers ::mergeCustomTagsList
      */
     public function testMergeCustomTagsList()
     {
@@ -242,7 +242,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::insertHTMLAfterTitle
+     * covers ::insertHTMLAfterTitle
      */
     public function testInsertHTMLAfterTitle()
     {

@@ -9,7 +9,7 @@ use axy\ml\Parser;
 use axy\ml\helpers\Token;
 
 /**
- * @coversDefaultClass axy\ml\Result
+ * coversDefaultClass axy\ml\Result
  */
 class ResultTest extends \PHPUnit_Framework_TestCase
 {
@@ -414,7 +414,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::replaceTokens
+     * covers ::replaceTokens
      */
     public function testReplaceTokens()
     {

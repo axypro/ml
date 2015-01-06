@@ -9,7 +9,7 @@ use axy\ml\tags\Scheme;
 use axy\ml\tests\nstst\Factory;
 
 /**
- * @coversDefaultClass axy\ml\tags\Scheme
+ * coversDefaultClass axy\ml\tags\Scheme
  */
 class SchemeTest extends \PHPUnit_Framework_TestCase
 {

@@ -12,7 +12,7 @@ use axy\ml\TagsList;
 use axy\ml\helpers\Tokenizer;
 
 /**
- * @coversDefaultClass axy\ml\Context
+ * coversDefaultClass axy\ml\Context
  */
 class ContextTest extends \PHPUnit_Framework_TestCase
 {

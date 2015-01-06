@@ -10,12 +10,12 @@ use axy\ml\helpers\Normalizer;
 use axy\ml\Options;
 
 /**
- * @coversDefaultClass axy\ml\helpers\Tokenizer
+ * coversDefaultClass axy\ml\helpers\Tokenizer
  */
 class TokenizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::tokenize
+     * covers ::tokenize
      */
     public function testTokenize()
     {
@@ -30,7 +30,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::tokenize
+     * covers ::tokenize
      */
     public function testTokenizeCut()
     {
@@ -46,7 +46,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::tokenize
+     * covers ::tokenize
      */
     public function testTokenizeList()
     {
@@ -59,7 +59,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::tokenize
+     * covers ::tokenize
      */
     public function testTokenizeH()
     {
@@ -79,7 +79,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getDuration
+     * covers ::getDuration
      */
     public function testGetDuration()
     {
@@ -90,7 +90,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::replaceTokens
+     * covers ::replaceTokens
      */
     public function testReplaceTokens()
     {

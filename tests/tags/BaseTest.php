@@ -9,13 +9,13 @@ use axy\ml\tests\nstst\tags\One;
 use axy\ml\tests\nstst\tags\Two;
 
 /**
- * @coversDefaultClass axy\ml\tags\Base
+ * coversDefaultClass axy\ml\tags\Base
  */
 class BaseTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::getNextComponent
-     * @covers ::getLastComponent
+     * covers ::getNextComponent
+     * covers ::getLastComponent
      * @dataProvider providerOne
      * @param string $content
      * @param array $options
@@ -62,8 +62,8 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getPlain
-     * @covers ::escape
+     * covers ::getPlain
+     * covers ::escape
      * covers ::$options
      * @dataProvider providerTwo
      * @param string $content

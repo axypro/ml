@@ -8,7 +8,7 @@ namespace axy\ml\tests;
 use axy\ml\Options;
 
 /**
- * @coversDefaultClass axy\ml\Options
+ * coversDefaultClass axy\ml\Options
  */
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {

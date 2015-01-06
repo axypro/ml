@@ -8,7 +8,7 @@ namespace axy\ml\tests\tags;
 use axy\ml\tags\ClosingTag;
 
 /**
- * @coversDefaultClass axy\ml\tags\ClosingTag
+ * coversDefaultClass axy\ml\tags\ClosingTag
  */
 class ClosingTagTest extends \PHPUnit_Framework_TestCase
 {

@@ -8,7 +8,7 @@ namespace axy\ml\tests\tags;
 use axy\ml\tags\Img;
 
 /**
- * @coversDefaultClass axy\ml\tags\Img
+ * coversDefaultClass axy\ml\tags\Img
  */
 class ImgTest extends \PHPUnit_Framework_TestCase
 {

@@ -9,7 +9,7 @@ use axy\ml\tags\Code;
 use axy\ml\tests\nstst\Factory;
 
 /**
- * @coversDefaultClass axy\ml\tags\Code
+ * coversDefaultClass axy\ml\tags\Code
  */
 class CodeTest extends \PHPUnit_Framework_TestCase
 {

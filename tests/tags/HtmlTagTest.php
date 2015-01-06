@@ -8,7 +8,7 @@ namespace axy\ml\tests\tags;
 use axy\ml\tags\HtmlTag;
 
 /**
- * @coversDefaultClass axy\ml\tags\HtmlTag
+ * coversDefaultClass axy\ml\tags\HtmlTag
  */
 class HtmlTagTest extends \PHPUnit_Framework_TestCase
 {

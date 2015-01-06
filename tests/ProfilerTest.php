@@ -8,7 +8,7 @@ namespace axy\ml\tests\ProfilerTest;
 use axy\ml\Parser;
 
 /**
- * @coversDefaultClass axy\ml\Profiler
+ * coversDefaultClass axy\ml\Profiler
  */
 class ProfilerTest extends \PHPUnit_Framework_TestCase
 {

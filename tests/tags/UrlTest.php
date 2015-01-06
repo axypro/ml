@@ -9,7 +9,7 @@ use axy\ml\tags\Url;
 use axy\ml\tests\nstst\Factory;
 
 /**
- * @coversDefaultClass axy\ml\tags\Url
+ * coversDefaultClass axy\ml\tags\Url
  */
 class UrlTest extends \PHPUnit_Framework_TestCase
 {

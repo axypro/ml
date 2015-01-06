@@ -9,7 +9,7 @@ use axy\ml\tags\Html;
 use axy\ml\tests\nstst\Factory;
 
 /**
- * @coversDefaultClass axy\ml\tags\Html
+ * coversDefaultClass axy\ml\tags\Html
  */
 class HtmlTest extends \PHPUnit_Framework_TestCase
 {

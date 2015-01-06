@@ -8,12 +8,12 @@ namespace axy\ml\tests\helpers;
 use axy\ml\helpers\TagParser;
 
 /**
- * @coversDefaultClass axy\ml\helpers\TagParser
+ * coversDefaultClass axy\ml\helpers\TagParser
  */
 class TagParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::loadAttrs
+     * covers ::loadAttrs
      * @dataProvider providerLoadAttrs
      * @param string $content
      * @param array $attrs
@@ -65,7 +65,7 @@ class TagParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::loadNextComponent
+     * covers ::loadNextComponent
      * @dataProvider providerLoadNextComponent
      * @param string $content
      * @param string $component
@@ -122,7 +122,7 @@ class TagParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::loadNextComponent
+     * covers ::loadNextComponent
      * @dataProvider providerLoadLastComponent
      * @param string $content
      * @param string $component

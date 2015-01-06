@@ -8,13 +8,13 @@ namespace axy\ml\tests;
 use axy\ml\Error;
 
 /**
- * @coversDefaultClass axy\ml\Error
+ * coversDefaultClass axy\ml\Error
  */
 class ErrorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__get
-     * @covers ::__isset
+     * covers ::__get
+     * covers ::__isset
      */
     public function testMagic()
     {
@@ -30,7 +30,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__get
+     * covers ::__get
      */
     public function testMessage()
     {
@@ -46,7 +46,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::sortListByLine
+     * covers ::sortListByLine
      */
     public function testSortListByLine()
     {
@@ -61,7 +61,7 @@ class ErrorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__toString
+     * covers ::__toString
      */
     public function testToString()
     {

@@ -9,7 +9,7 @@ use axy\ml\TagsList;
 use axy\ml\tests\nstst\Factory;
 
 /**
- * @coversDefaultClass axy\ml\TagsList
+ * coversDefaultClass axy\ml\TagsList
  */
 class TagsListTest extends \PHPUnit_Framework_TestCase
 {
@@ -49,7 +49,7 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
     ];
 
     /**
-     * @covers ::getParams
+     * covers ::getParams
      * @dataProvider providerGetParams
      * @param string $name
      * @param string $expected
@@ -192,7 +192,7 @@ class TagsListTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::create
+     * covers ::create
      * @dataProvider providerCreate
      * @param string $name
      * @param string $content

@@ -8,12 +8,12 @@ namespace axy\ml\tests\helpers;
 use axy\ml\helpers\Config;
 
 /**
- * @coversDefaultClass axy\ml\helpers\Config
+ * coversDefaultClass axy\ml\helpers\Config
  */
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::getOptions
+     * covers ::getOptions
      */
     public function testGetOptions()
     {
@@ -23,7 +23,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getTags
+     * covers ::getTags
      */
     public function testGetTags()
     {

@@ -8,7 +8,7 @@ namespace axy\ml\tests\tags;
 use axy\ml\tags\Tag;
 
 /**
- * @coversDefaultClass axy\ml\tags\Tag
+ * coversDefaultClass axy\ml\tags\Tag
  */
 class TagTest extends \PHPUnit_Framework_TestCase
 {

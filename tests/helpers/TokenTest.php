@@ -8,12 +8,12 @@ namespace axy\ml\tests;
 use axy\ml\helpers\Token;
 
 /**
- * @coversDefaultClass axy\ml\helpers\Token
+ * coversDefaultClass axy\ml\helpers\Token
  */
 class TokenTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
+     * covers ::__construct
      */
     public function testCreate()
     {
@@ -27,8 +27,8 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::append
-     * @covers ::getSubs
+     * covers ::append
+     * covers ::getSubs
      */
     public function testAppend()
     {
@@ -42,7 +42,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::asArray
+     * covers ::asArray
      */
     public function testAsArray()
     {
@@ -71,7 +71,7 @@ class TokenTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::__toString
+     * covers ::__toString
      */
     public function testToString()
     {

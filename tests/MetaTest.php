@@ -8,7 +8,7 @@ namespace axy\ml\tests;
 use axy\ml\Meta;
 
 /**
- * @coversDefaultClass axy\ml\Meta
+ * coversDefaultClass axy\ml\Meta
  */
 class MetaTest extends \PHPUnit_Framework_TestCase
 {

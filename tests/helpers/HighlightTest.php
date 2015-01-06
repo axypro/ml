@@ -10,12 +10,12 @@ use axy\ml\Options;
 use axy\ml\helpers\Token;
 
 /**
- * @coversDefaultClass axy\ml\helpers\Highlight
+ * coversDefaultClass axy\ml\helpers\Highlight
  */
 class HighlightTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::text
+     * covers ::text
      * @dataProvider providerText
      * @param string $text
      * @param array $options
@@ -79,7 +79,7 @@ class HighlightTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::header
+     * covers ::header
      * @dataProvider providerHeader
      * @param array $params
      * @param array $options
