@@ -5,7 +5,9 @@
 
 namespace axy\ml\tests\nstst\tags;
 
-class Cus extends \axy\ml\tags\Base
+use axy\ml\tags\Base;
+
+class Cus extends Base
 {
     /**
      * {@inheritdoc}

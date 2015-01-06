@@ -16,6 +16,7 @@ class HtmlTagTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerHtmlTag
      * @param string $name
      * @param string $content
+     * @param array $options
      * @param string $html
      */
     public function testHtmlTag($name, $content, $options, $html)

@@ -5,7 +5,6 @@
 
 namespace axy\ml\tests\tags;
 
-use axy\ml\tags\Scheme;
 use axy\ml\tests\nstst\Factory;
 
 /**
@@ -15,6 +14,7 @@ class SchemeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerScheme
+     * @param string $name
      * @param string $content
      * @param string $html
      * @param string $plain

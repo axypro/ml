@@ -7,7 +7,6 @@
 namespace axy\ml;
 
 use axy\ml\helpers\Token;
-use axy\ml\Result;
 
 /**
  * Some utilites
@@ -39,7 +38,7 @@ class Util
             if (empty($options['fullload'])) {
                 $fp = @fopen($options['filename'], 'rt');
                 if (!$fp) {
-                    throw new RuntimeException('File not found');
+                    throw new \RuntimeException('File not found');
                 }
             } else {
                 $content = file_get_contents($options['filename']);

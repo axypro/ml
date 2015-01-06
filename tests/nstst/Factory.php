@@ -16,21 +16,22 @@ use axy\ml\helpers\Block;
 class Factory
 {
     /**
-     * Create an instance of context for testing
+     * Creates an instance of context for testing
      *
      * @param array $options [optional]
      * @param array $tags [optional]
      * @param mixed $custom
+     * @param bool $withBlock
      * @return \axy\ml\Context
      */
-    public static function createContext($options = null, $tags = null, $custom = null, $withblock = true)
+    public static function createContext($options = null, $tags = null, $custom = null, $withBlock = true)
     {
         $tokenizer = new Tokenizer('');
         $options = new Options($options);
         $tags = new TagsList($tags);
         $result = new Result($tokenizer, $options, $tags, $custom);
         $context = new Context($result, $options, $tags, $custom);
-        if ($withblock) {
+        if ($withBlock) {
             $container = new Token(Token::TYPE_BLOCK, 1);
             $container->subs = [];
             $block = new Block($container, $context);

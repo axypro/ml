@@ -5,7 +5,6 @@
 
 namespace axy\ml\tests;
 
-use axy\ml\TagsList;
 use axy\ml\tests\nstst\Factory;
 
 /**

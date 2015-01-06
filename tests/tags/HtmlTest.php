@@ -17,6 +17,7 @@ class HtmlTest extends \PHPUnit_Framework_TestCase
      * @dataProvider providerHtml
      * @param string $content
      * @param string $html
+     * @param string $plain
      */
     public function testHtml($content, $html, $plain)
     {

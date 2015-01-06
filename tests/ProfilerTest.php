@@ -25,7 +25,7 @@ class ProfilerTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('float', $profiler->tokenize);
         $this->assertInternalType('float', $profiler->html);
         $this->assertNull($profiler->plain);
-        $r = $result->plain;
+        $r = $r.$result->plain;
         $this->assertInternalType('float', $profiler->tokenize);
         $this->assertInternalType('float', $profiler->html);
         $this->assertInternalType('float', $profiler->plain);

@@ -18,7 +18,7 @@ class Tokenizer
      * The constructor
      *
      * @param string $content
-     * @param array $options [optional]
+     * @param array|\ArrayAccess $options [optional]
      */
     public function __construct($content, $options = null)
     {
@@ -49,12 +49,11 @@ class Tokenizer
      * Tokenize, please!
      *
      * @param string $cut [optional]
-     * @return bool
      */
     public function tokenize($cut = null)
     {
         if ($this->meta) {
-            return true;
+            return;
         }
         $this->cut = $cut;
         $this->meta = new Meta();
@@ -237,7 +236,7 @@ class Tokenizer
         do {
             $parts = explode($open, $line, 2);
             $text = ($firstLine && $firstPart) ? ltrim($parts[0]) : $parts[0];
-            $etag = isset($parts[1]); // on this line was found a tag
+            $eTag = isset($parts[1]); // on this line was found a tag
             if ($text !== '') {
                 if ($this->text) {
                     $this->text->content .= ($firstPart ? "\n" : '').$text;
@@ -253,14 +252,14 @@ class Tokenizer
             } elseif ($firstPart) {
                 if ($this->text) {
                     $this->text->content .= "\n";
-                } elseif ($etag && (!$firstLine)) {
+                } elseif ($eTag && (!$firstLine)) {
                     $text = new Token(Token::TYPE_TEXT, $this->numline);
                     $text->content = "\n";
                     $this->block->append($text);
                 }
                 $this->endtag = false;
             }
-            if (!$etag) {
+            if (!$eTag) {
                 /* A tag was not found - end of line */
                 break;
             }

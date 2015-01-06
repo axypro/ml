@@ -69,7 +69,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
      * @param string $content
      * @param array $options
      * @param string $html
-     * @param array $errors
+     * @param string $plain
      */
     public function testTwo($content, $options, $html, $plain)
     {

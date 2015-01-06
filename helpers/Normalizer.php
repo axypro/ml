@@ -15,7 +15,7 @@ class Normalizer
      * Normalizes the text before the parsing
      *
      * @param string $content
-     * @param array $options
+     * @param array|\ArrayAccess $options
      * @return string
      */
     public static function toParse($content, $options)

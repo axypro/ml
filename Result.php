@@ -135,8 +135,6 @@ class Result
         $context = $this->context;
         $options = $this->context->options->getSource();
         $context->startRender($this->tokenizer->getErrors());
-        $tags = $this->tags;
-        $errors = [];
         $blocks = [];
         foreach ($this->tokens as $token) {
             switch ($token->type) {
@@ -176,7 +174,6 @@ class Result
     {
         $mt = microtime(true);
         $context = $this->context;
-        $options = $this->context->options->getSource();
         $context->startRender($this->tokenizer->getErrors());
         $tags = $this->tags;
         $blocks = [];

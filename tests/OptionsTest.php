@@ -23,7 +23,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException axy\magic\errors\ContainerReadOnly
+     * @expectedException \axy\magic\errors\ContainerReadOnly
      */
     public function testReadonly()
     {
@@ -32,7 +32,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException axy\magic\errors\FieldNotExist
+     * @expectedException \axy\magic\errors\FieldNotExist
      */
     public function testNotFound()
     {
@@ -41,7 +41,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException axy\magic\errors\FieldNotExist
+     * @expectedException \axy\magic\errors\FieldNotExist
      */
     public function testRigidly()
     {
