@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
@@ -9,19 +10,17 @@ use axy\ml\helpers\Tokenizer;
 use axy\ml\helpers\Normalizer;
 
 /**
- * The parser of axyml documents
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
+ * The parser of axyml document
  */
 class Parser
 {
     /**
-     * Constructor
+     * The constructor
      *
      * @param array $options [optional]
-     *        the list of custom options
+     *        the custom options list
      * @param array $tags [optional]
-     *        the list of custom tags
+     *        the custom tags list
      * @param mixed $custom [optional]
      *        the custom context
      */
@@ -33,14 +32,14 @@ class Parser
     }
 
     /**
-     * Parsing of an axyml document
+     * Parses an axyml document
      *
      * @param string $content
-     *        the content of the document
+     *        the document content
      * @param string $cut [optional]
      *        the anchor for document cutting
      * @return \axy\ml\Result
-     *         the result of parsing
+     *         the parsing result
      */
     public function parse($content, $cut = null)
     {
@@ -51,7 +50,7 @@ class Parser
     }
 
     /**
-     * Parsing of an axyml document from a file
+     * Parses of an axyml document from a file
      *
      * @param string $filename
      *        the file name of the document (must exist)
@@ -62,7 +61,7 @@ class Parser
      */
     public function parseFile($filename, $cut = null)
     {
-        return $this->parse(\file_get_contents($filename), $cut);
+        return $this->parse(file_get_contents($filename), $cut);
     }
 
     /**

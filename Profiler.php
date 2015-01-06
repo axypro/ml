@@ -1,14 +1,13 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
 
 /**
- * A simple profiler of parsing
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
+ * A simple profiler for the parsing
  */
 class Profiler extends \stdClass
 {

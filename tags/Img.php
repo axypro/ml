@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
@@ -12,8 +13,6 @@ use axy\callbacks\Callback;
  *
  * @example [IMG /i/a.png]
  * @example [URL /i/a.png Alt text]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Img extends Base
 {
@@ -36,7 +35,7 @@ class Img extends Base
         if ($params->css !== null) {
             $attrs[] = 'class="'.$this->escape($params->css).'"';
         }
-        return '<img '.(\implode(' ', $attrs)).' />';
+        return '<img '.(implode(' ', $attrs)).' />';
     }
 
     /**

@@ -1,22 +1,20 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
 
 use axy\ml\helpers\TagParser;
-use axy\ml\Options;
 
 /**
  * The basic class of axyml-tags
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 abstract class Base
 {
     /**
-     * Constructor
+     * The constructor
      *
      * @param string $name
      *        the tag name
@@ -34,21 +32,21 @@ abstract class Base
         $this->context = $context;
         $this->sEscape = $context ? $context->options->escape : true;
         if ($options) {
-            $this->options = \array_replace($this->options, $options);
+            $this->options = array_replace($this->options, $options);
         }
         $this->preparse();
         $this->parse();
     }
 
     /**
-     * Get the HTML representation of tag
+     * Returns the HTML representation of tag
      *
      * @return string
      */
     abstract public function getHTML();
 
     /**
-     * Get the plain text representation of tag
+     * Returns the plain text representation of tag
      *
      * @return string
      */
@@ -58,7 +56,7 @@ abstract class Base
     }
 
     /**
-     * Get the errors list
+     * Returns the errors list
      *
      * @return array
      */
@@ -75,7 +73,7 @@ abstract class Base
     }
 
     /**
-     * Get a next component of the value
+     * Returns a next component of the value
      *
      * @return string
      */
@@ -85,7 +83,7 @@ abstract class Base
     }
 
     /**
-     * Get a last component of the value
+     * Returns a last component of the value
      *
      * @return string
      */
@@ -115,13 +113,13 @@ abstract class Base
     protected function escape($text)
     {
         if ($this->sEscape) {
-            $text = \htmlspecialchars($text, \ENT_COMPAT, 'UTF-8');
+            $text = htmlspecialchars($text, \ENT_COMPAT, 'UTF-8');
         }
         return $text;
     }
 
     /**
-     * Get an argument by number
+     * Returns an argument by number
      *
      * @param int $num [optional]
      * @param mixed $default [optional]

@@ -1,14 +1,13 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\helpers;
 
 /**
  * The class of a single token
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  *
  * @property-read array $subs
  *                the list of inline tokens for a block
@@ -80,14 +79,14 @@ class Token extends \stdClass
     public $type;
 
     /**
-     * Line where the token was found
+     * The line where the token was found
      *
      * @var int
      */
     public $line;
 
     /**
-     * Constructor
+     * The constructor
      *
      * @param string $type
      * @param int $line [optional]
@@ -112,7 +111,7 @@ class Token extends \stdClass
     }
 
     /**
-     * Get list of subs
+     * Returns a list of subs
      *
      * @return array
      */
@@ -122,7 +121,7 @@ class Token extends \stdClass
     }
 
     /**
-     * Represent the token as array
+     * Represents the token as array
      *
      * @return array
      */

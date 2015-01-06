@@ -1,21 +1,21 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\helpers;
 
 use axy\ml\Error;
+use axy\ml\Meta;
 
 /**
  * The axyML-tokenizer
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Tokenizer
 {
     /**
-     * Constructor
+     * The constructor
      *
      * @param string $content
      * @param array $options [optional]
@@ -35,13 +35,13 @@ class Tokenizer
             $this->openBracket = '[';
             $this->closeBracket = ']';
         }
-        $len = \strlen($this->openBracket);
+        $len = strlen($this->openBracket);
         if ($len > 1) {
             $this->openLength = $len;
-            $this->openPattern = '/^(('.\preg_quote($this->openBracket, '/').')*)(.*)$/s';
+            $this->openPattern = '/^(('.preg_quote($this->openBracket, '/').')*)(.*)$/s';
         } else {
             $this->openLength = null;
-            $this->openPattern = '/^('.\preg_quote($this->openBracket, '/').'*)(.*)$/s';
+            $this->openPattern = '/^('.preg_quote($this->openBracket, '/').'*)(.*)$/s';
         }
     }
 
@@ -49,6 +49,7 @@ class Tokenizer
      * Tokenize, please!
      *
      * @param string $cut [optional]
+     * @return bool
      */
     public function tokenize($cut = null)
     {
@@ -56,17 +57,17 @@ class Tokenizer
             return true;
         }
         $this->cut = $cut;
-        $this->meta = new \axy\ml\Meta();
+        $this->meta = new Meta();
         $this->process = true;
-        $mt = \microtime(true);
+        $mt = microtime(true);
         while ($this->process) {
             $this->loadNextLine();
         }
-        $this->duration = \microtime(true) - $mt;
+        $this->duration = microtime(true) - $mt;
     }
 
     /**
-     * Get the tokens list
+     * Returns the tokens list
      *
      * @return array
      */
@@ -76,9 +77,9 @@ class Tokenizer
     }
 
     /**
-     * Get the meta data
+     * Returns the meta data
      *
-     * @return \axy\ml\Meta
+     * @return Meta
      */
     public function getMeta()
     {
@@ -86,7 +87,7 @@ class Tokenizer
     }
 
     /**
-     * Get the list of errors
+     * Returns the list of errors
      *
      * @return array
      */
@@ -96,7 +97,7 @@ class Tokenizer
     }
 
     /**
-     * Check if the document was cutted by more-anchor
+     * Checks if the document was cutted by more-anchor
      *
      * @return boolean
      */
@@ -106,7 +107,7 @@ class Tokenizer
     }
 
     /**
-     * Get a duration of the parsing
+     * Returns a duration of the parsing
      *
      * @return float
      */
@@ -126,7 +127,7 @@ class Tokenizer
     }
 
     /**
-     * Load and parse a next line from the content
+     * Loads and parses a next line from the content
      */
     private function loadNextLine()
     {
@@ -135,8 +136,8 @@ class Tokenizer
             return;
         }
         $this->numline++;
-        $parts = \explode("\n", $this->content, 2);
-        $line = \rtrim($parts[0]);
+        $parts = explode("\n", $this->content, 2);
+        $line = rtrim($parts[0]);
         $this->content = isset($parts[1]) ? $parts[1] : '';
         if ($line === '') {
             $this->block = null;
@@ -150,7 +151,7 @@ class Tokenizer
     }
 
     /**
-     * Load a special line (begins with "#")
+     * Loads a special line (begins with "#")
      *
      * @param string $line
      */
@@ -167,28 +168,28 @@ class Tokenizer
                 return;
             case '=':
                 /* meta data #= */
-                $line = \ltrim(\substr($line, 2));
+                $line = ltrim(substr($line, 2));
                 if ($line === '') {
                     $this->errors[] = new Error(Error::META_EMPTY, $this->numline);
                     return;
                 }
-                $line = \explode(':', $line, 2);
-                $this->meta[\rtrim($line[0])] = isset($line[1]) ? \ltrim($line[1]) : true;
+                $line = explode(':', $line, 2);
+                $this->meta[rtrim($line[0])] = isset($line[1]) ? ltrim($line[1]) : true;
                 return;
         }
-        if (!\preg_match('/^(#+)(\[(.*?)\])?\s*(.*)$/s', $line, $matches)) {
+        if (!preg_match('/^(#+)(\[(.*?)\])?\s*(.*)$/s', $line, $matches)) {
             return;
         }
-        $defname = !empty($matches[2]);
-        $name = $defname ? \trim($matches[3]) : null;
+        $defName = !empty($matches[2]);
+        $name = $defName ? trim($matches[3]) : null;
         $content = $matches[4];
         if ($content !== '') {
             /* content is not empty - this is header */
             $token = new Token(Token::TYPE_HEADER, $this->numline);
             $token->content = $content;
             $token->name = $name;
-            $token->level = \strlen($matches[1]);
-            if ($defname) {
+            $token->level = strlen($matches[1]);
+            if ($defName) {
                 $token->link = $this->hLinkPrefix.$name;
             } elseif ($this->hLinkNeed) {
                 $this->hLinkNum++;
@@ -196,7 +197,7 @@ class Tokenizer
             } else {
                 $token->link = null;
             }
-        } elseif ($defname) {
+        } elseif ($defName) {
             /* content is empty, but exists name - anchor */
             $token = new Token(Token::TYPE_ANCHOR, $this->numline);
             $token->name = $name;
@@ -223,8 +224,8 @@ class Tokenizer
     private function loadBlockLine($line)
     {
         $open = $this->openBracket;
-        $firstline = (!$this->block); // this is a first line of the block
-        if ($firstline) {
+        $firstLine = (!$this->block); // this is a first line of the block
+        if ($firstLine) {
             /* create new block token */
             $this->block = new Token(Token::TYPE_BLOCK, $this->numline);
             $this->listblock = false;
@@ -232,14 +233,14 @@ class Tokenizer
             $this->text = null;
             $this->endtag = false;
         }
-        $firstpart = true; // this is a first part of this line
+        $firstPart = true; // this is a first part of this line
         do {
-            $parts = \explode($open, $line, 2);
-            $text = ($firstline && $firstpart) ? \ltrim($parts[0]) : $parts[0];
+            $parts = explode($open, $line, 2);
+            $text = ($firstLine && $firstPart) ? ltrim($parts[0]) : $parts[0];
             $etag = isset($parts[1]); // on this line was found a tag
             if ($text !== '') {
                 if ($this->text) {
-                    $this->text->content .= ($firstpart ? "\n" : '').$text;
+                    $this->text->content .= ($firstPart ? "\n" : '').$text;
                 } else {
                     $this->text = new Token(Token::TYPE_TEXT, $this->numline);
                     $this->block->append($this->text);
@@ -249,10 +250,10 @@ class Tokenizer
                     }
                     $this->text->content = $text;
                 }
-            } elseif ($firstpart) {
+            } elseif ($firstPart) {
                 if ($this->text) {
                     $this->text->content .= "\n";
-                } elseif ($etag && (!$firstline)) {
+                } elseif ($etag && (!$firstLine)) {
                     $text = new Token(Token::TYPE_TEXT, $this->numline);
                     $text->content = "\n";
                     $this->block->append($text);
@@ -266,7 +267,7 @@ class Tokenizer
             /* A tag was found - load it */
             $this->text = null; // curent text ended
             $line = $parts[1];
-            $firstpart = false;
+            $firstPart = false;
             $this->loadTag($line);
             if ($line === '') {
                 $this->endtag = true;
@@ -283,37 +284,37 @@ class Tokenizer
     private function loadTag(&$line)
     {
         /* Determine the size of the opening bracket */
-        if (\preg_match($this->openPattern, $line, $matches)) {
+        if (preg_match($this->openPattern, $line, $matches)) {
             if ($this->openLength) {
                 if ($matches[1] !== '') {
-                    $len = (int)(\strlen($matches[1]) / $this->openLength) + 1;
+                    $len = (int)(strlen($matches[1]) / $this->openLength) + 1;
                     $line = $matches[3];
                 } else {
                     $len = 1;
                 }
             } else {
-                $len = \strlen($matches[1]) + 1;
+                $len = strlen($matches[1]) + 1;
                 $line = $matches[2];
             }
         } else {
             $len = 1;
             $line = '';
         }
-        $close = \str_repeat($this->closeBracket, $len);
-        $parts = \explode($close, $line, 2);
+        $close = str_repeat($this->closeBracket, $len);
+        $parts = explode($close, $line, 2);
         if (isset($parts[1])) {
             /* The tag ends on the current line */
             $this->parseTag($parts[0]);
             $line = $parts[1];
         } else {
             /* The tag is multiline */
-            $parts = \explode($close, $this->content, 2);
-            $tagcontent = $line."\n".$parts[0];
-            $isclosed = isset($parts[1]); // tag is correctly closed
-            $this->parseTag($tagcontent, !$isclosed);
-            $this->numline += \substr_count($tagcontent, "\n") - 1;
-            if ($isclosed) {
-                $parts = \explode("\n", $parts[1], 2);
+            $parts = explode($close, $this->content, 2);
+            $tagContent = $line."\n".$parts[0];
+            $isClosed = isset($parts[1]); // tag is correctly closed
+            $this->parseTag($tagContent, !$isClosed);
+            $this->numline += substr_count($tagContent, "\n") - 1;
+            if ($isClosed) {
+                $parts = explode("\n", $parts[1], 2);
                 $line = ($parts[0]);
                 $this->content = isset($parts[1]) ? $parts[1] : '';
                 $this->numline++;
@@ -325,14 +326,14 @@ class Tokenizer
     }
 
     /**
-     * Parse tag
+     * Parses a tag
      *
      * @param string $content
      *        the tag content (after the tag name)
-     * @param boolean $notclosed [optional]
+     * @param boolean $notClosed [optional]
      *        the tag is not closed
      */
-    private function parseTag($content, $notclosed = false)
+    private function parseTag($content, $notClosed = false)
     {
         if ($content === '') {
             return;
@@ -342,22 +343,22 @@ class Tokenizer
         switch ($content[0]) {
             case '/':
                 $token->name = '/';
-                $token->content = \substr($content, 1);
+                $token->content = substr($content, 1);
                 break;
             case '*':
                 $token->name = '*';
                 $token->content = $content;
                 break;
             default:
-                if (\preg_match('/^([a-z0-9_]+)(.*?)$/is', $content, $matches)) {
-                    $token->name = \strtolower($matches[1]);
+                if (preg_match('/^([a-z0-9_]+)(.*?)$/is', $content, $matches)) {
+                    $token->name = strtolower($matches[1]);
                     $token->content = $matches[2];
                 } else {
                     $token->name = null;
                     $token->content = $content;
                 }
         }
-        if ($notclosed) {
+        if ($notClosed) {
             $this->errors[] = new Error(Error::TAG_NOT_CLOSED, $this->numline, ['tag' => $token->name]);
         }
     }
@@ -386,7 +387,7 @@ class Tokenizer
     /**
      * The meta-data of the document
      *
-     * @var \axy\ml\Meta
+     * @var Meta
      */
     private $meta;
 

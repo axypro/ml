@@ -1,14 +1,13 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
 
 /**
- * Class for closing tags like a [/B]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
+ * Class for closing tags like [/B]
  */
 class ClosingTag extends Base
 {
@@ -17,10 +16,10 @@ class ClosingTag extends Base
      */
     public function getHTML()
     {
-        if ($this->tagname === '') {
+        if ($this->tagName === '') {
             return '';
         }
-        return '</'.$this->tagname.($this->tagattrs ? ' '.$this->tagattrs : '').'>';
+        return '</'.$this->tagName.($this->tagAttrs ? ' '.$this->tagAttrs : '').'>';
     }
 
     /**
@@ -36,9 +35,9 @@ class ClosingTag extends Base
      */
     protected function parse()
     {
-        $this->tagname = \strtolower($this->getNextComponent());
-        $this->tagattrs = $this->getLastComponent();
-        if ($this->tagname === '') {
+        $this->tagName = strtolower($this->getNextComponent());
+        $this->tagAttrs = $this->getLastComponent();
+        if ($this->tagName === '') {
             $this->errors[] = 'empty closing tag';
         }
     }
@@ -46,10 +45,10 @@ class ClosingTag extends Base
     /**
      * @var string
      */
-    private $tagname;
+    private $tagName;
 
     /**
      * @var string
      */
-    private $tagattrs;
+    private $tagAttrs;
 }

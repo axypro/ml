@@ -1,19 +1,18 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\helpers;
 
 /**
  * Access to ml-configs (default options, tags)
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Config
 {
     /**
-     * Get the list of default options
+     * Returns the list of default options
      *
      * @return array
      */
@@ -23,7 +22,7 @@ class Config
     }
 
     /**
-     * Get the list of standard tags
+     * Returns the list of standard tags
      *
      * @return array
      */
@@ -33,7 +32,7 @@ class Config
     }
 
     /**
-     * Get a system config by a name
+     * Returns a system config by a name
      *
      * @param string $name
      * @return array
@@ -42,7 +41,7 @@ class Config
     {
         if (!isset(self::$configs[$name])) {
             $filename = __DIR__.'/'.self::$dir.'/'.$name.'.php';
-            self::$configs[$name] = include($filename);
+            self::$configs[$name] = include $filename;
         }
         return self::$configs[$name];
     }

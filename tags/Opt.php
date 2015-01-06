@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
@@ -9,8 +10,6 @@ namespace axy\ml\tags;
  * Tag [Opt]
  *
  * @example [Opt:nop]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Opt extends Base
 {
@@ -25,7 +24,7 @@ class Opt extends Base
         } else {
             $block = $this->context->block;
             foreach ($args as $arg) {
-                $arg = \strtolower($arg);
+                $arg = strtolower($arg);
                 $block->opts[$arg] = true;
             }
         }

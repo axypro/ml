@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
@@ -9,43 +10,41 @@ use axy\ml\helpers\Token;
 use axy\ml\helpers\Highlight;
 use axy\ml\helpers\Normalizer;
 use axy\ml\helpers\Block;
-use axy\ml\Error;
+use axy\magic\LazyField;
 
 /**
  * The result of parsing of an axyml document
  *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
- *
  * @property-read string $html
- *                a html representation
+ *                the html representation
  * @property-read string $plain
- *                a plain text representaion
+ *                the plain text representation
  * @property-read string $title
- *                a title of the document
+ *                the title of the document
  * @property-read \axy\ml\Meta $meta
- *                a meta data
- * @property-read boolead $isCutted
- *                a flag that the document was cutted
+ *                the meta data
+ * @property-read boolean $isCutted
+ *                the flag that the document was cutted
  * @property-read array $tokens
- *                a list of tokens
+ *                the list of tokens
  * @property-read array $errors
- *                a list of errors
+ *                the list of errors
  * @property-read \axy\ml\Profiler $profiler
- *                a profiler
+ *                the profiler
  */
 class Result
 {
-    use \axy\magic\LazyField;
+    use LazyField;
 
     /**
-     * Constructor
+     * The constructor
      *
      * @param \axy\ml\helpers\Tokenizer $tokenizer
-     *        the tokenizer with the result of the document tokenize
+     *        the tokenizer containing the result of the document tokenize
      * @param \axy\ml\Options $options
      *        the parsing options
      * @param \axy\ml\TagsList $tags
-     *        the list of available tags
+     *        the available tags list
      * @param mixed $custom
      *        the custom context
      */
@@ -74,7 +73,7 @@ class Result
     }
 
     /**
-     * Get the list of headers
+     * Returns the headers list
      *
      * @param int $max [optional]
      * @return array (content, level, name)
@@ -100,7 +99,7 @@ class Result
     }
 
     /**
-     * Replace a tokens list
+     * Replaces a tokens list
      *
      * @param array $tokens
      * @return \axy\ml\Result
@@ -132,7 +131,7 @@ class Result
      */
     private function createHtml()
     {
-        $mt = \microtime(true);
+        $mt = microtime(true);
         $context = $this->context;
         $options = $this->context->options->getSource();
         $context->startRender($this->tokenizer->getErrors());
@@ -154,7 +153,7 @@ class Result
                 case Token::TYPE_BLOCK:
                     $block = new Block($token, $context);
                     $block->render();
-                    $blocks = \array_merge($blocks, $block->blocks);
+                    $blocks = array_merge($blocks, $block->blocks);
                     break;
                 case Token::TYPE_HTML:
                     $blocks[] = $token->content;
@@ -162,10 +161,10 @@ class Result
         }
         $this->magicFields['fields']['errors'] = Error::sortListByLine($this->context->errors);
         $sep = $options['beauty'] ? "\n\n" : "\n";
-        $html = \implode($sep, $blocks);
+        $html = implode($sep, $blocks);
         $html = Normalizer::toResult($html, $options);
         $this->context->endRender();
-        $mt = \microtime(true) - $mt;
+        $mt = microtime(true) - $mt;
         $this->magicFields['fields']['profiler']->html = $mt;
         return $html;
     }
@@ -175,7 +174,7 @@ class Result
      */
     private function createPlain()
     {
-        $mt = \microtime(true);
+        $mt = microtime(true);
         $context = $this->context;
         $options = $this->context->options->getSource();
         $context->startRender($this->tokenizer->getErrors());
@@ -205,13 +204,13 @@ class Result
                                 break;
                         }
                     }
-                    $blocks[] = \implode('', $els);
+                    $blocks[] = implode('', $els);
                     break;
             }
         }
         $context->endRender();
-        $result = \implode("\n", $blocks);
-        $mt = \microtime(true) - $mt;
+        $result = implode("\n", $blocks);
+        $mt = microtime(true) - $mt;
         $this->magicFields['fields']['profiler']->plain = $mt;
         return $result;
     }

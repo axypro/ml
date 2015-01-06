@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
@@ -13,8 +14,6 @@ use axy\callbacks\Callback;
  * @example [URL http://example.loc/]
  * @example [URL http://example.loc/ Example link]
  * @example [URL "http://link with space" Caption]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Url extends Base
 {
@@ -37,11 +36,11 @@ class Url extends Base
         }
         if ($params->type === 'code') {
             if ($this->options['css_code'] !== null) {
-                $codecss = ' class="'.$this->escape($this->options['css_code']).'"';
+                $codeCss = ' class="'.$this->escape($this->options['css_code']).'"';
             } else {
-                $codecss = '';
+                $codeCss = '';
             }
-            $caption = '<code'.$codecss.'>'.$params->caption.'</code>';
+            $caption = '<code'.$codeCss.'>'.$params->caption.'</code>';
         } else {
             $caption = $params->caption;
         }
@@ -62,7 +61,7 @@ class Url extends Base
     protected function parse()
     {
         $this->params = (object)[
-            'type' => \strtolower($this->getArg()),
+            'type' => strtolower($this->getArg()),
             'url' => $this->getNextComponent(),
             'caption' => null,
             'context' => $this->context,

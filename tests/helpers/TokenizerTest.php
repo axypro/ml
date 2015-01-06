@@ -40,7 +40,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
         $tokenizer->tokenize('cut');
         $this->assertEquals($data['meta'], $tokenizer->getMeta()->getSource());
         $tokens = $tokenizer->getTokens();
-        $expected = \array_slice($data['tokens'], 0, 4);
+        $expected = array_slice($data['tokens'], 0, 4);
         $this->assertEquals($expected, $this->tokens2array($tokens));
         $this->assertTrue($tokenizer->isCutted());
     }
@@ -117,7 +117,7 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase
      */
     private function getTokensContent($name)
     {
-        return \file_get_contents(__DIR__.'/../nstst/tokens/'.$name.'.txt');
+        return file_get_contents(__DIR__.'/../nstst/tokens/'.$name.'.txt');
     }
 
     /**

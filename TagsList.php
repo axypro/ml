@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
@@ -9,15 +10,13 @@ use axy\ml\helpers\Config;
 
 /**
  * Access to available tags
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class TagsList
 {
     /**
-     * Constructor
+     * The constructor
      *
-     * @param array $tags [optional]
+     * @param array $custom [optional]
      *        the list of custom tags
      */
     public function __construct(array $custom = null)
@@ -27,21 +26,21 @@ class TagsList
     }
 
     /**
-     * Get parameters for create a tag instance
+     * Returns parameters for creating a tag instance
      *
      * @param string $name
      * @return array (classname, options, name) or NULL
      */
     public function getParams($name)
     {
-        if (!\array_key_exists($name, $this->cache)) {
+        if (!array_key_exists($name, $this->cache)) {
             $this->cache[$name] = $this->createParams($name);
         }
         return $this->cache[$name];
     }
 
     /**
-     * Create the tag instance
+     * Creates the tag instance
      *
      * @param string $name
      * @param string $content
@@ -65,7 +64,7 @@ class TagsList
      */
     private function createParams($name)
     {
-        if (\array_key_exists($name, $this->custom)) {
+        if (array_key_exists($name, $this->custom)) {
             $custom = $this->custom[$name];
             if ($custom === null) {
                 return null;
@@ -74,7 +73,7 @@ class TagsList
         } else {
             $custom = null;
         }
-        if (\array_key_exists($name, $this->default)) {
+        if (array_key_exists($name, $this->default)) {
             $default = $this->normalize($this->default[$name]);
         } else {
             $default = null;
@@ -82,7 +81,7 @@ class TagsList
         if ($custom && $default) {
             $result = [
                 'classname' => $custom['classname'] ?: $default['classname'],
-                'options' => \array_replace($default['options'], $custom['options']),
+                'options' => array_replace($default['options'], $custom['options']),
                 'name' => $custom['name'] ?: $default['name'],
             ];
         } elseif ($custom) {
@@ -100,20 +99,20 @@ class TagsList
         }
         $first = $result['classname'][0];
         if ($first === '=') {
-            $alias = $this->getParams(\substr($result['classname'], 1));
+            $alias = $this->getParams(substr($result['classname'], 1));
             if (!$alias) {
                 return null;
             }
             if (!empty($result['options'])) {
-                $alias['options'] = \array_replace($alias['options'], $result['options']);
+                $alias['options'] = array_replace($alias['options'], $result['options']);
             }
             return $alias;
         } elseif ($first === '\\') {
-            $result['classname'] = \substr($result['classname'], 1);
+            $result['classname'] = substr($result['classname'], 1);
         } else {
             $result['classname'] = __NAMESPACE__.'\tags\\'.$result['classname'];
         }
-        if (!\class_exists($result['classname'], true)) {
+        if (!class_exists($result['classname'], true)) {
             return null;
         }
         return $result;
@@ -125,14 +124,14 @@ class TagsList
      */
     private function normalize($params)
     {
-        if (!\is_array($params)) {
+        if (!is_array($params)) {
             return [
                 'classname' => $params,
                 'options' => [],
                 'name' => null,
             ];
         }
-        if (\array_key_exists(0, $params)) {
+        if (array_key_exists(0, $params)) {
             return [
                 'classname' => empty($params[0]) ? null : $params[0],
                 'options' => empty($params[1]) ? [] : $params[1],

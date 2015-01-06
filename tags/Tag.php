@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
@@ -9,8 +10,6 @@ namespace axy\ml\tags;
  * Tag [TAG:htmltag]
  *
  * @example [tag:div style="color:red"]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Tag extends Base
 {
@@ -24,7 +23,7 @@ class Tag extends Base
             $this->errors = ['empty html tag'];
             return '';
         }
-        return '<'.\strtolower($tag).($this->value ? ' '.$this->value : '').'>';
+        return '<'.strtolower($tag).($this->value ? ' '.$this->value : '').'>';
     }
 
     /**

@@ -42,7 +42,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
                 $params->url = '/';
                 $params->caption = '/';
             } elseif ($url[0] === ':') {
-                $params->url = 'http://mysite.loc/'.\substr($url, 1);
+                $params->url = 'http://mysite.loc/'.substr($url, 1);
                 $params->caption = $params->caption.'!';
                 $params->css = 'internal';
             }

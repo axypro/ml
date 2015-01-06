@@ -20,8 +20,8 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $plain = $this->getFile('base.txt');
         $parser = new Parser();
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
-        $this->assertSame($plain, \rtrim($result->plain));
+        $this->assertSame($html, rtrim($result->html));
+        $this->assertSame($plain, rtrim($result->plain));
         $this->assertFalse($result->isCutted);
         $this->assertSame('basic, test', $result->meta->keywords);
         $this->assertSame('Title of the document', $result->title);
@@ -94,10 +94,10 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html2 = $this->getFile('cut.html');
         $parser = new Parser();
         $result1 = $parser->parse($axyml, 'unk');
-        $this->assertSame($html1, \rtrim($result1->html));
+        $this->assertSame($html1, rtrim($result1->html));
         $this->assertFalse($result1->isCutted);
         $result2 = $parser->parse($axyml, 'anchor');
-        $this->assertSame($html2, \rtrim($result2->html));
+        $this->assertSame($html2, rtrim($result2->html));
         $this->assertTrue($result2->isCutted);
     }
 
@@ -107,7 +107,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     public function testMany()
     {
         $textHandler = function ($params) {
-            $params->content = \str_replace(2, 3, $params->content);
+            $params->content = str_replace(2, 3, $params->content);
         };
         $options = [
             'escape' => false,
@@ -129,7 +129,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('many.html');
         $parser = new Parser($options, $tags);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
     }
 
     /**
@@ -155,7 +155,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('blocks.html');
         $parser = new Parser($options, $tags);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertEmpty($result->errors);
     }
 
@@ -165,7 +165,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     public function testHand()
     {
         $bHandler = function ($text) {
-            return '<span>'.\str_replace("\n", '', $text).'</span>';
+            return '<span>'.str_replace("\n", '', $text).'</span>';
         };
         $options = [
             'bHandler' => $bHandler
@@ -186,7 +186,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('hand.html');
         $parser = new Parser($options, $tags);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertEmpty($result->errors);
     }
 
@@ -200,7 +200,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $plain = $this->getFile('empty0.txt');
         $parser = new Parser();
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertSame($plain, $result->plain);
         $this->assertEmpty($result->errors);
     }
@@ -214,7 +214,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('nl.html');
         $parser = new Parser();
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertEmpty($result->errors);
     }
 
@@ -235,7 +235,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         ];
         $parser = new Parser(null, $tags);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertEmpty($result->errors);
     }
 
@@ -248,7 +248,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('lists.html');
         $parser = new Parser();
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertEmpty($result->errors);
     }
 
@@ -264,7 +264,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         ];
         $parser = new Parser(null, $tags, ['value' => 2]);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertEmpty($result->errors);
     }
 
@@ -277,7 +277,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('urlimg.html');
         $parser = new Parser();
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertCount(1, $result->errors);
     }
 
@@ -311,7 +311,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         ];
         $parser = new Parser(null, $tags);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertEmpty($result->errors);
     }
 
@@ -350,7 +350,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         ];
         $parser = new Parser(null, $tags);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
         $this->assertCount(1, $result->errors);
     }
 
@@ -363,7 +363,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('table.html');
         $parser = new Parser();
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
     }
 
     /**
@@ -375,7 +375,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('opt.html');
         $parser = new Parser();
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
     }
 
     /**
@@ -396,7 +396,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         $html = $this->getFile('opt-handler.html');
         $parser = new Parser($options);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
     }
 
     public function testHeaders()
@@ -410,7 +410,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
         ];
         $parser = new Parser($options);
         $result = $parser->parse($axyml);
-        $this->assertSame($html, \rtrim($result->html));
+        $this->assertSame($html, rtrim($result->html));
     }
 
     /**
@@ -445,7 +445,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         if (!isset($this->files[$fn])) {
             $filename = __DIR__.'/nstst/parse/'.$fn;
-            $this->files[$fn] = \rtrim(\file_get_contents($filename));
+            $this->files[$fn] = rtrim(file_get_contents($filename));
         }
         return $this->files[$fn];
     }

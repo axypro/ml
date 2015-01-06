@@ -1,21 +1,23 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
 
+use axy\magic\ArrayWrapper;
+use axy\magic\Named;
+
 /**
  * The meta data dictionary
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
-class Meta extends \axy\magic\ArrayWrapper
+class Meta extends ArrayWrapper
 {
-    use \axy\magic\Named;
+    use Named;
 
     /**
-     * Constructor
+     * The constructor
      *
      * @param array $data [optional]
      */
@@ -25,11 +27,11 @@ class Meta extends \axy\magic\ArrayWrapper
     }
 
     /**
-     * Get a data value by a name
+     * Returns a data value by name
      *
      * @param string $name
      * @param mixed $default [optional]
-     * @returm mixed
+     * @return mixed
      */
     public function value($name, $default = null)
     {

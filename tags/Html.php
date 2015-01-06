@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
@@ -9,8 +10,6 @@ namespace axy\ml\tags;
  * Tag [HTML]
  *
  * @example [html <script>alert(1);</script>]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Html extends Base
 {
@@ -20,7 +19,7 @@ class Html extends Base
     public function getHTML()
     {
         $this->context->block->create = false;
-        return \trim($this->value);
+        return trim($this->value);
     }
 
     /**
@@ -28,7 +27,7 @@ class Html extends Base
      */
     public function getPlain()
     {
-        return \strip_tags($this->getHTML());
+        return strip_tags($this->getHTML());
     }
 
     /**

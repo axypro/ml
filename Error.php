@@ -1,14 +1,16 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
 
+use axy\magic\LazyField;
+use axy\magic\ReadOnly;
+
 /**
- * The error item of parsing
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
+ * The item of parsing error
  *
  * @property-read string $code
  * @property-read int $line
@@ -17,8 +19,8 @@ namespace axy\ml;
  */
 class Error
 {
-    use \axy\magic\LazyField;
-    use \axy\magic\ReadOnly;
+    use LazyField;
+    use ReadOnly;
 
     const TAG_UNKNOWN = 'tag_unknown';
     const TAG_NOT_CLOSED = 'tag_not_closed';
@@ -27,7 +29,7 @@ class Error
     const META_EMPTY = 'meta_empty';
 
     /**
-     * Constructor
+     * The constructor
      *
      * @param string $code
      * @param int $line [optional]
@@ -57,7 +59,7 @@ class Error
     }
 
     /**
-     * Sort the list of errors by the lines
+     * Sorts the errors list by number of lines
      *
      * @param array $errors
      * @return array
@@ -72,7 +74,7 @@ class Error
             }
             return 0;
         };
-        \usort($errors, $cmp);
+        usort($errors, $cmp);
         return $errors;
     }
 
@@ -98,14 +100,14 @@ class Error
             $tpl = $this->messages[''];
         }
         $callback = function ($m) use ($data) {
-            $m = \trim($m[1]);
+            $m = trim($m[1]);
             return isset($data[$m]) ? $data[$m] : '';
         };
-        return \preg_replace_callback('/{{(.*?)}}/', $callback, $tpl);
+        return preg_replace_callback('/{{(.*?)}}/', $callback, $tpl);
     }
 
     /**
-     * Messages templates
+     * Message templates
      *
      * @var array
      */

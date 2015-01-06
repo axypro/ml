@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
@@ -11,8 +12,6 @@ namespace axy\ml\tags;
  * @example [http://example.loc/]
  * @example [http://example.loc/ Example link]
  * @example [http"://link with space" Caption]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Scheme extends Base
 {

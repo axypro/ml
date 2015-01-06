@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\helpers;
@@ -9,24 +10,22 @@ use axy\callbacks\Callback;
 
 /**
  * The helper for handling and wrapping blocks and values
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Highlight
 {
     /**
-     * Escape html special characters in the text
+     * Escapes html special characters in the text
      *
      * @param string $text
      * @return string
      */
     public static function escape($text)
     {
-        return \htmlspecialchars($text, \ENT_COMPAT, 'UTF-8');
+        return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
     }
 
     /**
-     * Escape the plain text
+     * Escapes the plain text
      *
      * @param string $text
      * @param array $options
@@ -51,7 +50,7 @@ class Highlight
     }
 
     /**
-     * Create HTML-header
+     * Creates HTML-header
      *
      * @param \axy\ml\helpers\Token $token
      * @param array $options

@@ -19,7 +19,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testExtractHeadTitleOnly()
     {
         $options = [
-            'content' => \file_get_contents(__DIR__.'/nstst/util/head.ml'),
+            'content' => file_get_contents(__DIR__.'/nstst/util/head.ml'),
             'meta' => false,
             'parser' => false,
         ];
@@ -34,7 +34,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testExtractHeadMeta()
     {
         $options = [
-            'content' => \file_get_contents(__DIR__.'/nstst/util/head.ml'),
+            'content' => file_get_contents(__DIR__.'/nstst/util/head.ml'),
             'parser' => false,
         ];
         $result = Util::extractHead($options);
@@ -52,14 +52,14 @@ class UtilTest extends \PHPUnit_Framework_TestCase
     public function testExtractHeadParser()
     {
         $options1 = [
-            'content' => \file_get_contents(__DIR__.'/nstst/util/head-parser.ml'),
+            'content' => file_get_contents(__DIR__.'/nstst/util/head-parser.ml'),
             'parser' => false,
         ];
         $result1 = Util::extractHead($options1);
         $this->assertNull($result1->title);
         $this->assertEmpty($result1->meta->getSource());
         $options2 = [
-            'content' => \file_get_contents(__DIR__.'/nstst/util/head-parser.ml'),
+            'content' => file_get_contents(__DIR__.'/nstst/util/head-parser.ml'),
         ];
         $result2 = Util::extractHead($options2);
         $this->assertSame('This is title', $result2->title);
@@ -120,7 +120,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMenu()
     {
-        $content = \file_get_contents(__DIR__.'/nstst/util/menu.ml');
+        $content = file_get_contents(__DIR__.'/nstst/util/menu.ml');
         $parser = new Parser();
         $result = $parser->parse($content);
         $expected = [
@@ -178,7 +178,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderMenu()
     {
-        $content = \file_get_contents(__DIR__.'/nstst/util/menu.ml');
+        $content = file_get_contents(__DIR__.'/nstst/util/menu.ml');
         $parser = new Parser();
         $result = $parser->parse($content);
         $expected = [
@@ -201,7 +201,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             '<li><a href="#e">Eight</a></li>',
             '</ol>',
         ];
-        $expected = \implode(\PHP_EOL, $expected);
+        $expected = implode(\PHP_EOL, $expected);
         $this->assertEquals($expected, Util::renderMenu($result, \PHP_EOL, 2, 5));
         $this->assertEquals($expected, Util::renderMenu($result->getHeaders(), \PHP_EOL, 2, 5));
         $menu = Util::createMenu($result, 2, 5);

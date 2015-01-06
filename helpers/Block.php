@@ -1,17 +1,17 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\helpers;
 
+use axy\ml\Context;
 use axy\ml\Error;
 use axy\callbacks\Callback;
 
 /**
  * Parameters of a current block (during render)
- *
- * @autor Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Block
 {
@@ -72,21 +72,21 @@ class Block
     public $opts = [];
 
     /**
-     * Construct
+     * The construct
      *
      * @param \axy\ml\helpers\Token $container
      *        a token of the current block
-     * @param \axy\ml\Context $context
+     * @param Context $context
      *        the parsing context
      */
-    public function __construct(Token $container, \axy\ml\Context $context)
+    public function __construct(Token $container, Context $context)
     {
         $this->container = $container;
         $this->context = $context;
     }
 
     /**
-     * Render block
+     * Renders the block
      */
     public function render()
     {
@@ -104,14 +104,14 @@ class Block
         $content = '';
         $tags = $context->tags;
         $first = null;
-        $lastcreate = true;
+        $lastCreate = true;
         foreach ($this->container->subs as $token) {
             $first = ($first === null) ? true : false;
             switch ($token->type) {
                 case Token::TYPE_TEXT:
                     $text = Highlight::text($token->content, $options);
                     if ($this->ltrim) {
-                        $text = \ltrim($text);
+                        $text = ltrim($text);
                         $this->ltrim = false;
                     }
                     $content .= $text;
@@ -128,15 +128,15 @@ class Block
                             ];
                             $context->addError(new Error(Error::TAG_INVALID, $token->line, $data));
                         }
-                        $lastcreate = $first ? $this->create : true;
+                        $lastCreate = $first ? $this->create : true;
                         if ($content === '') {
                             $content = $html;
                         } else {
                             if ($this->split) {
-                                $this->addBlock($options, $lastcreate);
+                                $this->addBlock($options, $lastCreate);
                                 $content = $html;
                                 $this->addBlock($options, $this->create);
-                                $lastcreate = true;
+                                $lastCreate = true;
                                 $first = null;
                                 $content = '';
                                 $this->split = false;
@@ -157,28 +157,28 @@ class Block
                     $content .= $token->content;
             }
         }
-        $this->addBlock($options, $lastcreate);
+        $this->addBlock($options, $lastCreate);
         $context->setCurrentBlock(null);
     }
 
     /**
      * @param array $options
-     * @param boolean $crblock
+     * @param boolean $crBlock
      * @return array
      */
-    private function addBlock($options, $crblock)
+    private function addBlock($options, $crBlock)
     {
         if (!empty($this->endListeners)) {
             foreach ($this->endListeners as $listener) {
-                \call_user_func($listener, $this);
+                call_user_func($listener, $this);
             }
             $this->endListeners = [];
         }
-        $content = \trim($this->content);
+        $content = trim($this->content);
         if ($content === '') {
             return;
         }
-        if ($crblock && $this->wrap) {
+        if ($crBlock && $this->wrap) {
             if ($options['bHandler']) {
                 $content = Callback::call($options['bHandler'], [$content, $this->opts]);
             } elseif (empty($this->opts['nop'])) {
@@ -195,7 +195,7 @@ class Block
     private $container;
 
     /**
-     * @var \axy\ml\Context
+     * @var Context
      */
     private $context;
 }

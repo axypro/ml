@@ -1,21 +1,21 @@
 <?php
 /**
  * @package axy/ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
 
 use axy\ml\helpers\Token;
+use axy\ml\Result;
 
 /**
  * Some utilites
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Util
 {
     /**
-     * Extract head information without tokenize (for fast processing)
+     * Extracts the header information without tokenize (for fast processing)
      *
      * Options:
      * "content" - a content of the document
@@ -37,12 +37,12 @@ class Util
             $content = $options['content'];
         } elseif (isset($options['filename'])) {
             if (empty($options['fullload'])) {
-                $fp = @\fopen($options['filename'], 'rt');
+                $fp = @fopen($options['filename'], 'rt');
                 if (!$fp) {
-                    throw new \RuntimeException('File not found');
+                    throw new RuntimeException('File not found');
                 }
             } else {
-                $content = \file_get_contents($options['filename']);
+                $content = file_get_contents($options['filename']);
             }
         } else {
             throw new \InvalidArgumentException('extractHead require content or filename');
@@ -59,11 +59,11 @@ class Util
         $process = true;
         while ($process) {
             if ($fp) {
-                $line = \rtrim(\fgets($fp));
-                $process = !\feof($fp);
+                $line = rtrim(fgets($fp));
+                $process = !feof($fp);
             } else {
-                $parts = \explode("\n", $content, 2);
-                $line = \rtrim($parts[0]);
+                $parts = explode("\n", $content, 2);
+                $line = rtrim($parts[0]);
                 if (isset($parts[1])) {
                     $content = $parts[1];
                 } else {
@@ -76,22 +76,22 @@ class Util
             if ($line[0] !== '#') {
                 break;
             }
-            switch (\substr($line, 1, 1)) {
+            switch (substr($line, 1, 1)) {
                 case '#':
                     break;
                 case '=':
                     if ($meta !== null) {
-                        $m = \explode(':', \substr($line, 2), 2);
-                        $name = \trim($m[0]);
+                        $m = explode(':', substr($line, 2), 2);
+                        $name = trim($m[0]);
                         if ($name !== null) {
-                            $meta[$name] = isset($m[1]) ? \trim($m[1]) : true;
+                            $meta[$name] = isset($m[1]) ? trim($m[1]) : true;
                         }
                     }
                     break;
                 default:
                     if ($result->title === null) {
-                        if (\preg_match('/^#(\[.*?\])?(.*?)$/is', $line, $matches)) {
-                            $result->title = \trim($matches[2]);
+                        if (preg_match('/^#(\[.*?\])?(.*?)$/is', $line, $matches)) {
+                            $result->title = trim($matches[2]);
                             if ($meta === null) {
                                 break;
                             }
@@ -100,7 +100,7 @@ class Util
             }
         }
         if ($fp) {
-            \fclose($fp);
+            fclose($fp);
         }
         if ($meta !== null) {
             $result->meta = new Meta($meta);
@@ -112,11 +112,11 @@ class Util
                     $parser = new Parser();
                 }
                 if ($fp) {
-                    $content = \file_get_contents($options['filename']);
+                    $content = file_get_contents($options['filename']);
                 }
-                $presult = $parser->parse($content);
-                $result->title = $presult->title;
-                $result->meta = $presult->meta;
+                $pResult = $parser->parse($content);
+                $result->title = $pResult->title;
+                $result->meta = $pResult->meta;
             }
         }
         return $result;
@@ -125,17 +125,17 @@ class Util
     /**
      * Creates a menu from a headers list
      *
-     * @param array|\axy\ml\Result $result
+     * @param array|Result $result
      * @param int $min [optional]
      * @param int $max [optional]
      * @return array
      */
     public static function createMenu($result, $min = 2, $max = null)
     {
-        if ($result instanceof \axy\ml\Result) {
+        if ($result instanceof Result) {
             $result = $result->getHeaders($max);
         }
-        if (!\is_array($result)) {
+        if (!is_array($result)) {
             throw new \InvalidArgumentException();
         }
         $headers = [];
@@ -149,10 +149,10 @@ class Util
     }
 
     /**
-     * Render a menu
+     * Renders a menu
      *
      * @param mixed $result
-     *        a Result instance, an array of headers or a menu struct
+     *        a Result instance, an array of headers or a menu structure
      * @param string $nl [optional]
      *        a line break
      * @param int $min [optional]
@@ -160,9 +160,9 @@ class Util
      * @return string
      *         a result html
      */
-    public static function renderMenu($result, $nl = \PHP_EOL, $min = 2, $max = null)
+    public static function renderMenu($result, $nl = PHP_EOL, $min = 2, $max = null)
     {
-        if ((!\is_array($result)) || (!isset($result[0])) || (!isset($result[0]['subs']))) {
+        if ((!is_array($result)) || (!isset($result[0])) || (!isset($result[0]['subs']))) {
             $result = self::createMenu($result, $min, $max);
         }
         if (empty($result)) {
@@ -188,15 +188,15 @@ class Util
             } else {
                 $aa = self::normalizeTag($a[$k]);
                 $v = self::normalizeTag($v);
-                if (\array_key_exists('classname', $v)) {
+                if (array_key_exists('classname', $v)) {
                     $aa['classname'] = $v['classname'];
                 }
-                if (\array_key_exists('name', $v)) {
+                if (array_key_exists('name', $v)) {
                     $aa['name'] = $v['name'];
                 }
                 if (isset($v['options'])) {
                     if (isset($aa['options'])) {
-                        $aa['options'] = \array_replace($aa['options'], $v['options']);
+                        $aa['options'] = array_replace($aa['options'], $v['options']);
                     } else {
                         $aa['options'] = $v['options'];
                     }
@@ -210,25 +210,25 @@ class Util
     /**
      * Inserts a HTML code after a title in a result
      *
-     * @param \axy\ml\Result $result
+     * @param Result $result
      * @param string $html
      */
     public static function insertHTMLAfterTitle(Result $result, $html)
     {
         $tokens = $result->tokens;
-        $ktitle = null;
+        $kTitle = null;
         foreach ($tokens as $k => $token) {
             if (($token->type === Token::TYPE_HEADER) && ($token->level === 1)) {
-                $ktitle = $k;
+                $kTitle = $k;
                 break;
             }
         }
-        $htoken = new Token(Token::TYPE_HTML);
-        $htoken->content = $html;
-        if ($ktitle !== null) {
-            \array_splice($tokens, $ktitle + 1, 0, [$htoken]);
+        $hToken = new Token(Token::TYPE_HTML);
+        $hToken->content = $html;
+        if ($kTitle !== null) {
+            array_splice($tokens, $kTitle + 1, 0, [$hToken]);
         } else {
-            \array_unshift($tokens, $htoken);
+            array_unshift($tokens, $hToken);
         }
         $result->replaceTokens($tokens);
     }
@@ -251,7 +251,7 @@ class Util
                 break;
             }
             if ($delta === 1) {
-                \array_shift($headers);
+                array_shift($headers);
                 $subs[] = [
                     'title' => $current['content'],
                     'link' => $current['link'],
@@ -280,9 +280,9 @@ class Util
         $result = '';
         foreach ($subs as $item) {
             $result .= '<li>';
-            $title = \htmlspecialchars($item['title'], \ENT_COMPAT, 'UTF-8');
+            $title = htmlspecialchars($item['title'], ENT_COMPAT, 'UTF-8');
             if ($item['link'] !== null) {
-                $link = \htmlspecialchars($item['link'], \ENT_COMPAT, 'UTF-8');
+                $link = htmlspecialchars($item['link'], ENT_COMPAT, 'UTF-8');
                 $result .= '<a href="#'.$link.'">'.$title.'</a>';
             } else {
                 $result .= $title;
@@ -302,19 +302,19 @@ class Util
      */
     private static function normalizeTag($tag)
     {
-        if (!\is_array($tag)) {
+        if (!is_array($tag)) {
             return ['classname' => $tag];
         }
-        if (!\array_key_exists(0, $tag)) {
+        if (!array_key_exists(0, $tag)) {
             return $tag;
         }
         $result = [
             'classname' => $tag[0],
         ];
-        if (isset($tag[1]) && \is_array($tag[1])) {
+        if (isset($tag[1]) && is_array($tag[1])) {
             $result['options'] = $tag[1];
         }
-        if (\array_key_exists(2, $tag)) {
+        if (array_key_exists(2, $tag)) {
             $result['name'] = $tag[2];
         }
         return $result;

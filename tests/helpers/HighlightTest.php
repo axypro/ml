@@ -33,7 +33,7 @@ class HighlightTest extends \PHPUnit_Framework_TestCase
     public function providerText()
     {
         $formatter = function ($params) {
-            $params->content = \str_replace('-', '-->', $params->content);
+            $params->content = str_replace('-', '-->', $params->content);
         };
         $formatter2 = function ($params) {
             $params->content .= '!';

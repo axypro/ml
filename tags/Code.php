@@ -1,6 +1,7 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\tags;
@@ -11,8 +12,6 @@ use axy\callbacks\Callback;
  * Tag [CODE]
  *
  * @example [code:php echo 2 + 2;]
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Code extends Base
 {
@@ -31,26 +30,26 @@ class Code extends Base
             return $params->html;
         }
         $html = '';
-        $aeclass = false;
+        $aeClass = false;
         if (($params->attr !== null) && ($params->lang !== null)) {
             $val = $this->escape($params->lang);
             if (($params->attr === 'class') && ($params->css !== null) && (!$params->block)) {
                 $val .= ' '.$this->escape($params->css);
-                $aeclass = true;
+                $aeClass = true;
             }
-            $alang = ' '.$params->attr.'="'.$val.'"';
+            $aLang = ' '.$params->attr.'="'.$val.'"';
         } else {
-            $alang = '';
+            $aLang = '';
         }
-        if (($params->css !== null) && (!$aeclass)) {
-            $acss = ' class="'.$this->escape($params->css).'"';
+        if (($params->css !== null) && (!$aeClass)) {
+            $aCss = ' class="'.$this->escape($params->css).'"';
         } else {
-            $acss = '';
+            $aCss = '';
         }
         if ($params->block) {
-            $html .= '<pre'.$acss.'><code'.$alang.'>'.$params->source."\n</code></pre>";
+            $html .= '<pre'.$aCss.'><code'.$aLang.'>'.$params->source."\n</code></pre>";
         } else {
-            $html .= '<code'.$alang.$acss.'>'.$params->source.'</code>';
+            $html .= '<code'.$aLang.$aCss.'>'.$params->source.'</code>';
         }
         return $html;
     }
@@ -75,7 +74,7 @@ class Code extends Base
             $params->lang = $this->getArg(0, $this->options['default_lang']);
         }
         if (!$this->params->block) {
-            $this->value = \rtrim($this->value);
+            $this->value = rtrim($this->value);
         }
         $params->source = $this->escape($this->value);
         $params->plain = $this->value;
@@ -92,7 +91,7 @@ class Code extends Base
     protected function preparse()
     {
         $this->params = (object)[
-            'block' => (\strpos($this->value, "\n") !== false),
+            'block' => (strpos($this->value, "\n") !== false),
             'lang' => null,
             'source' => null,
             'plain' => null,

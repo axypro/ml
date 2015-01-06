@@ -1,8 +1,8 @@
-# axy\ml
+# axy\ml: simple markup language
 
-Simple markup language
+ * GitHub: [axypro/ml](https://github.com/axypro/ml)
+ * Composer: [axypro/ml](https://packagist.org/packages/axy/ml)
 
-Uses PHP 5.4+
+PHP 5.4+
 
-Composer: `axy/ml`.
-
+Library does not require any dependencies (except composer packages).

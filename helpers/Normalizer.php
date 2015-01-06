@@ -1,19 +1,18 @@
 <?php
 /**
  * @package axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml\helpers;
 
 /**
  * Text format normalizer
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 class Normalizer
 {
     /**
-     * Normalize the text to parse
+     * Normalizes the text before the parsing
      *
      * @param string $content
      * @param array $options
@@ -21,13 +20,13 @@ class Normalizer
      */
     public static function toParse($content, $options)
     {
-        $tab = \str_repeat(' ', $options['tab']);
-        $content = \str_replace("\t", $tab, $content);
-        return \preg_replace('/(\r\n)|(\n\r)|\n|\r/', "\n", $content);
+        $tab = str_repeat(' ', $options['tab']);
+        $content = str_replace("\t", $tab, $content);
+        return preg_replace('/(\r\n)|(\n\r)|\n|\r/', "\n", $content);
     }
 
     /**
-     * Normalize the text to result
+     * Normalizes the result text
      *
      * @param string $content
      * @param array $options
@@ -37,7 +36,7 @@ class Normalizer
     {
         $nl = $options['nl'];
         if ($nl !== "\n") {
-            $content = \str_replace("\n", $nl, $content);
+            $content = str_replace("\n", $nl, $content);
         }
         return $content;
     }

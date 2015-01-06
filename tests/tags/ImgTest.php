@@ -37,8 +37,8 @@ class ImgTest extends \PHPUnit_Framework_TestCase
                 $params->plain = '!!!';
                 return;
             }
-            if (\substr($params->src, 0, 1) === ':') {
-                $params->src = '/i/'.\substr($params->src, 1);
+            if (substr($params->src, 0, 1) === ':') {
+                $params->src = '/i/'.substr($params->src, 1);
                 $params->css = 'i';
             }
         };

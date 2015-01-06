@@ -12,7 +12,7 @@ class One extends \axy\ml\tags\Base
      */
     public function getHTML()
     {
-        return \implode('.', $this->args).':'.\implode('.', $this->components);
+        return implode('.', $this->args).':'.implode('.', $this->components);
     }
 
     /**
@@ -31,13 +31,13 @@ class One extends \axy\ml\tags\Base
 
     /**
      * @param string $prefix
-     * @param object $url
+     * @param object $params
      * @return string
      */
     public static function handleUrl($prefix, $params)
     {
-        if (\strpos($params->url, $prefix) === 0) {
-            $params->url = 'http://example.loc/'.\substr($params->url, 1);
+        if (strpos($params->url, $prefix) === 0) {
+            $params->url = 'http://example.loc/'.substr($params->url, 1);
         }
     }
 

@@ -32,7 +32,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             '##[cut] Subtitle',
             'Full text',
         ];
-        $content = \implode("\n", $content);
+        $content = implode("\n", $content);
         $parser = new Parser();
         $result = $parser->parse($content, 'cut');
         $this->assertInstanceOf('axy\ml\Result', $result);
@@ -83,6 +83,6 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
         $result = $parser->parseFile($filename, 'cut');
         $expected = "<h1>Title of the document</h1>\n\n<p>This is <b>short</b> text.</p>";
-        $this->assertSame($expected, \trim($result->html));
+        $this->assertSame($expected, trim($result->html));
     }
 }

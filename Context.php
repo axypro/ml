@@ -1,41 +1,44 @@
 <?php
 /**
  * @package \axy\ml
+ * @author Oleg Grigoriev <go.vasac@gmail.com>
  */
 
 namespace axy\ml;
 
+use axy\ml\helpers\Block;
+use axy\magic\LazyField;
+use axy\magic\ReadOnly;
+
 /**
- * The context of parsing
- *
- * @author Oleg Grigoriev <go.vasac@gmail.com>
+ * The context of the parsing
  *
  * @property-read \axy\ml\Result $result
- *                The result of parsing the current document
+ *                the result of the parsing of the current document
  * @property-read \axy\ml\Options $options
- *                The options of parsing
+ *                the parsing options
  * @property-read \axy\ml\TagsList $tags
- *                The list of available tags
+ *                the list of available tags
  * @property-read mixed $custom
- *                The custom context
- * @property-read \axy\ml\helpers\Block $block
- *                A current block (during render)
+ *                the custom context
+ * @property-read Block $block
+ *                a current block (during render)
  * @property-read array $errors
- *                The list of errors of last parsing
+ *                the errors list of the last parsing
  * @property-read object $vars
- *                Custom variables of parsing
+ *                custom variables of the parsing
  */
 class Context
 {
-    use \axy\magic\LazyField;
-    use \axy\magic\ReadOnly;
+    use LazyField;
+    use ReadOnly;
 
     /**
-     * Constructor
+     * The constructor
      *
      * @param \axy\ml\Result $result
      * @param \axy\ml\Options $options
-     * @param \axy\ml\TagList $tags
+     * @param \axy\ml\TagsList $tags
      * @param mixed $custom
      */
     public function __construct(Result $result, Options $options, TagsList $tags, $custom)
@@ -52,10 +55,10 @@ class Context
     }
 
     /**
-     * Initialization for start render
+     * Initialization before rendering
      *
      * @param array $errors [optional]
-     *        the errors list of tokenize
+     *        the errors list of the tokenize
      */
     public function startRender(array $errors = [])
     {
@@ -64,7 +67,7 @@ class Context
     }
 
     /**
-     * End parsing
+     * Ends the parsing
      */
     public function endRender()
     {
@@ -73,17 +76,17 @@ class Context
     }
 
     /**
-     * Set a current block (during render)
+     * Sets the current block (while render)
      *
-     * @param \axy\ml\helpers\Block $block
+     * @param Block $block
      */
-    public function setCurrentBlock(\axy\ml\helpers\Block $block = null)
+    public function setCurrentBlock(Block $block = null)
     {
         $this->magicFields['fields']['block'] = $block;
     }
 
     /**
-     * Append an error to the errors list
+     * Appends an error to the errors list
      *
      * @param \axy\ml\Error $error
      */
