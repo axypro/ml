@@ -1,6 +1,6 @@
-# CHANGELOG
+### dev-master
 
-## dev-master
+* Travis
 
-## 0.0.1 (09.03.2014)
+### 0.0.1 (09.03.2014)
 
