@@ -9,16 +9,16 @@ namespace axy\ml\helpers;
 /**
  * The class of a single token
  *
- * @property-read array $subs
- *                the list of inline tokens for a block
- * @property-read string $name
- *                the anchor name
- * @property-read string $content
- *                the content of the token
- * @property-read int $level
- *                the level of a header
- * @property-read string $link
- *                the link of a header
+ * @property array $subs
+ *           the list of inline tokens for a block
+ * @property string $name
+ *           the anchor name
+ * @property string $content
+ *           the content of the token
+ * @property int $level
+ *           the level of a header
+ * @property string $link
+ *           the link of a header
  */
 class Token extends \stdClass
 {
