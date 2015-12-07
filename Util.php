@@ -40,6 +40,7 @@ class Util
                 if (!$fp) {
                     throw new \RuntimeException('File not found');
                 }
+                $content = null;
             } else {
                 $content = file_get_contents($options['filename']);
             }

@@ -90,7 +90,7 @@ class Error
     /**
      * @return string
      */
-    private function createMessage()
+    protected function createMessage()
     {
         $code = $this->magicFields['fields']['code'];
         $data = $this->magicFields['fields']['data'];

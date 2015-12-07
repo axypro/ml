@@ -116,7 +116,7 @@ class Result
     /**
      * @return string
      */
-    private function loadTitle()
+    protected function loadTitle()
     {
         foreach ($this->tokens as $token) {
             if (($token->type === Token::TYPE_HEADER) && ($token->level === 1)) {
@@ -129,7 +129,7 @@ class Result
     /**
      * @return string
      */
-    private function createHtml()
+    protected function createHtml()
     {
         $mt = microtime(true);
         $context = $this->context;
@@ -170,7 +170,7 @@ class Result
     /**
      * @return string
      */
-    private function createPlain()
+    protected function createPlain()
     {
         $mt = microtime(true);
         $context = $this->context;
