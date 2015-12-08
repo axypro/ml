@@ -445,7 +445,9 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         if (!isset($this->files[$fn])) {
             $filename = __DIR__.'/nstst/parse/'.$fn;
-            $this->files[$fn] = rtrim(file_get_contents($filename));
+            $content = rtrim(file_get_contents($filename));
+            $content = str_replace("\r", '', $content);
+            $this->files[$fn] = $content;
         }
         return $this->files[$fn];
     }
